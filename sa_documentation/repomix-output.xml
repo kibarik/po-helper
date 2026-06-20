@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SA-HELPER CONTEXT MANIFEST (адаптация context-gen)
+  Оригинальный context-gen ожидает дамп КОДА репозитория. Здесь ground truth —
+  НЕ код хранилища, а 7 внешних источников идеи AI-трансформации. Этот файл —
+  манифест источников (статус получения, покрытие), чтобы каждый факт в index.md
+  трассировался до конкретного источника. Принцип SA-Helper: ноль галлюцинаций.
+-->
+<sa_context>
+  <meta>
+    <task>Систематизировать AI-TRANSFORMATION/index.md под полноту и соответствие идеи AI-трансформации (PAF)</task>
+    <author_framework>Тихомиров Сергей, productframework.ru, канал «Борода продакта»</author_framework>
+    <license>CC BY-SA 4.0</license>
+    <generated>2026-06-20</generated>
+  </meta>
+
+  <sources>
+    <!-- ДОСТУПНЫЕ С КОНТЕНТОМ -->
+    <source id="S1" status="FULL" group="AI-transformation">
+      <url>https://productframework.ru/ops/main</url>
+      <title>PAF — Product Architecture Framework, AI Product Operations (каркас)</title>
+      <coverage>Определение PAF; общий каркас; 6 принципов; команды Business Pod/Product Pod; модель управления (Нексус+Кортекс); структура Нексусов (рынка/продукта/роста/компании); Спелость контекста; Кортекс; Feature Bunch vs Backlog; Confidence Point; ролевая модель; Концепция Трёх Линз (3PL); эффект асинхронности; stage-gate; Product Sprint (Progress Pulse→Bunch Saturation→Pitching of Trust→Bale→Germination→Harvesting); Und-Id-Ex; модель зрелости AI Product Operations.</coverage>
+    </source>
+    <source id="S2" status="FULL" group="AI-transformation">
+      <url>https://productframework.ru/ai_product_roles</url>
+      <title>Роль менеджера продукта в эпоху ИИ (статья, апрель 2026)</title>
+      <coverage>FOBO/FOMO; исследования OpenAI(GDPval)/Karpathy/Anthropic; Harvard×BCG (фронт ИИ, кентавры/киборги); Filippi (ТРИЗ+ChatGPT); McKinsey (time-to-market); Harvard×P&amp;G (ИИ как кибер-коллега); Berkeley (рост интенсивности); метапознание+креативность; BetterUp×Stanford (workslop); Product Sense (рынок РФ); 3 вида оптимизации (авто/аугмент/агент); что вне ИИзации (стратегия+синхронизация); системная динамика (Голдратт, Product Life Cycle, Джевонс, Value Chain, Курцвейл, Маслоу); цифровой профиль продукта; новые роли (Product Engineer, Portfolio/Bizdev Architect, AI PM, Growth PM, Discovery/Launcher PM, AI UX Designer, Product Ops); метафоры ИИ-UX; роль «секретарь/адъютант».</coverage>
+    </source>
+    <source id="S3" status="FULL" group="Skills">
+      <url>https://productframework.ru/skill_map</url>
+      <title>Карта навыков менеджера продукта с точки зрения PAF (сентябрь 2021)</title>
+      <coverage>PM как целевая функция (максимизация ценности продукта с минимизацией time-to-market); 6 секторов (Discovery&amp;Researches, Value&amp;Solution Design, Development&amp;Delivery, Growth&amp;Experiments, Product Marketing, Sales&amp;Economics); 3 уровня (внутренний=junior/фича, средний=middle-senior/продукт, внешний=head-CPO/портфель-NorthStar); последовательность навыков (лучами); конфигурации ролей (Product Marketing Manager и др.); почему PAF Skills Map (ссылки на Product Star/Карпова, Typical/Розову, Product Mindset/Агеева, профстандарт 06.012); фокус ТОЛЬКО на hard skills.</coverage>
+    </source>
+    <source id="S4" status="FULL" group="Skills">
+      <url>https://profstandart.rosmintrud.ru/...?ELEMENT_ID=50430</url>
+      <title>Профстандарт 06.012 «Менеджер продуктов в области ИТ» (приказ Минтруда 636н от 16.09.2021, рег. № 147)</title>
+      <coverage>4 обобщённые трудовые функции: A (сопровождение продукта, ур.4, A/01–05), B (управление ИТ-продуктом, ур.5, B/01–09), C (управление серией продуктов и группой менеджеров, ур.6, C/01–09), D (управление портфелем и подразделением, ур.7, D/01–06); уровни квалификации 4–7; ОКЗ 1221/2431/3322; ОКВЭД 62.02/70.22/73.20.1.</coverage>
+    </source>
+
+    <!-- НЕДОСТУПНЫЕ — НЕ ВЫДУМЫВАТЬ (zero hallucination) -->
+    <source id="S5" status="PARTIAL_PAYWALLED" group="Skills">
+      <url>https://medium.com/typical-company/какие-навыки-нужны-менеджеру-продукта-93a874903f55</url>
+      <title>«Какие навыки нужны менеджеру продукта» — Medium / Typical Company (Валерия Розова)</title>
+      <note>Получено через Playwright 1.61 (Chromium headless + Google referer), HTTP 200. Захвачены: заголовок, автор (Валерия Розова), публикация typical.company, вводные абзацы, дисклеймер. ПОЛНЫЙ список навыков скрыт metered/member paywall Medium — НЕ реконструируется (zero hallucination). Разбор: sa_documentation/sources/S5_medium.md. Провалы обхода: Googlebot UA→403 Cloudflare; Jina Reader→451; freedium→000; format=json→403; Save Page Now→520.</note>
+    </source>
+    <source id="S6" status="METADATA_ONLY" group="Skills">
+      <url>https://docs.google.com/spreadsheets/d/1DC61vKVcPcxb2OgGZ98hKSlzM1c07YfhAywu1WFy8Eg/edit?gid=51611207</url>
+      <title>(ожидается) «[Product Mindset] Навыки менеджера продуктов : Навыки v1.2» — Google Sheet</title>
+      <note>htmlview/gviz/export отдают только заголовок (JS-рендер). Содержимое ячеек не извлечено. В index.md указан как табличная карта навыков (Product Mindset/Юра Агеев) БЕЗ пересказа содержимого.</note>
+    </source>
+    <source id="S7" status="UNAVAILABLE_CLOSED" group="Skills">
+      <url>https://miro.com/app/board/uXjVOs817Gs=/</url>
+      <title>(ожидается) Доска Miro — визуальная карта навыков</title>
+      <note>Закрытая интерактивная доска (canvas, требует рендер/доступ). web_reader содержимое не получает. В index.md указан как визуальный артефакт БЕЗ пересказа.</note>
+    </source>
+  </sources>
+
+  <!-- Контекст хранилища: как PAF-термины УЖЕ названы в существующих нотах (для consistency index.md) -->
+  <existing_notes_glossary>
+    <note file="RB-STEP-1-IDEA/1.1 Нексус Рынка.md">Нексус Рынка</note>
+    <note file="RB-STEP-1-IDEA/1.2 Нексус Продукта.md">Нексус Продукта</note>
+    <note file="RB-STEP-1-IDEA/1.3 Нексус Роста.md">Нексус Роста</note>
+    <note file="RB-STEP-1-IDEA/2.1 Linza Strategy.md">Линза Стратегии</note>
+    <note file="RB-STEP-1-IDEA/2.2 Linza Business.md">Линза Бизнеса</note>
+    <note file="RB-STEP-1-IDEA/2.3 Linza Product.md">Линза Продукта</note>
+    <note file="RB-STEP-1-IDEA/3.2 Confidence Points.md">Confidence Points</note>
+    <note file="RB-STEP-1-IDEA/3.3 AI Bunch Formation.md">AI Bunch Formation</note>
+    <note file="RB-STEP-1-IDEA/6.1 Pitching of Trust.md">Pitching of Trust</note>
+  </existing_notes_glossary>
+
+  <principle>Каждое утверждение в AI-TRANSFORMATION/index.md маркируется источником [S1]–[S7]. Источники [S5,S6,S7] не цитируются по содержимому — только упоминание существования.</principle>
+</sa_context>

@@ -1,0 +1,18 @@
+# .repomixignore — SA-Helper context-gen
+# Репо: Obsidian-хранилище PAF-нот (markdown). Кода нет.
+# Исключаем служебное и бинарное.
+
+# Система / контроль версий
+.git/
+.gitignore
+
+# Конфигурация агента
+.claude/
+
+# Бинарники и медиа (если появятся)
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.mp4
+*.webp
