@@ -21,7 +21,7 @@ PAF сознательно «не фиксирует технологию» [S1]
 
 | Ключ | Тип | Описание | Обязательный |
 |---|---|---|---|
-| `nexus` | enum | Какой Нексус: `product` \| `customer` \| `market` \| `growth` \| `portfolio` \| `ops` | ✅ |
+| `nexus` | open slug | **open slug** (любой из `GROUND/NEXUS/_registry.yaml`); дефолтный минимум в [[nexus_catalog]] | ✅ |
 | `node_id` | string | Стабильный идентификатор (ascii, нижний регистр, напр. `aip-7-overview`) | ✅ |
 | `node_type` | enum | Тип узла (см. §3) | ✅ |
 | `paf_step` | int\|null | Шаг AI-PROCESSES (0–8) или `null` для мета-узлов | ✅ |
@@ -34,6 +34,33 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `ttl_days` | int | Срок актуальности в днях. normative: 365; empirical: market/customer=90, growth=60 | ✅ |
 | `ripeness` | enum | `fresh` \| `ripening` \| `wilting` — вычисляется из `updated`+`ttl_days` (см. §4) | ✅ |
 | `tags` | list[string] | Доп. теги (Obsidian), напр. `[fit-point]`, `[sprint-engine]` | — |
+
+### 2.1 Кастомные Nexus-типы
+
+Поле `nexus` — **открытый slug**, не фиксированный enum: значение берётся из реестра клиента `GROUND/NEXUS/_registry.yaml`. Дефолтный минимальный набор (market/customer/product/growth) и опциональные PAF-типы (ops-model, company) определены в [[nexus_catalog]].
+
+Клиент определяет **кастомные** Нексусы под своё решение (напр. `sellers`, `buyers`, `supply-chain`):
+- Команда: `/paf-nexus-create` → интервью (name, slug, purpose, owner из roster, seed_questions, опц. paf_step, опц. schema_extensions) → создаёт `GROUND/NEXUS/<slug>/` и регистрирует в `GROUND/NEXUS/_registry.yaml` (`source: custom`).
+- Гвардраилы: slug уникален; конфликт с дефолтными / мастер-каталогом [[nexus_catalog]] → предупреждение; owner должен быть из roster.
+- **`schema_extensions`** — опц. тип-специфичные поля поверх базовой Node schema (§2). Напр. кастомный Нексус `sellers` может добавить поле `quota_attainment` — оно живёт рядом с `nexus`/`confidence`/`sources`, но не заменяет их.
+- Узлы кастомного Нексуса подчиняются **тем же правилам** Node schema: `sources` (Узел без sources = workslop), `confidence` (Confidence Point), `updated`/`ttl_days`, `ripeness` (wilting логика §4). `kind` = `normative` \| `empirical` по природе узла.
+
+### 2.2 Empirical узлы клиента (GROUND Vault)
+
+Узлы контекста продукта клиента живут в `GROUND/` (GROUND Vault) и имеют `kind: empirical` — это допущения и факты, не методология.
+
+| Аспект | Значение |
+|---|---|
+| `kind` | `empirical` |
+| `sources` | `["onboarding:<doc>"]` (из ингестии доков, Phase A) \| `["onboarding:interview"]` (из интервью, Phase B) \| последующие: аналитика, эксперимент, интервью Steps 1–8 |
+| `confidence` по умолчанию | **0.2–0.4** (допущение онбординга, **не валидировано**). CP поднимают Steps 1–8 (интервью/эксперименты → 0.5–1.0). |
+| `ttl_days` | короче, чем у normative (365): **market/customer = 90, growth = 60**. Быстрее wilting → раньше триггерит обновление/верификацию. |
+
+В тело каждого такого узла ставится пометка:
+
+> ⚠️ **допущение клиента (онбординг)**, требует валидации в Steps 1–8. CP отражает уровень доверия к допущению, не подтверждённый факт.
+
+> Онбординг цифровизует, **не валидирует** [S1] Принцип 4, [S2] III.7. Не выдавать допущения за факты. См. [[nexus_catalog]] (seed_questions для интервью) и [[ground_schema]] (структура GROUND Vault).
 
 ---
 
@@ -90,6 +117,8 @@ AI-PROCESSES — это **продукт** (сам фреймворк). Его 6
 - `confidence: 1.0` (всё трассируется до [S1]–[S4]); `ttl_days: 365` (normative); `ripeness: fresh`.
 
 > Пилот доказывает: schema работает на реальных нотах. Для **empirical** контекста (реальный продукт) — те же ключи, но `confidence`/`sources` отражают интервью/аналитику, `ttl_days` короче.
+>
+> **Разделение:** AI-PROCESSES — **normative** Nexus фреймворка (`kind: normative`, `confidence: 1.0`, трассируется до [S1]–[S4]); GROUND Vault клиента — **empirical** (`kind: empirical`, low-CP допущения онбординга, см. §2.2). Коробка не смешивает методологию с контекстом клиента.
 
 ---
 
@@ -114,4 +143,4 @@ tags: [pmf, fit-point]
 ```
 
 ---
-**Version:** 1.0 · **Last updated:** 2026-06-20 · **Связанные:** [[naming_conventions]] · [[AI-PROCESSES/operating-model|operating-model]] · [[AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup|1.nexus-setup]]
+**Version:** 1.1 (v3: open nexus + custom types + empirical client nodes) · **Last updated:** 2026-06-21 · **Связанные:** [[nexus_catalog]] · [[naming_conventions]] · [[ground_schema]] · [[AI-PROCESSES/operating-model|operating-model]] · [[AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup|1.nexus-setup]]
