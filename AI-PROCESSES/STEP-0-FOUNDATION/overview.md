@@ -1,3 +1,19 @@
+---
+nexus: product
+node_id: aip-0-overview
+node_type: bootstrap
+paf_step: 0
+sprint_phase: null
+kind: normative
+owner: Product Ops
+confidence: 1.0
+sources: ["[S1]", "[S2]", "[S3]", "[S4]"]
+updated: 2026-06-20
+ttl_days: 365
+ripeness: fresh
+tags: []
+---
+
 # Step 0 — Foundation: бутстрап AI-Native операционной модели
 
 > **Особый шаг.** Step 0 — это НЕ 6-фазный цикл Product Sprint. Это **разовый бутстрап** операционной модели PAF перед любым Product Discovery. Без него «остальные шаги усиливают мусор» [S1] Часть IX. Здесь закладываются Нексус + Кортекс + роли + Progress Pulse — четыре подшага, на которых стоят шаги 1–8.

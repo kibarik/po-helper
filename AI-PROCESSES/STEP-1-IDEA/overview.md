@@ -1,3 +1,19 @@
+---
+nexus: product
+node_id: aip-1-overview
+node_type: step-overview
+paf_step: 1
+sprint_phase: null
+kind: normative
+owner: Product Engineer
+confidence: 1.0
+sources: ["[S1]", "[S2]", "[S3]", "[S4]", "RB-STEP-1"]
+updated: 2026-06-20
+ttl_days: 365
+ripeness: fresh
+tags: []
+---
+
 # overview — Step 1: Idea & Context
 
 > **Веха Discovery · Линза: Strategy + Business + Product (все 3 Линзы) · Fit-точка: — (входная веха)**

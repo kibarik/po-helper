@@ -1,3 +1,19 @@
+---
+nexus: market
+node_id: aip-3-overview
+node_type: step-overview
+paf_step: 3
+sprint_phase: null
+kind: normative
+owner: Portfolio Manager
+confidence: 1.0
+sources: ["[S1]", "[S2]", "[S3]", "[S4]", "RB-STEP-3"]
+updated: 2026-06-20
+ttl_days: 365
+ripeness: fresh
+tags: []
+---
+
 # overview — Step 3: Market
 
 > Веха Discovery · Линза: **Strategy** · Fit-точка: — (первый гейт — Need/Value Fit в конце Step 4)

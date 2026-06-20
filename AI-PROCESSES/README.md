@@ -1,3 +1,19 @@
+---
+nexus: product
+node_id: aip-readme
+node_type: spine
+paf_step: null
+sprint_phase: null
+kind: normative
+owner: Product Ops
+confidence: 1.0
+sources: ["[S1]", "[S2]", "[S3]", "[S4]"]
+updated: 2026-06-20
+ttl_days: 365
+ripeness: fresh
+tags: []
+---
+
 # 🧭 AI-PROCESSES — AI-Native продуктовый фреймворк: от Идеи к полному Product Discovery
 
 > **Исполняемый StepByStep-фреймворк продуктовой команды нового поколения.** Объединяет классический Product Discovery (веха за вехой) с AI-Native операционной моделью **PAF** (Тихомиров С., [S1]–[S4]) и AI-трансформацией (`AI-TRANSFORMATION/`).
