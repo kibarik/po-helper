@@ -87,22 +87,24 @@ flowchart TD
 ```
 .claude/
 ├── commands/
-│   ├── bft-context-gen.md   ← контекст-пак
-│   ├── bft-problem.md       ← диагноз As-Is/Gap
-│   ├── bft-concept.md       ← 2-3 концепта
-│   ├── bft-debate.md        ← красная команда
-│   ├── bft-draft.md         ← черновик требований
-│   └── bft-validate.md      ← hard gates + Светофор
+│   ├── bft-context-gen.md   ← контекст-пак (Кортексы + Нексусы)
+│   ├── bft-problem.md       ← rich picture + диагноз As-Is/Gap
+│   ├── bft-concept.md       ← 2-3 концепта + CATWOE
+│   ├── bft-debate.md        ← красная команда (Адвокат Дьявола)
+│   ├── bft-draft.md         ← черновик требований (БТ/ПТ/ИТ/ФТ/НФТ)
+│   └── bft-validate.md      ← 12 hard gates + Светофор
 └── skills/
     └── bft-writer/
-        ├── SKILL.md                      ← роли + pipeline + 10 принципов
+        ├── SKILL.md                      ← роли + pipeline + 13 принципов
         ├── resources/
-        │   ├── bft_standards.md
-        │   ├── hard_gates.md             ← 10 🔴 + чек-лист + Светофор
+        │   ├── bft_standards.md          ← идентификаторы, типы (ПТ≠ФТ≠НФТ), НФТ-набор, NFR-реестр
+        │   ├── hard_gates.md             ← 12 🔴 + чек-лист + Светофор
+        │   ├── anchor_rules.md           ← ранги якорей R1/R2/R3 (код — только As-Is)
+        │   ├── catwoe.md                 ← SSM CATWOE (W→БТ, O→Ревью, E→НФТ)
         │   └── debate_rules.md           ← протокол adversarial
         └── examples/
-            ├── ideal_bft.md
-            └── golden_bft_example.md
+            ├── ideal_bft.md              ← пустой шаблон
+            └── golden_bft_example.md     ← аннотированный эталон
 ```
 
 Артефакты эпика: `<workspace>/<epic>/{context-pack,problem,concept,draft,validation}.md`.
