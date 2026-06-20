@@ -1,8 +1,9 @@
-# Spec — PAF Team OS (коробочное решение)
+# Spec — PAF Team OS (коробочное решение) · v2 (GROUND Vault + онбординг)
 
-> **Цель:** превратить репозиторий AI-KORTEX в дистрибутивный git-template — «коробку», которую любая команда клонирует, проходит LLM-setup (`/paf-init`) и ведёт продуктовый процесс + разработку по методологии **PAF** (https://productframework.ru/ops/main, Тихомиров С., CC BY-SA 4.0).
-> **Status:** design approved 2026-06-21. → `writing-plans`.
-> **Ground:** построен vault (TRADITIONAL/AI-TRANSFORMATION/AI-PROCESSES) + Cortex (6 агентов, `.claude/agents/`) + Nexus schema (`sa_documentation/nexus_schema.md`) + ruflo MCP (`.mcp.json`, Phase 2-complete). Коробка ≈ 90% готова; этот spec покрывает недостающие ~10%: setup-визард, разделение справочник/работа, дистрибуция.
+> **Цель:** дистрибутивный git-template. Команда/клиент клонирует → инструменты + **подробный онбординг** цифровизуют существующий контекст клиента в **GROUND Vault** (персонализированный, насыщенный Нексус) → дальше ведут продуктовый процесс + разработку по **PAF** (https://productframework.ru/ops/main, Тихомиров С., CC BY-SA 4.0).
+> **Рефрейм v2 (от клиента):** центр тяжести коробки — **онбординг**, который наполняет Нексусы **правильным контекстом** и **цифровизует его для работы с ИИ**. Не «пустой workspace», а насыщенный GROUND Vault.
+> **Status:** design v2 approved 2026-06-21. → `writing-plans`.
+> **Ground:** построены vault (TRADITIONAL/AI-TRANSFORMATION/AI-PROCESSES) + Cortex (6 агентов, `.mcp/agents/`) + Nexus schema (`sa_documentation/nexus_schema.md`) + ruflo MCP (`.mcp.json`, Phase 2-complete).
 
 ---
 
@@ -10,170 +11,205 @@
 
 | Развилка | Решение |
 |---|---|
-| Форм-фактор | **Git template + LLM setup-агент** (`/paf-init` skill). Не CLI. |
-| Стек | **Claude Code обязателен**; Obsidian рекомендован; ruflo MCP опционален (graceful degradation: без ruflo агенты fallback на Grep). |
-| Рабочая область | **Отдельная `WORKSPACE/`** — живой продукт-Nexus команды. Справочные слои (TRADITIONAL/AI-TRANSFORMATION/AI-PROCESSES/sa_documentation) — read-only методология. |
-| Дистрибуция | Эволюция текущего репо в box (не новый репо). |
-| Лицензия | Методология PAF = **CC BY-SA 4.0**; код (агенты, scripts, paf-init) = **MIT**. |
+| Форм-фактор | **Git template + LLM-агенты** (`/paf-init`, `/paf-onboard`). Не CLI. |
+| Стек | **Claude Code обязателен**; Obsidian рекомендован; ruflo MCP опционален (graceful degradation). |
+| Рабочая область | **GROUND Vault** (`GROUND/`) — персонализированный под клиента волт с насыщенным Нексусом. Справочные слои (TRADITIONAL/AI-TRANSFORMATION/AI-PROCESSES/sa_documentation) — read-only методология. |
+| **Онбординг — механизм** | **Гибрид**: ингестия существующих доков клиента → Cortex парсит+структурирует → управляемое интервью заполняет пробелы + верифицирует. |
+| **Онбординг — глубина/CP** | Цифровизация ВСЕХ существующих знаний по 4 Нексусам как **low-CP допущений** (`kind:empirical`, `sources=["onboarding"]`, `confidence: 0.2–0.4`). Формальные **Steps 1–8 валидируют** и поднимают CP. GROUND = насыщенный, но невалидированный. |
+| Дистрибуция | Эволюция текущего репо в box. |
+| Лицензия | Методология PAF = **CC BY-SA 4.0**; код = **MIT**. |
 
 ---
 
-## 2. Поток входа команды
+## 2. Поток входа клиента
 
 ```
-1. git clone <paf-team-os>         (или Use this template)
-2. открыть папку в Claude Code
-3. /paf-init                        ← LLM-визард (skill)
-     интервью → генерация WORKSPACE/ → первый Pulse
-4. готово к Step 1 → AI-PROCESSES/STEP-1-IDEA/overview (или /paf-step-1, будущий)
+1. git clone <paf-team-os>                (или Use this template)
+2. открыть в Claude Code
+3. /paf-init                              ← конфиг + структура GROUND (one-shot)
+     компания / продукт / команда / роли / Cortex-фаза → GROUND/config.yaml + пустой каркас
+4. /paf-onboard                           ← ПОДРОБНЫЙ ОНБОРДИНГ (главное; repeatable)
+     Phase A: ингестия доков клиента (GROUND/_intake/) → Cortex парсит → узлы Нексуса
+     Phase B: управляемое интервью по 4 Нексусам → заполнение пробелов
+     Phase C: верификация + простановка low-CP + anti-workslop
+     → GROUND Vault насыщен (baseline Context Ripeness)
+5. готово → Steps 1–8 (насыщенный Нексус, теперь ВАЛИДИРУЕМ и поднимаем CP)
 ```
 
----
-
-## 3. `/paf-init` — setup-визард
-
-**Форма:** Claude Code skill → `.claude/skills/paf-init/SKILL.md`. Команда вводит `/paf-init`, Claude ведёт диалог и генерирует артефакты.
-
-### 3.1 Интервью (вопросы собираются диалогом, не одной формой)
-1. Компания (имя).
-2. Продукт: название + elevator pitch (идея).
-3. Размер команды.
-4. Кто **Product Engineer** (единственная обязательная роль PAF [S1] III.2).
-5. (опц.) Другие роли — Product Ops / Growth Engineer / Portfolio Manager / Discovery-Launcher PM / AI UX Designer — кто или «Cortex (Claude) совмещает».
-6. Целевая **Cortex-фаза** зрелости: 1 (ассистент) / 2 (проводник + RAG) / 3 (event-driven, future).
-7. (опц.) Существующий контент для сидирования (документы, ссылки, интервью) — старт не с пустого Nexus.
-
-### 3.2 Что генерирует (артефакты в `WORKSPACE/`)
-- **`WORKSPACE/config.yaml`** — параметры команды/продукта (schema в §4).
-- **`WORKSPACE/NEXUS/`** — 4 пустых Нексуса (`market/`, `customer/`, `product/`, `growth/`) со структурой Node schema + по одному шаблонному узлу-placeholder в каждом + `NEXUS/_index.md` (MOC).
-- **`WORKSPACE/PULSE/01-pulse.md`** — первый Progress Pulse (snapshot: 4 Нексуса пустые, CR≈0; гэп = «есть идея, нет валидации»; intent = Step 1; стартовый CP низкий).
-- **(если ruflo MCP жив)** продукт-namespace в `config.yaml` (`ruflo.namespace: <slug>`); `nexus-builder`/`memory_store` готовы к записи.
-- **Финальный ответ**: readiness-отчёт (4 критерия STEP-0 → PASS для продукта) + «Готово → Step 1».
-
-### 3.3 Гвардраилы paf-init
-- **Idempotent**: если `WORKSPACE/config.yaml` уже есть — предупредить, не затирать без подтверждения.
-- **Detect ruflo MCP**: проверить доступность `mcp__ruflo__memory_stats`; выставить `config.yaml: cortex.ruflo_mcp: true|false`. Без ruflo — заметка в INSTALL-стиле «RAG опционален, fallback Grep».
-- **Ноль галлюцинаций**: paf-init НЕ выдумывает продукт-контекст; пустые Нексусы остаются пустыми (команда насыщает в Steps 1–8).
+> `/paf-init` = быстрая setup-настройка (one-shot). `/paf-onboard` = подробная цифровизация контекста (повторяемо — клиент может подкидывать новые доки). Онбординг — центр коробки.
 
 ---
 
-## 4. `WORKSPACE/config.yaml` — schema
+## 3. `/paf-init` — конфиг + структура GROUND (one-shot)
+
+**Форма:** skill → `.claude/skills/paf-init/SKILL.md`.
+
+**Интервью (быстро):** компания · название продукта + slug · elevator pitch · размер команды · кто Product Engineer · (опц.) др. роли · целевая Cortex-фаза (1/2/3) · (опц.) существующий контент для `_intake/`.
+
+**Генерирует:**
+- `GROUND/config.yaml` (schema §6).
+- `GROUND/` skeleton: `_intake/` (клиент кладёт доки), `NEXUS/` (4 пустых Нексуса + `_index.md`), `PULSE/`, `BUNCH/`, `RESULTS/`.
+- (опц.) первый `PULSE/00-init-pulse.md` (snapshot пустого → intent = онбординг).
+- **Detect ruflo MCP** → `config.yaml: cortex.ruflo_mcp`. **Idempotent** (не затирать существующий config).
+- Финал: «Конфиг готов → запусти `/paf-onboard` для цифровизации контекста».
+
+---
+
+## 4. `/paf-onboard` — подробная цифровизация контекста (главное; repeatable)
+
+**Форма:** skill → `.claude/skills/paf-onboard/SKILL.md`. Ведёт Cortex-агентами (`scouting`, `nexus-builder`, `cp-scorer`).
+
+### Phase A — ингестия доков клиента
+- Клиент кладёт материалы в `GROUND/_intake/` (доки, презы, PRD, research, заметки, URLs).
+- `scouting` + `nexus-builder` парсят каждый → извлекают факты/гипотезы → создают узлы Нексуса (`kind:empirical`, `sources=["onboarding:<doc>"]`).
+- Дедуп через `mcp__ruflo__memory_search` (ruflo) или Grep (без ruflo).
+
+### Phase B — управляемое интервью (заполнение пробелов)
+LLM ведёт структурированное интервью по 4 Нексусам (только пробелы после Phase A):
+- **market**: кто рынок, объём, конкуренты, тренды, Ставки.
+- **customer**: сегменты, JTBD, боли, mNSM-гипотеза.
+- **product**: идея, фичи, Vision, гэп.
+- **growth**: каналы, модель, ограничения, AI-COGS (если AI-продукт).
+Ответы → узлы (`sources=["onboarding:interview"]`).
+
+### Phase C — верификация + CP + anti-workslop
+- `cp-scorer` простанавливает **low-CP** всем онбординг-узлам: `confidence: 0.2–0.4` (допущение, не валидировано).
+- **Anti-workslop гейт:** ни один онбординг-узел не маркируется как факт/валидированный. Явная пометка в теле: `> ⚠️ допущение клиента (онбординг), требует валидации в Steps 1–8`.
+- (если ruflo) индекс GROUND-узлов в продукт-namespace.
+
+### Phase D — readiness-отчёт GROUND Vault
+- Context Ripeness по 4 Нексусам (baseline из покрытия; freshness высокий, CP низкий).
+- Карта: что насыщено / где главные пробелы / top low-CP узлы для приоритетной валидации.
+- Финал: «GROUND Vault насыщен → готов к Steps 1–8. Сейчас ВАЛИДИРУЕМ (Step 1 Idea → интервью/эксперименты → поднимаем CP)».
+
+---
+
+## 5. CP-дисциплина (критично) [S1] Принцип 4, [S2] III.7
+
+| Источник узла | `kind` | `confidence` | Валидация |
+|---|---|---|---|
+| Онбординг (доки/интервью клиента) | empirical | **0.2–0.4** (допущение) | Steps 1–8: интервью/эксперименты → растёт |
+| Steps 1–8 (валидировано) | empirical | 0.5–1.0 (по доказательствам) | CP растёт от новой информации |
+| Методология PAF (справочник) | normative | 1.0 (трассируется до [S1]–[S4]) | — |
+
+> **Принцип:** онбординг цифровизует, **не валидирует**. GROUND Vault = насыщенный, но low-CP. Не выдавать допущения клиента за факты (workslop). CP поднимают Steps 1–8 через реальные интервью/эксперименты. `wilting-detector` следит за CP/ripeness.
+
+---
+
+## 6. `GROUND/config.yaml` — schema
 
 ```yaml
-# Сгенерировано /paf-init. Редактируется командой.
 company: <имя>
 product:
   name: <название>
-  slug: <ascii-slug>        # → ruflo namespace, node_id prefix (напр. "acme-billing")
+  slug: <ascii-slug>          # → ruflo namespace, node_id prefix
   idea: <elevator pitch>
 team:
   size: <N>
   roster:
-    product_engineer: <человек>          # обязательно
+    product_engineer: <человек>            # обязательно
     product_ops: <человек | "Cortex">
     growth_engineer: <... | "Cortex">
     portfolio_manager: <... | "Cortex" | null>
     discovery_launcher_pm: <... | null>
     ai_ux_designer: <... | null>
 cortex:
-  phase_target: 2          # 1 | 2 | 3
-  ruflo_mcp: true          # auto-detected
-  obsidian: true           # recommended
+  phase_target: 2            # 1 | 2 | 3
+  ruflo_mcp: true            # auto-detected at /paf-init
+  obsidian: true             # recommended
+onboarding:
+  status: init               # init | in-progress | done
+  sources_ingested: []       # список доков в _intake/ (Phase A)
+  baseline_cr: {}            # Context Ripeness по Нексусам после онбординга
+  onboarded_at: null         # дата завершения Phase D
 created: 2026-06-21
-paf_step: 0                # текущий шаг (растёт 0→8 по мере прохождения)
+paf_step: 0                  # текущий шаг (0=онбординг, потом 1→8)
 ```
 
 ---
 
-## 5. Структура репо (box layout)
+## 7. Структура репо (box layout)
 
 ```
 paf-team-os/
-├── README.md              ← что это + quickstart (clone → /paf-init)
-├── INSTALL.md             ← prerequisites + шаги + troubleshooting
-├── LICENSE                ← CC BY-SA (методология) + MIT (код)
-├── .gitignore             ← .claude/*.db, .swarm/, .DS_Store (есть)
-├── .mcp.json              ← ruflo MCP (есть; опц., team approves)
-├── .claude/               ← ДВИЖОК (engine)
-│   ├── agents/            ← 6 Cortex-агентов (есть)
-│   ├── skills/paf-init/   ← НОВОЕ: setup-визард
-│   └── CORTEX.md          ← (есть)
-├── AI-PROCESSES/          ← СПРАВОЧНИК: 9-шаговый фреймворк (read-only)
-├── AI-TRANSFORMATION/     ← СПРАВОЧНИК: почему (read-only)
-├── TRADITIONAL/           ← СПРАВОЧНИК: классические методы RB-STEP (read-only)
-├── sa_documentation/      ← СПРАВОЧНИК: nexus_schema, naming, nexus_index.py (read-only)
-└── WORKSPACE/             ← ЖИВАЯ РАБОТА КОМАНДЫ (НОВОЕ; init'ится /paf-init)
-    ├── README.md          ← «здесь ваш продукт-Nexus; /paf-init»
-    ├── config.yaml        ← (генерируется)
-    ├── NEXUS/             ← empirical узлы продукта (market/customer/product/growth)
-    ├── PULSE/             ← Progress Pulse логи по шагам
-    ├── BUNCH/             ← Банч-артефакты
-    └── RESULTS/           ← Harvesting (NPV, PMF, фиксации)
+├── README.md · INSTALL.md · LICENSE · .gitignore · .mcp.json
+├── .claude/                 ← ДВИЖОК (engine)
+│   ├── agents/              ← 6 Cortex-агентов (есть)
+│   ├── skills/
+│   │   ├── paf-init/        ← НОВОЕ: конфиг + структура GROUND
+│   │   └── paf-onboard/     ← НОВОЕ: цифровизация контекста (главное)
+│   └── CORTEX.md            ← (есть)
+├── AI-PROCESSES/            ← СПРАВОЧНИК: 9-шаговый фреймворк (read-only)
+├── AI-TRANSFORMATION/       ← СПРАВОЧНИК: почему (read-only)
+├── TRADITIONAL/             ← СПРАВОЧНИК: классические методы RB-STEP (read-only)
+├── sa_documentation/        ← СПРАВОЧНИК: nexus_schema, naming, nexus_index.py (read-only)
+└── GROUND/                  ← GROUND VAULT: персонализированный волт клиента (НОВОЕ)
+    ├── README.md            ← «здесь ваш контекст; /paf-init → /paf-onboard»
+    ├── config.yaml          ← (генерируется /paf-init)
+    ├── _intake/             ← клиент кладёт доки для онбординга (Phase A)
+    ├── NEXUS/               ← empirical узлы продукта (market/customer/product/growth)
+    ├── PULSE/               ← Progress Pulse логи
+    ├── BUNCH/               ← Банч-артефакты
+    └── RESULTS/             ← Harvesting (NPV, PMF, фиксации)
 ```
 
-**Правка справочника:** команды НЕ должны править AI-PROCESSES/AI-TRANSFORMATION/TRADITIONAL/sa_documentation — это канон PAF (read-only). Их продукт-контекст — только в `WORKSPACE/`. Wiki-links работают (Obsidian резолвит по имени ноты; ссылки из WORKSPACE → AI-PROCESSES ведут к методу).
+**Правка справочника запрещена** — AI-PROCESSES/AI-TRANSFORMATION/TRADITIONAL/sa_documentation = канон PAF (read-only). Контекст клиента — только в `GROUND/`. Wiki-links работают (Obsidian резолвит по имени ноты).
 
-**Template vs fork:** template шлёт `WORKSPACE/` пустым (skeleton + README placeholder, tracked). Команда клонирует → `/paf-init` заполняет → команда коммитит свой WORKSPACE в свой fork. `WORKSPACE/` НЕ gitignored (это работа команды). `.claude/memory.db` — gitignored (регенерируется).
+**Template vs fork:** template шлёт `GROUND/` пустым (skeleton + README, tracked). Клиент клонирует → `/paf-init` → `/paf-onboard` → коммитит свой GROUND в свой fork. `GROUND/` НЕ gitignored (это контекст клиента). `.claude/memory.db`, `.swarm/` — gitignored.
 
 ---
 
-## 6. Graceful degradation
+## 8. Graceful degradation
 
 | Компонент | Без него | Поведение |
 |---|---|---|
-| Claude Code | — | ОБЯЗАТЕЛЕН (setup-агент + Кортекс). |
-| Obsidian | нет графического vault/wiki-link рендера | vault = markdown, любой редактор. Cortex/агенты работают (читают файлы). |
-| ruflo MCP | нет semantic RAG | агенты fallback на Grep (structured frontmatter). `nexus_index.py` пропускается. `/paf-init` ставит `ruflo_mcp: false`. |
+| Claude Code | — | ОБЯЗАТЕЛЕН (онбординг + Кортекс). |
+| Obsidian | нет графического vault/wiki-link рендера | vault = markdown, любой редактор. Онбординг/Cortex работают. |
+| ruflo MCP | нет semantic RAG | `paf-onboard`/агенты fallback на Grep (structured). Дедуп/поиск по смыслу слабее. `config.yaml: cortex.ruflo_mcp: false`. |
 
 INSTALL.md документирует все 3 уровня.
 
 ---
 
-## 7. Лицензия + credits
-
-- **Методология PAF** (TRADITIONAL/AI-TRANSFORMATION/AI-PROCESSES текст, термины, принципы) → **CC BY-SA 4.0**, автор Сергей Тихомиров (productframework.ru). README — явный credit + ссылка.
-- **Код** (`.claude/agents/*`, `sa_documentation/nexus_index.py`, `.claude/skills/paf-init/*`) → **MIT**.
-- `LICENSE` — dual: файл-заглушка с разъяснением какой слой под какой лицензией.
-
----
-
-## 8. Scope сборки (что создать)
-
-1. **`.claude/skills/paf-init/SKILL.md`** (+ вспомогательные) — setup-визард: интервью-логика + bootstrap-процедура (§3) + readiness-отчёт.
-2. **`WORKSPACE/` skeleton** — `README.md` placeholder + пустые `NEXUS/`(4 поддиректории + template-узлы + `_index.md`), `PULSE/`, `BUNCH/`, `RESULTS/` (с `.gitkeep`).
-3. **`WORKSPACE/config.yaml` schema** — задокументировать (§4); paf-init генерирует.
-4. **`README.md`** (переписать верхний) — что это, quickstart, credits PAF.
-5. **`INSTALL.md`** — prerequisites (Claude Code обязат./Obsidian реком./ruflo опц.), шаги, troubleshooting (MCP approval, ruflo path).
-6. **`LICENSE`** — dual CC BY-SA + MIT.
-7. **Адаптация Cortex под продукт-namespace**: `nexus-builder`/`scouting`/`bunch-former` — читать `WORKSPACE/config.yaml` → ruflo namespace продукта (вместо хардкода `ai-kortex`); если ruflo нет — Grep по `WORKSPACE/NEXUS/`.
-8. **`nexus_schema.md`** — секция «empirical узлы продукта» (поля для kind:empirical: гипотезы/интервью/метрики; ttl короче).
+## 9. Лицензия + credits
+- **Методология PAF** (TRADITIONAL/AI-TRANSFORMATION/AI-PROCESSES, термины, принципы) → **CC BY-SA 4.0**, автор Сергей Тихомиров (productframework.ru). README — явный credit + ссылка.
+- **Код** (`.claude/agents/*`, `.claude/skills/*`, `sa_documentation/nexus_index.py`) → **MIT**.
+- `LICENSE` — dual с разъяснением слоёв.
 
 ---
 
-## 9. Out of scope (YAGNI)
-- CLI-установщик (`npx ...`) — отказано в пользу template+skill.
-- Multi-product per clone — один `WORKSPACE/` на продукт; новый продукт → новый fork.
-- Neo4j / Phase 3 (event-driven, swarm) — будущая работа.
-- Хостинг/marketplace — только git.
-- `/paf-step-N` агенты для каждого шага — будущая UX (сейчас команды идут по AI-PROCESSES/overview).
-- i18n — только русский (matching PAF source).
+## 10. Scope сборки (что создать)
+
+1. **`.claude/skills/paf-init/SKILL.md`** — конфиг + структура GROUND (§3).
+2. **`.claude/skills/paf-onboard/SKILL.md`** — подробная цифровизация контекста (§4): Phase A ингестия, B интервью, C verify/CP, D readiness. Главный skill.
+3. **`GROUND/` skeleton** — `_intake/`, `NEXUS/`(4 поддиректории + template empirical-узлы + `_index.md`), `PULSE/`, `BUNCH/`, `RESULTS/` (с `.gitkeep` + README).
+4. **`GROUND/config.yaml` schema** — задокументировать (§6); paf-init генерирует, paf-onboard обновляет (`onboarding.*`).
+5. **`README.md`** (верхний) — что это, quickstart (clone → /paf-init → /paf-onboard → Steps), credits PAF.
+6. **`INSTALL.md`** — prerequisites (Claude Code обязат./Obsidian реком./ruflo опц.), шаги, troubleshooting (MCP approval, ruflo path, _intake/).
+7. **`LICENSE`** — dual CC BY-SA + MIT.
+8. **Cortex адаптация под продукт-namespace** — `nexus-builder`/`scouting`/`bunch-former`/`cp-scorer` читают `GROUND/config.yaml` → ruflo namespace продукта + корень `GROUND/NEXUS/` (вместо хардкода `ai-kortex`/`AI-PROCESSES`). Grep fallback по `GROUND/NEXUS/`.
+9. **`nexus_schema.md`** — секция «empirical узлы клиента» (kind:empirical, onboarding-source, low-CP по умолчанию, ttl короче).
+10. **Онбординг-интервью скрипт/шаблон** — структурированные вопросы по 4 Нексусам (Phase B) как артефакт в `paf-onboard/`.
 
 ---
 
-## 10. Готовность = определение «done»
-Коробка готова, когда новая команда (никогда не видевшая репо) может за ≤30 мин:
+## 11. Out of scope (YAGNI)
+- CLI-установщик; multi-product per clone; Neo4j / Phase 3 (event-driven, swarm); hosting/marketplace; `/paf-step-N` агенты; i18n.
+
+## 12. Готовность = «done»
+Коробка готова, когда НОВЫЙ клиент за ≤1 рабочий день:
 1. `git clone` + открыть в Claude Code.
-2. Запустить `/paf-init` → ответить на интервью → получить инициализированный `WORKSPACE/`.
-3. Прочитать readiness-отчёт (4 критерия STEP-0 → PASS) + «Готово → Step 1».
-4. Открыть `AI-PROCESSES/STEP-1-IDEA/overview` и начать Product Sprint с Кортексом над своим Nexus.
+2. `/paf-init` → конфиг + структура GROUND.
+3. `/paf-onboard` → закинул доки в `_intake/`, прошёл интервью → GROUND Vault насыщен (4 Нексуса с low-CP узлами, baseline Context Ripeness).
+4. Прочитал readiness-отчёт + карту пробелов → понимает, что валидировать в Steps 1–8.
+5. Открыл `AI-PROCESSES/STEP-1-IDEA/overview` → начал Product Sprint с Кортексом над насыщенным GROUND Nexus.
+
+## 13. Риски
+- **Онбординг = workslop-зона №1** (допущения клиента как «контекст»). **Контрмера:** low-CP + явная пометка «допущение, требует валидации» + `cp-scorer` гейт (§5).
+- **ruflo MCP registration quirk** — INSTALL даёт фикс; без ruflo коробка работает (degradation).
+- **Клиент правит справочник** — README/GROUND-README: «методология read-only, работа в GROUND/».
+- **Пере-онбординг затирает** — `/paf-onboard` idempotent: дедуп + upsert (не дублировать/не затирать валидированные узлы без подтверждения).
+- **Объём онбординга** — Phase B интервью модульное (по Нексусам), можно паузить/возобновлять; не один монолитный диалог.
 
 ---
-
-## 11. Риски
-- **ruflo MCP registration quirk** (plugin vs mcpServers) — INSTALL даёт чёткий фикс (`.mcp.json` approval + restart); без ruflo коробка всё равно работает (degradation).
-- **Команды правят справочник** — README/WORKSPACE-README явно: «методология read-only, работа в WORKSPACE/».
-- **paf-init выдумывает контент** — гвардраил: пустые Нексусы остаются пустыми; /paf-init только структура + config + первый Pulse.
-- **LLM-вариативность интервью** — skill фиксирует ОБЯЗАТЕЛЬНЫЕ поля config.yaml; опциональные — на усмотрение диалога.
-
----
-**Version:** 1.0 · **Approved:** 2026-06-21 · **Next:** `writing-plans` → implementation plan.
+**Version:** 2.0 · **Approved:** 2026-06-21 · **Next:** `writing-plans` → implementation plan (10 scope items).
