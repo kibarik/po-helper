@@ -1,74 +1,81 @@
 <p align="center">
   <strong>PO-Helper: BFT-Writer</strong><br>
-  <em>Фреймворк для ИИ-агентов: генерация БФТ (Бизнес-Функциональные Требования) уровня enterprise</em>
+  <em>Multi-step pipeline для ИИ-агентов: генерация БФТ (Бизнес-Функциональные Требования) уровня enterprise</em>
 </p>
 
 ---
 
 > **БФТ** — структурируй известное, фиксируй неизвестное. Каждый факт ← источник (трекер / PO / ТЗ).
 >
-> Ключевой принцип — **нулевой допуск к галлюцинациям**: адаптация методологии [sa-helper](https://gitlab.com/boboden541/sa-helper) (где якорь — `code:line`) под forward-looking требования (где якорь смещён на трекер / решения PO / wiki / СА).
+> Архитектура — зеркало [sa-helper](https://gitlab.com/boboden541/sa-helper) FNR-pipeline, адаптированная под forward-looking требования: якорь смещён с `code:line` на трекер / решения PO / wiki / СА. Каждая стадия — **отдельная команда, отдельная роль, STOP-пауза для ревью**.
 
 ---
 
 ## ⚡ Установка
 
-Разверните po-helper в проекте одной командой (в корне проекта):
-
 ```bash
+# в корне проекта:
 curl -ksSL https://raw.githubusercontent.com/kibarik/po-helper/main/install.sh | bash
 ```
 
-Или локально из клона:
-
-```bash
-bash install.sh
-```
-
-Скрипт скопирует `.claude/skills/bft-writer/` и `.claude/commands/{bft-gen,bft-context-gen}.md` в текущий проект. Существующие файлы не удаляются.
-
-> Поддерживается Claude Code (`.claude/`). Для других агентов (Codex `.agents/`, Cline `.cline/` и т.п.) — адаптируйте пути по аналогии.
+Или из клона: `bash install.sh`. Копирует `.claude/{skills/bft-writer,commands}`. Существующие файлы не удаляются.
 
 ---
 
-## 📊 Процесс генерации БФТ
+## 📊 Процесс генерации БФТ (multi-step, как sa-helper)
 
 ```mermaid
 flowchart TD
-    A["/bft-context-gen"] -->|"Кортексы + Нексусы → context-pack"| B["/bft-gen"]
-    B -->|"каскад требований + диаграммы"| C["Adversarial Review"]
-    C --> D{"Hard Gates + Светофор"}
-    D -->|"🔴 gate нарушен"| B
-    D -->|"🟢/🟡"| E(("БФТ готов"))
+    A["/bft-context-gen"] -->|"context-pack"| B["/bft-problem"]
+    B -->|"problem.md"| C["/bft-concept"]
+    C -->|"concept.md · 2-3 концепта"| D["/bft-debate"]
+    D -->|"вердикт в concept.md"| E{Вердикт?}
+
+    E -->|"Принят"| F["/bft-draft"]
+    E -->|"Забраковано"| C
+
+    F -->|"черновик БФТ"| G["/bft-validate"]
+    G -->|"🟢/🟡"| H(("Done"))
+    G -->|"🔴 нарушен gate"| F
+
+    style A fill:#4a9eff,color:#fff
+    style B fill:#ffd43b,color:#000
+    style C fill:#ffd43b,color:#000
+    style D fill:#ffd43b,color:#000
+    style F fill:#ffd43b,color:#000
+    style G fill:#ff6b6b,color:#fff
+    style H fill:#51cf66,color:#fff
 ```
 
-**Два этапа:**
+**6 стадий, каждая = отдельный запуск + STOP-пауза:**
 
-1. **`/bft-context-gen {epic} {key}`** — сборка контекст-пака: статичный фон (Кортексы: архитектура/регуляторика/бизнес-правила/решения) + живые факты эпика (Нексусы: трекер/wiki/PO/код).
-2. **`/bft-gen {epic}`** — генерация БФТ (10 стадий: якоря → каркас → open-questions → каскад требований → диаграммы → зависимости → adversarial → hard gates → Светофор → сборка).
+| Стадия | Команда | Роль | Артефакт |
+|:---|:---|:---|:---|
+| Контекст | `/bft-context-gen` | Context Builder | `context-pack.md` |
+| Проблема | `/bft-problem` | Problem Analyst (диагноз, без решения) | `problem.md` |
+| Концепты | `/bft-concept` | Solution Designer (2-3 варианта) | `concept.md` |
+| Дебаты | `/bft-debate` | Architect vs Devil's Advocate | вердикт в `concept.md` |
+| Требования | `/bft-draft` | Requirements Writer | черновик БФТ |
+| Валидация | `/bft-validate` | Validator (свежий взгляд) | `validation.md` |
+
+**Циклы:** дебаты забракованы → `/bft-concept`; валидация 🔴 → `/bft-draft`.
 
 ---
 
-## 🛠 Команды
-
-| Команда | Описание | Результат |
-|:--------|:---------|:----------|
-| `/bft-context-gen` | Сборка контекст-пака | `bft-context-pack.md` (Кортексы + Нексусы + матрица покрытия) |
-| `/bft-gen` | Генерация БФТ | документ БФТ + отчёт «Светофор» |
-
----
-
-## 🧠 За счёт чего качество (механизмы sa-helper, перенесённые на БФТ)
+## 🧠 За счёт чего качество
 
 | # | Механизм | Что даёт |
 |:--|:--------|:---------|
-| 1 | **Каскад ролей** (context → gen → validate) | Нет смешения «диагноз+решение+требование» |
-| 2 | **Adversarial Review** (3 раунда, Адвокат Дьявола) | Red-teaming требований: нагрузка/отказ/идемпотентность/безопасность/зависимости |
-| 3 | **Hard Gates** (10 бинарных 🔴) | Валидация = конечный список pass/fail, не «постарайся» |
-| 4 | **Self-валидация «Светофор»** (🟢/🟡/🔴 по слоям) | Многопроходная проверка |
-| 5 | **Truth Anchors** (якорь на трекер/PO/wiki вместо `code:line`) | Нулевой допуск к галлюцинациям |
-| 6 | **Few-shot эталоны** (ideal + golden) | Копирование формата/глубины примера |
-| 7 | **No Silent Skip** | Неизвестное → «Открытые вопросы» / `[УТОЧНИТЬ]`, а не выдумка |
+| 1 | **Разные роли = разные «мозги»** | Нет смешения «диагноз+решение+требование» |
+| 2 | **STOP-паузы human-in-the-loop** | PO ревьюит между стадиями, ловит ошибки рано |
+| 3 | **Adversarial отдельным запуском** (`/bft-debate`) | Ломает confirmation bias — другой агент критикует |
+| 4 | **Concept-стадия** (2-3 варианта) | Не фиксируем первый пришедший вариант |
+| 5 | **Hard Gates** (10 бинарных 🔴) | Валидация = pass/fail, не «постарайся» |
+| 6 | **Self-валидация «Светофор»** (🟢/🟡/🔴) | Многопроходная проверка свежим взглядом |
+| 7 | **Truth Anchors** (якорь на трекер/PO/wiki) | Нулевой допуск к галлюцинациям |
+| 8 | **Артефакты-передачи** | Каждый шаг проверяем, откатываем, переиспользуем |
+
+> ⚠️ **Главное:** НЕ генерируй БФТ за один промт. STOP после каждой стадии. Только так pipeline эквивалентен sa-helper по качеству.
 
 ---
 
@@ -77,30 +84,41 @@ flowchart TD
 ```
 .claude/
 ├── commands/
-│   ├── bft-context-gen.md   ← сборка контекст-пака
-│   └── bft-gen.md           ← генерация БФТ
+│   ├── bft-context-gen.md   ← контекст-пак
+│   ├── bft-problem.md       ← диагноз As-Is/Gap
+│   ├── bft-concept.md       ← 2-3 концепта
+│   ├── bft-debate.md        ← красная команда
+│   ├── bft-draft.md         ← черновик требований
+│   └── bft-validate.md      ← hard gates + Светофор
 └── skills/
     └── bft-writer/
-        ├── SKILL.md                      ← роль + 10 принципов + pipeline
+        ├── SKILL.md                      ← роли + pipeline + 10 принципов
         ├── resources/
-        │   ├── bft_standards.md          ← идентификаторы, НФТ-набор, frontmatter
+        │   ├── bft_standards.md
         │   ├── hard_gates.md             ← 10 🔴 + чек-лист + Светофор
         │   └── debate_rules.md           ← протокол adversarial
         └── examples/
-            ├── ideal_bft.md              ← пустой шаблон
-            └── golden_bft_example.md     ← аннотированный эталон
+            ├── ideal_bft.md
+            └── golden_bft_example.md
 ```
 
-Каждый навык содержит **SKILL.md** (роль), **resources/** (чек-листы, стандарты), **examples/** (эталоны) — по архитектуре sa-helper.
+Артефакты эпика: `<workspace>/<epic>/{context-pack,problem,concept,draft,validation}.md`.
 
 ---
 
 ## 🔗 Связь с sa-helper
 
-sa-helper превращает **код в документацию** (reverse-engineering, якорь `file:line`).
-po-helper превращает **постановку PO в требования** (forward-looking, якорь на трекер/PO/wiki).
+| sa-helper (reverse-engineering) | po-helper (forward-looking) |
+|:---|:---|
+| `/context-gen` → repomix (код) | `/bft-context-gen` → Кортексы + Нексусы |
+| `/fnr-new-task` → task.md | `/bft-problem` → problem.md |
+| `/fnr-concept` → concept.md | `/bft-concept` → concept.md |
+| `/fnr-debate` → вердикт | `/bft-debate` → вердикт |
+| `/fnr-system-requirements` → BR/FR/NFR | `/bft-draft` → БТ/ПТ/ИТ/ФТ/НФТ |
+| `/validate-doc` → аудит | `/bft-validate` → Светофор |
+| якорь `code:line` | якорь трекер/PO/wiki |
 
-Механика качества идентична; отличается только источник «якорей истины».
+Механика качества идентична; отличается источник «якорей истины».
 
 ---
 
