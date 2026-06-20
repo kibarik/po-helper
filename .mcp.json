@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "ruflo": {
+      "command": "/opt/homebrew/bin/ruflo",
+      "args": ["mcp", "start"]
+    }
+  }
+}
