@@ -1,3 +1,19 @@
+---
+nexus: growth
+node_id: aip-5-overview
+node_type: step-overview
+paf_step: 5
+sprint_phase: null
+kind: normative
+owner: Growth Engineer
+confidence: 1.0
+sources: ["[S1]", "[S2]", "[S3]", "[S4]", "RB-STEP-5"]
+updated: 2026-06-20
+ttl_days: 365
+ripeness: fresh
+tags: []
+---
+
 # overview — Step 5: Business Model
 
 > **Веха Discovery · Линза: Business (Рычаги/Lever → NPV, Business Sprint) · Fit-точка: 🟥 Biz-model fit**

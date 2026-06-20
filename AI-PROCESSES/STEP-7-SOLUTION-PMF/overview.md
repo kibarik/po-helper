@@ -1,3 +1,19 @@
+---
+nexus: product
+node_id: aip-7-overview
+node_type: step-overview
+paf_step: 7
+sprint_phase: null
+kind: normative
+owner: Product Engineer
+confidence: 1.0
+sources: ["[S1]", "[S2]", "[S3]", "[S4]", "RB-STEP-7"]
+updated: 2026-06-20
+ttl_days: 365
+ripeness: fresh
+tags: ["fit-point"]
+---
+
 # overview — Step 7: Solution & PMF
 
 > Веха Discovery · Линза: **Product** · Fit-точка: 🟫 PMF

@@ -1,3 +1,19 @@
+---
+nexus: product
+node_id: aip-fit-points
+node_type: gates
+paf_step: null
+sprint_phase: null
+kind: normative
+owner: Product Ops
+confidence: 1.0
+sources: ["[S1]", "[S2]", "[S3]", "[S4]"]
+updated: 2026-06-20
+ttl_days: 365
+ripeness: fresh
+tags: ["fit-point"]
+---
+
 # 🚦 Fit-Points — гейты Product Discovery (Stage-Gate по Confidence Point)
 
 > Четыре точки соответствия (fit), которые подтверждают прогресс по 9 шагам AI-PROCESSES. Каждая = **Stage-Gate по Confidence Point** [S1] VI.3: рост контекста → выше шанс прохождения гейта **или осознанного отказа**.

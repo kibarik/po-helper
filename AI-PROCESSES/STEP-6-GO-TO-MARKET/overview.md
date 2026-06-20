@@ -1,3 +1,19 @@
+---
+nexus: growth
+node_id: aip-6-overview
+node_type: step-overview
+paf_step: 6
+sprint_phase: null
+kind: normative
+owner: Growth Engineer
+confidence: 1.0
+sources: ["[S1]", "[S2]", "[S3]", "[S4]", "RB-STEP-6"]
+updated: 2026-06-20
+ttl_days: 365
+ripeness: fresh
+tags: []
+---
+
 # overview — Step 6: Go-to-Market
 
 > **Веха Discovery · Линза: Business (+ Product) · Fit-точка: — (дистрибуция = bottleneck по Голдратту [S2])**

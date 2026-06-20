@@ -1,3 +1,19 @@
+---
+nexus: product
+node_id: aip-operating-model
+node_type: operating-model
+paf_step: null
+sprint_phase: null
+kind: normative
+owner: Product Ops
+confidence: 1.0
+sources: ["[S1]", "[S2]", "[S3]", "[S4]"]
+updated: 2026-06-20
+ttl_days: 365
+ripeness: fresh
+tags: []
+---
+
 # ⚙️ Operating Model — правила игры AI-Native продуктовой команды (PAF)
 
 > Единая операционная модель, на которой стоят **все 9 шагов** AI-PROCESSES. Прочитай ОБЯЗАТЕЛЬНО перед шагами.
