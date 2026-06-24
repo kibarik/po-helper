@@ -3,6 +3,10 @@
     "ruflo": {
       "command": "/opt/homebrew/bin/ruflo",
       "args": ["mcp", "start"]
+    },
+    "excalidraw": {
+      "command": "npx",
+      "args": ["-y", "excalidraw-mcp"]
     }
   }
 }
