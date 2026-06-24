@@ -24,6 +24,7 @@ PAF (https://productframework.ru/ops/main, Тихомиров С., CC BY-SA 4.0)
 | `growth` | Нексус системы роста | каналы, модель монетизации, AI-COGS | Growth Engineer | 5, 6, 8 | ✅ | Каналы дистрибуции/роста? Модель монетизации? AI-COGS (составляющая затрат ИИ)? Рычаги (Lever) роста NPV? |
 | `ops-model` | Нексус операционной модели | операционная модель, кадренсы, эффект асинхронности | Product Ops / Product Architect | — | ❌ | — |
 | `company` | Нексус портфеля/компании | портфель продуктов, бизнес-юниты (Business Pod) | Portfolio Manager / Bizdev Architect | — | ❌ | — |
+| `team` | Нексус организационной структуры | персоны, роли, зоны влияния/ответственности, связи, экспертиза — People Graph для ИИ-навигации | Product Ops / Portfolio Manager | — | ❌ | ФИО и должности ключевых людей? Зоны ответственности каждого? Кто с кем взаимодействует по рабочим вопросам? По каким вопросам к кому обращаться? |
 
 > `minimal: true` — входит в дефолтный набор, инстанцируется `/paf-init`. `minimal: false` — опциональные PAF-типы, клиент подключается по необходимости (PAF определяет 6 типов: 4 минимальных + `ops-model` + `company`).
 
@@ -115,8 +116,129 @@ schema_extensions: {}
 
 - **`ops-model`** — Нексус операционной модели. Purpose: операционная модель, кадренсы спринтов, эффект асинхронности (нарушение кадренсов при росте локальных скоростей → event-based). Owner role: **Product Ops / Product Architect**.
 - **`company`** — Нексус портфеля/компании. Purpose: портфель продуктов, бизнес-юниты (Business Pod), скаутинг возможностей/угроз на уровне компании. Owner role: **Portfolio Manager / Bizdev Architect**.
+- **`team`** — Нексус организационной структуры. Purpose: People Graph — каждый узел = один человек (node_type: person), с ролью, зонами влияния, связями и экспертизой для ИИ-навигации. Owner role: **Product Ops / Portfolio Manager**.
 
-> Эти типы PAF определяет как часть методологии (всего 6 типов: 4 минимальных + 2 опциональных). Они не получают `seed_questions` по умолчанию — клиент формирует вопросы под свой контекст или через `/paf-nexus-create`-интервью.
+> Эти типы PAF определяет как часть методологии (всего 7 типов: 4 минимальных + 3 опциональных). `ops-model` и `company` не получают `seed_questions` по умолчанию — клиент формирует вопросы через `/paf-nexus-create`-интервью. `team` имеет полную YAML-спецификацию (§4.1) ниже.
+
+### 4.1 `team` — полная спецификация
+
+```yaml
+slug: team
+name: Нексус организационной структуры
+purpose: >
+  People Graph организации. Каждый Узел = один человек (node_type: person).
+  Даёт ИИ-агенту структурированное представление кто, на какой роли работает,
+  по каким вопросам полезен, с кем взаимодействует, каким контекстом обладает.
+  Граф формирует три слоя: org chart (reports_to/manages),
+  social graph (collaborates_with), expertise graph (expertise_topics/contact_for).
+owner_role: "Product Ops / Portfolio Manager"
+paf_step_ref: null
+minimal: false
+seed_questions:
+  - Полное ФИО и должность каждого ключевого человека?
+  - Какие зоны ответственности и принятия решений у каждого?
+  - Кто кому подчиняется (прямая иерархия)?
+  - Кто с кем взаимодействует по рабочим вопросам (не иерархически)?
+  - По каким вопросам к кому обращаться?
+  - Каким уникальным контекстом или экспертизой обладает каждый человек?
+schema_extensions:
+  # --- Идентичность (обязательные для node_type: person) ---
+  full_name:
+    type: string
+    required: true
+    description: "Полное ФИО (Иванов Иван Иванович)"
+  role_title:
+    type: string
+    required: true
+    description: "Должность/титул (напр. 'Product Manager', 'CTO')"
+  department:
+    type: string
+    required: false
+    description: "Отдел или подразделение"
+
+  # --- Org Chart (W3C org:reportsTo / org:Membership) ---
+  reports_to:
+    type: string
+    required: false
+    description: "node_id руководителя (прямое подчинение)"
+  manages:
+    type: list[string]
+    required: false
+    description: "node_ids прямых подчинённых"
+  membership_since:
+    type: date
+    required: false
+    description: "Дата начала в роли (ISO YYYY-MM-DD)"
+
+  # --- Social Graph (кто с кем взаимодействует) ---
+  collaborates_with:
+    type: list[string]
+    required: false
+    description: "node_ids ключевых коллег по рабочим вопросам (не иерархия)"
+
+  # --- Expertise Graph (что знает, куда роутить) ---
+  influence_zones:
+    type: list[string]
+    required: true
+    description: "Зоны ответственности/влияния (напр. ['бюджет продукта', 'найм команды'])"
+  expertise_topics:
+    type: list[string]
+    required: true
+    description: "Темы экспертизы — для AI-поиска нужного человека"
+  contact_for:
+    type: list[string]
+    required: true
+    description: "По каким вопросам обращаться (routing hint для ИИ-агента)"
+  context_holds:
+    type: string
+    required: false
+    description: "Уникальный контекст, которым обладает человек (свободный текст для RAG)"
+
+  # --- Контакты ---
+  communication_channels:
+    type: list[string]
+    required: false
+    description: "Как связаться (напр. ['Slack: @ivan', 'email: ivan@co.ru'])"
+```
+
+> **Примечание по wilting:** `ttl_days` для person-узлов рекомендуется **180 дней** — роли меняются реже рынка, но быстрее нормативных документов. При реорганизации обновляйте `reports_to`/`manages`/`collaborates_with` — граф связей устаревает быстрее, чем `full_name`/`role_title`.
+
+> **Источники для person-узлов:** `sources` должен указывать откуда взяты данные — `["onboarding:interview"]`, `["hr-system"]`, `["self-reported"]`, `["linkedin"]`, `["config.yaml:roster"]`. Узел без `sources` = workslop (как и для всех Нексусов).
+
+> **Связь с `config.yaml team.roster`:** roster — **источник истины по ролям** (кто Product Engineer, Growth Engineer, …), team-нексус — **богатый профиль человека** (связи, экспертиза, контекст). При создании нексуса через `/paf-nexus-create` (каталожный режим, §3.1 скилла) каждый **именованный** человек из roster (не `"Cortex"`/null) засевает заготовку person-узла: `full_name`/`role_title` из roster, `sources: ["config.yaml:roster"]`, `confidence: 0.3`; иерархия (`reports_to`/`manages`/`collaborates_with`) и экспертиза остаются пустыми до явного наполнения (`/paf-onboard` или вручную). Так устраняется двойной ввод людей без выдумывания связей.
+
+> **Подключение нексуса `team`** — опциональный, инстанцируется не `/paf-init`, а **`/paf-nexus-create`** (каталожный режим): берёт это определение (§4.1), создаёт `GROUND/NEXUS/team/`, регистрирует в `_registry.yaml` (`source: custom`), засевает узлы из roster.
+
+**Пример frontmatter person-узла:**
+
+```yaml
+---
+nexus: team
+node_id: team-ivanov-ivan
+node_type: person
+paf_step: null
+kind: empirical
+owner: Product Ops
+confidence: 0.8
+sources: ["onboarding:interview", "hr-system"]
+updated: 2026-06-24
+ttl_days: 180
+ripeness: fresh
+# schema_extensions:
+full_name: Иванов Иван Иванович
+role_title: Product Manager
+department: Продукт
+reports_to: team-sidorov-aleksei
+manages: [team-petrov-dmitry, team-kozlova-anna]
+collaborates_with: [team-kuznecov-sergei, team-morozova-elena]
+influence_zones: ["роадмап продукта", "приоритизация фич", "релизы"]
+expertise_topics: ["product discovery", "JTBD", "A/B тесты", "mobile UX"]
+contact_for: ["приоритет фичи", "статус релиза", "customer feedback"]
+context_holds: "Знает историю решений по онбордингу за 2 года, имеет прямой доступ к топ-клиентам"
+communication_channels: ["Slack: @ivan.ivanov", "email: i.ivanov@company.ru"]
+membership_since: 2024-03-01
+---
+```
 
 ---
 
@@ -139,4 +261,4 @@ schema_extensions: {}
 - `/paf-nexus-create` — skill создания кастомного Нексуса (§5).
 
 ---
-**Version:** 1.0 · **Last updated:** 2026-06-21 · **Связанные:** [[nexus_schema]] · [[naming_conventions]] · [[GROUND/NEXUS/_registry|_registry.yaml]]
+**Version:** 1.2 · **Last updated:** 2026-06-25 · **Связанные:** [[nexus_schema]] · [[naming_conventions]] · [[GROUND/NEXUS/_registry|_registry.yaml]] · `/paf-nexus-create`
