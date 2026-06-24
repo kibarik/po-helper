@@ -51,15 +51,35 @@ COMMANDS=(
 )
 
 # --- навыки ---
+# examples/ — доменный слой: в --update НЕ перезаписываем уже существующие
+# эталоны проекта (это его few-shot под свой домен), но добавляем новые.
+# SKILL.md и resources/ — generic-логика фреймворка, обновляются всегда.
 for skill in "${SKILLS[@]}"; do
-  if [ -d "$SRC_SKILLS/$skill" ]; then
-    if [ -d "$DEST_SKILLS/$skill" ] && [ "$MODE" = "install" ]; then
-      echo "  · skills/$skill уже есть — пропускаю (для обновления: --update)"
-    else
-      mkdir -p "$DEST_SKILLS/$skill"
-      cp -R "$SRC_SKILLS/$skill/." "$DEST_SKILLS/$skill/"
-      echo "  ✓ skills/$skill/"
+  [ -d "$SRC_SKILLS/$skill" ] || continue
+  if [ -d "$DEST_SKILLS/$skill" ] && [ "$MODE" = "install" ]; then
+    echo "  · skills/$skill уже есть — пропускаю (для обновления: --update)"
+    continue
+  fi
+  mkdir -p "$DEST_SKILLS/$skill"
+  if [ "$MODE" = "update" ] && [ -d "$DEST_SKILLS/$skill/examples" ]; then
+    # обновляем SKILL.md + resources/, сохраняем кастомные examples проекта
+    [ -f "$SRC_SKILLS/$skill/SKILL.md" ] && cp "$SRC_SKILLS/$skill/SKILL.md" "$DEST_SKILLS/$skill/SKILL.md"
+    if [ -d "$SRC_SKILLS/$skill/resources" ]; then
+      mkdir -p "$DEST_SKILLS/$skill/resources"
+      cp -R "$SRC_SKILLS/$skill/resources/." "$DEST_SKILLS/$skill/resources/"
     fi
+    if [ -d "$SRC_SKILLS/$skill/examples" ]; then
+      mkdir -p "$DEST_SKILLS/$skill/examples"
+      for ex in "$SRC_SKILLS/$skill/examples/"*; do
+        [ -e "$ex" ] || continue
+        exname="$(basename "$ex")"
+        [ -e "$DEST_SKILLS/$skill/examples/$exname" ] || cp -R "$ex" "$DEST_SKILLS/$skill/examples/$exname"
+      done
+    fi
+    echo "  ✓ skills/$skill/ (SKILL+resources обновлены, examples проекта сохранены)"
+  else
+    cp -R "$SRC_SKILLS/$skill/." "$DEST_SKILLS/$skill/"
+    echo "  ✓ skills/$skill/"
   fi
 done
 
