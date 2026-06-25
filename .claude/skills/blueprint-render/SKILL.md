@@ -19,24 +19,32 @@ description: "Финал Blueprint-pipeline: из Scope Model рендерит G
   `:::changed|affected|context`, линии visibility/interaction, пунктир между слоями).
 
 ## 3. Render-check (ЖЁСТКИЙ ГЕЙТ)
-Прогони Mermaid через render-check:
+Запиши сгенерированный Mermaid в файл и прогони render-check:
 ```bash
 python3 - <<'PY'
-from sa_documentation.blueprint_render import render_check, block_message
-code = open("/tmp/blueprint.mmd").read()   # запиши сгенерированный Mermaid сюда
+import pathlib
+from sa_documentation.blueprint_render import render_check, classify_failure, block_message, unavailable_message
+code = pathlib.Path("/tmp/blueprint.mmd").read_text(encoding="utf-8")  # сюда записан Mermaid
 ok, log = render_check(code)
-print("OK" if ok else block_message(log))
+if ok:
+    print("OK")
+elif classify_failure(log) == "environment":
+    print(unavailable_message(log))   # рендерер/Chrome недоступен — НЕ ошибка диаграммы
+else:
+    print(block_message(log))         # ошибка синтаксиса Mermaid
 PY
 ```
-- Ошибка синтаксиса → авто-repair: верни код + лог модели, исправь. До **3 попыток**.
-- **После 3 попыток ошибка ИЛИ рендерер недоступен → СТОП.** НЕ писать blueprint.md. Вывести:
+Ветвление гейта:
+- **OK** → переходи к §4.
+- **syntax** (ошибка диаграммы) → авто-repair: верни код + лог модели, исправь Mermaid. До **3 попыток**. После 3 неудач → СТОП, НЕ писать blueprint.md, показать `block_message`:
   ```
   ⛔ Не могу продолжить: ошибка рендера Mermaid.
   Для успешного завершения задачи нужно исправить:
   <лог ошибки + проблемная строка>
   Задача НЕ завершена, пока Mermaid не рендерится чисто.
   ```
-- Задача = done ТОЛЬКО при чистом рендере. Иначе blocked.
+- **environment** (нет Chrome/рендерера) → СТОП, НЕ писать blueprint.md, показать `unavailable_message` (разовая установка `npx -y puppeteer browsers install chrome-headless-shell`). Это НЕ ошибка диаграммы — не выдавай за неё.
+- Задача = done ТОЛЬКО при чистом рендере (OK). Иначе blocked.
 
 ## 4. Собрать blueprint.md (только после чистого рендера)
 Frontmatter по `blueprint_schema.md` + секции:
