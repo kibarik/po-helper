@@ -31,7 +31,7 @@ def render_check(mermaid_code, timeout=120):
     with tempfile.TemporaryDirectory() as d:
         src = pathlib.Path(d) / "in.mmd"
         out = pathlib.Path(d) / "out.svg"
-        src.write_text(mermaid_code)
+        src.write_text(mermaid_code, encoding="utf-8")
         try:
             r = subprocess.run(
                 cmd + [str(src), "-o", str(out)],
@@ -56,6 +56,6 @@ def block_message(log):
 
 if __name__ == "__main__":
     import sys
-    ok, log = render_check(pathlib.Path(sys.argv[1]).read_text())
+    ok, log = render_check(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
     print("OK" if ok else block_message(log))
     sys.exit(0 if ok else 1)
