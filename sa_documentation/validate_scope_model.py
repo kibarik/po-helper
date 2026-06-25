@@ -71,9 +71,14 @@ def validate_scope_model(path):
             errs.append(f"journey #{i} must be a mapping: {j!r}")
             continue
         st = j.get("step")
-        if st in steps:
+        if st is None:
+            errs.append(f"journey #{i} missing step")
+        elif not isinstance(st, int):
+            errs.append(f"journey step not int: {st!r}")
+        elif st in steps:
             errs.append(f"duplicate journey step: {st!r}")
-        steps.add(st)
+        else:
+            steps.add(st)
         _check_src(j, f"journey step {st}")
 
     # layers
@@ -113,7 +118,18 @@ def validate_scope_model(path):
             continue
         if sc.get("layer") not in layer_ids:
             errs.append(f"scope_of_change #{i} layer unknown: {sc.get('layer')!r}")
+        if sc.get("marker") not in _SCOPE:
+            errs.append(f"scope_of_change #{i} marker invalid: {sc.get('marker')!r}")
         _check_src(sc, f"scope_of_change #{i}")
+
+    # gaps
+    gaps = m.get("gaps")
+    if gaps is not None and not isinstance(gaps, list):
+        errs.append(f"gaps must be a list: {gaps!r}")
+    else:
+        for i, g in enumerate(gaps or []):
+            if not isinstance(g, dict):
+                errs.append(f"gap #{i} must be a mapping: {g!r}")
 
     return errs
 
