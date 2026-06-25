@@ -41,3 +41,9 @@ def test_classify_syntax_error():
 def test_unavailable_message_mentions_install():
     msg = blueprint_render.unavailable_message("Could not find Chrome")
     assert "chrome-headless-shell" in msg and "НЕ ошибка" in msg
+
+
+def test_render_check_no_renderer(monkeypatch):
+    monkeypatch.setattr(blueprint_render, "pick_renderer", lambda: None)
+    ok, log = blueprint_render.render_check("flowchart LR\n A-->B")
+    assert ok is False and "no Mermaid renderer available" in log

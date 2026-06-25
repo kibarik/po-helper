@@ -85,3 +85,60 @@ scope_of_change:
 """
     errs = validate_scope_model(_write(tmp_path, body))
     assert any("scope_of_change" in e and "S9" in e for e in errs), errs
+
+
+def test_journey_missing_step(tmp_path):
+    body = """
+task: t
+mode: enrich
+sources:
+  - {id: S1, kind: bft, ref: r}
+trigger: {actor: a, event: e, source: S1}
+end_state: {outcome: o, source: S1}
+journey:
+  - {name: n, source: S1}
+layers:
+  - {id: L_actor, name: A}
+cells: []
+"""
+    errs = validate_scope_model(_write(tmp_path, body))
+    assert any("missing step" in e for e in errs), errs
+
+
+def test_scope_of_change_bad_marker(tmp_path):
+    body = """
+task: t
+mode: enrich
+sources:
+  - {id: S1, kind: bft, ref: r}
+trigger: {actor: a, event: e, source: S1}
+end_state: {outcome: o, source: S1}
+journey:
+  - {step: 1, name: n, source: S1}
+layers:
+  - {id: L_backstage, name: B}
+cells: []
+scope_of_change:
+  - {layer: L_backstage, summary: s, marker: changd, source: S1}
+"""
+    errs = validate_scope_model(_write(tmp_path, body))
+    assert any("marker invalid" in e for e in errs), errs
+
+
+def test_gaps_must_be_list(tmp_path):
+    body = """
+task: t
+mode: enrich
+sources:
+  - {id: S1, kind: bft, ref: r}
+trigger: {actor: a, event: e, source: S1}
+end_state: {outcome: o, source: S1}
+journey:
+  - {step: 1, name: n, source: S1}
+layers:
+  - {id: L_actor, name: A}
+cells: []
+gaps: "oops"
+"""
+    errs = validate_scope_model(_write(tmp_path, body))
+    assert any("gaps must be a list" in e for e in errs), errs
