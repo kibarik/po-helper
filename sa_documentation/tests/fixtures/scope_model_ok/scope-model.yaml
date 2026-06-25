@@ -1,0 +1,25 @@
+task: sample-task
+title: Sample task
+mode: enrich
+created: 2026-06-25
+confidence: 0.7
+sources:
+  - {id: S1, kind: bft, ref: "БФТ §1"}
+  - {id: S2, kind: nexus, ref: "product/feature-x"}
+trigger: {actor: "Клиент", event: "Открыл форму", source: S1}
+end_state: {outcome: "Заявка создана", source: S1}
+actors:
+  - {id: A1, name: "Клиент", source: S1}
+journey:
+  - {step: 1, name: "Открыть форму", actor: A1, source: S1}
+  - {step: 2, name: "Отправить заявку", actor: A1, source: S2}
+layers:
+  - {id: L_actor, name: "Actor / Customer"}
+  - {id: L_frontstage, name: "Frontstage / UX-UI"}
+  - {id: L_backstage, name: "Backstage / App-logic"}
+cells:
+  - {step: 1, layer: L_frontstage, action: "Показ формы", scope: context, source: S1}
+  - {step: 2, layer: L_backstage, action: "Создание заявки", scope: changed, source: S2}
+scope_of_change:
+  - {layer: L_backstage, summary: "Новый обработчик заявки", marker: changed, source: S2}
+gaps: []
