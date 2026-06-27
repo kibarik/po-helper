@@ -207,3 +207,13 @@ def test_write_atlas_idempotent(tmp_path):
     write_atlas(tmp_path, today)           # second run
     assert (tmp_path / "ATLAS/INDEX.md").read_text() == idx1   # idempotent
     assert (tmp_path / "ATLAS/manifest.json").read_text() == man1
+
+
+def test_cli_main_runs_without_ruflo(tmp_path, monkeypatch):
+    # Generation must not depend on ruflo/.swarm — simulate absent binary.
+    import sa_documentation.atlas_index as ai
+    _write(tmp_path / "AI-PROCESSES/om.md", NODE_OK)
+    monkeypatch.setenv("PATH", "")  # no ruflo on PATH
+    rc = ai.main(["--atlas", "--root", str(tmp_path), "--today", "2026-06-20"])
+    assert rc == 0
+    assert (tmp_path / "ATLAS/manifest.json").exists()
