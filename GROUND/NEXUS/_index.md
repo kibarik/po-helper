@@ -11,6 +11,6 @@ MOC (map of content) всех Нексусов, инстанцированных
 
 ## Кастомные Нексусы
 
-*(добавляются через `/paf-nexus-create`)*
+- [team](team/) — организационная структура, People Graph.
 
 <!-- TODO /paf-init: перегенерировать из _registry.yaml -->

@@ -8,3 +8,4 @@ nexus_types:
   - {slug: customer, source: default, onboarded: todo}
   - {slug: product,  source: default, onboarded: todo}
   - {slug: growth,   source: default, onboarded: todo}
+  - {slug: team,     source: custom,  onboarded: todo, name: Нексус организационной структуры, purpose: "People Graph — персоны, роли, зоны влияния, связи, экспертиза"}
