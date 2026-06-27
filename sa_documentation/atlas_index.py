@@ -124,3 +124,41 @@ def nexus_aggregates(nodes, today):
             "context_ripeness": round(comp * fresh, 3),
         })
     return out
+
+
+def collect_tasks(tasks_dir, repo_root):
+    """Backlog.md tasks (*.md with frontmatter) under tasks_dir."""
+    base = pathlib.Path(repo_root) / tasks_dir
+    if not base.exists():
+        return []
+    tasks = []
+    for p in sorted(base.glob("*.md")):
+        fm, _ = parse_frontmatter(p.read_text(encoding="utf-8"))
+        if not fm.get("id"):
+            continue
+        tasks.append({
+            "task_id": fm.get("id"),
+            "title": fm.get("title"),
+            "status": fm.get("status"),
+            "nexus_nodes": fm.get("nexus_nodes") or [],
+            "path": p.relative_to(repo_root).as_posix(),
+        })
+    return tasks
+
+
+def collect_agents(agents_dir, repo_root):
+    """Cortex agents (.claude/agents/*.md) — name, phase, description, path."""
+    base = pathlib.Path(repo_root) / agents_dir
+    if not base.exists():
+        return []
+    agents = []
+    for p in sorted(base.glob("*.md")):
+        fm, _ = parse_frontmatter(p.read_text(encoding="utf-8"))
+        name = fm.get("name") or p.stem
+        agents.append({
+            "name": name,
+            "phase": fm.get("sprint_phase"),
+            "description": fm.get("description"),
+            "path": p.relative_to(repo_root).as_posix(),
+        })
+    return agents
