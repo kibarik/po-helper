@@ -42,32 +42,31 @@
 
 | Стадия | Команда | Роль | Артефакт |
 |---|---|---|---|
-| 0 Контекст | `/bft-context-gen` | Context Builder (Кортексы C1–C5 + Нексусы N1–N7) | `{bft_workspace}/bft-context-pack.md` |
-| 1 Проблема | `/bft-problem` | Problem Analyst (диагноз, не решение) | `problem.md` |
-| 2 Концепты | `/bft-concept` | Solution Designer (2-3 варианта) | `concept.md` |
-| 3 Дебаты | `/bft-debate` | Architect vs Devil's Advocate | вердикт в `concept.md` |
-| 4 Требования | `/bft-draft` | Requirements Writer | черновик БФТ → `{bft_store}/` |
-| 5 Валидация | `/bft-validate` | Validator (свежий взгляд) | `validation.md` |
+| 0 Контекст | `/bft-context-gen` | Context Builder (Кортексы C1–C5 + Нексусы N1–N7) | `artefacts/bft-context-pack.md` |
+| 1 Проблема | `/bft-problem` | Problem Analyst (диагноз, не решение) | `artefacts/problem.md` |
+| 2 Концепты | `/bft-concept` | Solution Designer (2-3 варианта) | `artefacts/concept.md` |
+| 3 Дебаты | `/bft-debate` | Architect vs Devil's Advocate | вердикт в `artefacts/concept.md` |
+| 4 Требования | `/bft-draft` | Requirements Writer | `<epic>.md` (финальный БФТ) |
+| 5 Валидация | `/bft-validate` | Validator (свежий взгляд) | `artefacts/validation.md` |
 | 6 Отгрузка | `/bft-deliver` | Deliverer (публикация) | JIRA Эпик + 2×Confluence + связи; манифест `delivery.md` |
 
 **Почему разделение:** разные роли не «загрязняют» друг друга (диагноз ≠ решение ≠ требование); adversarial отдельным запуском ломает confirmation bias; артефакты-передачи проверяемы; STOP-паузы дают human-in-the-loop ревью.
 
-### Рабочая папка эпика (staging в po-helper)
+### Рабочая папка эпика (staging в workspace)
 
-**Все наработки — внутри `po-helper`.** Артефакты помечены папками (по одному артефакту на папку). В основное хранилище проекта переносится только финальный БФТ и только после 🟢/🟡 верификации (см. принцип 15).
+**Все наработки — внутри рабочей папки эпика `<workspace>/<epic>/`.** Финальный БФТ `<epic>.md` лежит в корне папки эпика; промежуточные артефакты пайплайна — в `artefacts/`. Финализация (готовность к ревью) — после 🟢/🟡 верификации (см. принцип 15).
 
 ```
-po-helper/БФТ/<EPIC>/                 ← песочница эпика (всё промежуточное здесь)
-├── context/     bft-context-pack.md  (/bft-context-gen)
-├── problem/     problem.md           (/bft-problem)
-├── concept/     concept.md           (/bft-concept → +вердикт от /bft-debate)
-├── draft/       draft.md             (/bft-draft) → кандидат БФТ
-└── validation/  validation.md        (/bft-validate)
-
-<основное-хранилище-проекта>/БФТ/<EPIC>.md   ← ТОЛЬКО после 🟢/🟡 (promotion)
+<workspace>/<epic>/
+├── <epic>.md                 (/bft-draft) → ФИНАЛЬНЫЙ БФТ (главный документ)
+└── artefacts/                промежуточные артефакты пайплайна
+    ├── bft-context-pack.md   (/bft-context-gen)
+    ├── problem.md            (/bft-problem)
+    ├── concept.md            (/bft-concept → +вердикт от /bft-debate)
+    └── validation.md         (/bft-validate)
 ```
 
-`<EPIC>` = `{БФТ-NAME}` (код/имя эпика). Промежуточные артефакты из песочницы в основное хранилище **не** копируются.
+Финальный БФТ лежит в корне папки эпика под именем `<epic>.md` — это то, что открывает PO. Всё остальное (контекст, диагноз, концепты, отчёт валидации) — служебные артефакты в `artefacts/`.
 
 ---
 
@@ -120,8 +119,8 @@ As-Is (с якорями: JIRA/Confluence/код/CORTEX-СА) → Gap → To-Be 
 ### 14. Обратная связь ревью (Lessons Learned)
 Навык **учится на замечаниях PO**. Каждое замечание к сгенерированному БФТ → строка-правило в `resources/review_feedback.md` (анти-паттерн + правило). `/bft-draft` применяет активные правила при генерации, `/bft-validate` проверяет (гейт 15). Принцип: одну и ту же ошибку не повторять дважды.
 
-### 15. Staging → Promotion (po-helper как песочница)
-Все промежуточные наработки (context-pack, problem, concept, draft, validation) живут **только в `po-helper/БФТ/<EPIC>/`**, артефакты помечены папками. В **основное хранилище проекта** выносятся **только верифицированные факты** — финальный БФТ переносится **исключительно после успешной верификации** `/bft-validate` (🟢 или 🟡; при 🔴 — остаётся в песочнице). Непроверенное в основное хранилище не попадает.
+### 15. Staging → финализация (рабочая папка эпика)
+Все промежуточные наработки (context-pack, problem, concept, validation) живут в `<workspace>/<epic>/artefacts/`; финальный БФТ — `<workspace>/<epic>/<epic>.md`. БФТ считается **финализированным (готовым к ревью)** только после успешной верификации `/bft-validate` (🟢 или 🟡; при 🔴 — возврат на `/bft-draft`, артефакты остаются в `artefacts/`). Непроверенное за готовое не выдаётся.
 
 ---
 
