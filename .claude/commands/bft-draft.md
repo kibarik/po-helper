@@ -29,7 +29,7 @@ description: 'Генерация черновика БФТ — БТ/ПТ/ИТ/Ф
 1. `skills/bft-writer/SKILL.md` (принципы).
 2. Стандарты: `resources/bft_standards.md` (форматы + различение типов + NFR-реестр). Шаблон: `examples/ideal_bft.md`. Эталон: `examples/golden_bft_example.md`.
 3. `resources/anchor_rules.md` (ранги якорей). `resources/catwoe.md`.
-4. Входы: `concept.md` (концепт + CATWOE + вердикт), `problem.md` (As-Is/Gap), context-pack.
+4. Входы (все из `<workspace>/<epic>/artefacts/`): `concept.md` (концепт + CATWOE + вердикт), `problem.md` (As-Is/Gap), `bft-context-pack.md`.
 
 ### Этап 2: Каркас
 - Бизнес описание; Общая информация; Стейкхолдеры; История; Доп. материалы.
@@ -61,10 +61,10 @@ description: 'Генерация черновика БФТ — БТ/ПТ/ИТ/Ф
 
 ### Этап 7: Сборка + STOP
 - Frontmatter + H1 `# [БФТ] {EPIC}: {Название}` + все разделы по `ideal_bft.md`.
-- Сохрани черновик.
+- **Сохрани финальный БФТ в КОРЕНЬ папки эпика: `<workspace>/<epic>/<epic>.md`** (не `draft.md`, не в `artefacts/`). Это главный документ, который открывает PO.
 - **Выведи РОВНО три блока и ОСТАНОВИСЬ** (формат фиксирован, ничего сверх):
   ```
-  БФТ: <путь>
+  БФТ: <workspace>/<epic>/<epic>.md
 
   Открытые вопросы (<N>):
   - [У<n>] <вопрос одной строкой>
