@@ -144,6 +144,27 @@ def nexus_aggregates(nodes, today):
     return out
 
 
+NEXUS_LABEL_PREFIX = "nexus:"
+
+
+def _task_nexus_nodes(fm):
+    """Linked node_ids for a Backlog.md task.
+
+    Backlog.md rewrites task files on every CLI edit and DROPS unknown
+    frontmatter keys (a raw `nexus_nodes:` field does not survive). The
+    survivable link mechanism is a native label `nexus:<node_id>`. We read
+    both: native labels with the `nexus:` prefix (primary, survives edits)
+    and a raw `nexus_nodes` list (for hand-authored tasks), unioned.
+    """
+    out = list(fm.get("nexus_nodes") or [])
+    for lbl in (fm.get("labels") or []):
+        if isinstance(lbl, str) and lbl.startswith(NEXUS_LABEL_PREFIX):
+            nid = lbl[len(NEXUS_LABEL_PREFIX):].strip()
+            if nid and nid not in out:
+                out.append(nid)
+    return out
+
+
 def collect_tasks(tasks_dir, repo_root):
     """Backlog.md tasks (*.md with frontmatter) under tasks_dir."""
     base = pathlib.Path(repo_root) / tasks_dir
@@ -158,7 +179,7 @@ def collect_tasks(tasks_dir, repo_root):
             "task_id": fm.get("id"),
             "title": fm.get("title"),
             "status": fm.get("status"),
-            "nexus_nodes": fm.get("nexus_nodes") or [],
+            "nexus_nodes": _task_nexus_nodes(fm),
             "path": p.relative_to(repo_root).as_posix(),
         })
     return tasks

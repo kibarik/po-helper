@@ -328,3 +328,25 @@ def test_cli_main_runs_without_ruflo(tmp_path, monkeypatch):
     rc = ai.main(["--atlas", "--root", str(tmp_path), "--today", "2026-06-20"])
     assert rc == 0
     assert (tmp_path / "ATLAS/manifest.json").exists()
+
+
+def test_collect_tasks_nexus_link_from_label(tmp_path):
+    # Backlog.md strips unknown frontmatter on edit; the survivable link is a
+    # native label `nexus:<node_id>`. collect_tasks must read it.
+    from sa_documentation.atlas_index import collect_tasks
+    _write(tmp_path / "backlog/tasks/task-1 - X.md",
+           "---\nid: TASK-1\ntitle: X\nstatus: To Do\n"
+           "labels:\n  - 'nexus:aip-operating-model'\n  - 'other'\n---\nbody\n")
+    tasks = collect_tasks("backlog/tasks", tmp_path)
+    assert tasks[0]["nexus_nodes"] == ["aip-operating-model"]
+
+
+def test_collect_tasks_nexus_link_union_label_and_field(tmp_path):
+    # Union of raw nexus_nodes (hand-authored) and nexus: labels, de-duped.
+    from sa_documentation.atlas_index import collect_tasks
+    _write(tmp_path / "backlog/tasks/task-2 - Y.md",
+           "---\nid: TASK-2\ntitle: Y\nstatus: Done\n"
+           "nexus_nodes: [aip-x]\n"
+           "labels:\n  - 'nexus:aip-x'\n  - 'nexus:aip-y'\n---\nbody\n")
+    tasks = collect_tasks("backlog/tasks", tmp_path)
+    assert tasks[0]["nexus_nodes"] == ["aip-x", "aip-y"]
