@@ -169,10 +169,17 @@ Markdown-MOC. Между маркерами `<!-- ATLAS:GENERATED:START -->` …
 
 ### 2.4 Связь задача ↔ узел
 
-- Backlog-задача: frontmatter `nexus_nodes: [node_id, ...]` + `[[node_id]]` в теле.
-- Генератор резолвит обе стороны → в манифесте `tasks[].nexus_nodes` и (вычисляемые) обратные
-  backlinks на стороне узла (через `nodes[].links` остаются wiki-рёбра, backlinks задач —
-  отдельным проходом при необходимости).
+⚠️ **Валидировано против реального Backlog.md (v1.44):** инструмент переписывает файл задачи на
+каждом CLI-редактировании и **дропает неизвестные frontmatter-поля** (сырое `nexus_nodes:` не
+выживает) и **произвольные секции тела** (выживают только managed-секции Description/AC/Plan/…).
+Единственный переживающий механизм связи — **native label**.
+
+- **Конвенция связи: native label `nexus:<node_id>`** на Backlog-задаче (выживает правки,
+  фильтруется на доске). Доп. (опц.) — `[[node_id]]` внутри секции Description (human-clickable
+  в Obsidian).
+- Генератор (`_task_nexus_nodes`): `tasks[].nexus_nodes` = union сырого `nexus_nodes` (для
+  hand-authored задач) и label-ов с префиксом `nexus:` (primary). Обратные backlinks на стороне
+  узла — отдельным проходом при необходимости (open question §6).
 - Гайдрейл `.claude/CORTEX.md`: «Банч ≠ беклог» — знание (узнаём) и задача (делаем) разные
   сущности, только связаны ссылкой.
 
@@ -184,11 +191,19 @@ MIT-плагин Obsidian, читает frontmatter напрямую (0 конв
 - `low-cp.md` — `TABLE WHERE confidence < 0.5`.
 - `tasks.md` — задачи по статусу (читает `backlog/` frontmatter).
 
-### 2.6 Backlog.md
+### 2.6 Backlog.md (инициализирован по умолчанию)
 
-Инициализация `backlog/` (`backlog init`) документируется в онбординге; MCP-сервер уже
-подключён в окружении (`backlog://workflow/overview`). Используется для задач/Банчей фазы
-EXECUTE и рабочих элементов.
+Беклог **предынициализирован в коробке** (юзеру не нужно настраивать): `backlog init` выполнен
+с универсальными настройками →
+- `backlog/config.yml`: `project_name: PAF Team OS`, статусы `To Do/In Progress/Done`,
+  `date_format: yyyy-mm-dd`, `auto_open_browser: false` (headless/box-friendly),
+  `task_prefix: task`, `backlog-dir: backlog` (совпадает с `TASKS_DIR` генератора).
+- `AGENTS.md` (root) — универсальные CLI-инструкции для любого LLM-агента (integration-mode
+  `cli`; MCP-сервер backlog в окружении тоже работает — покрыты оба пути).
+- `backlog/tasks/.gitkeep` — структура готова; беклог пуст (без opinionated seed-задач).
+
+Связь задач с узлами — через label `nexus:<node_id>` (§2.4). Используется для задач/Банчей
+фазы EXECUTE и рабочих элементов.
 
 ## 3. Интеграция в дистрибутив (онбординг)
 

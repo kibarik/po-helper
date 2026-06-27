@@ -44,7 +44,10 @@ GROUND/
   Семантический поиск агентов заработает только после
   `python3 sa_documentation/nexus_index.py` в рабочей CWD. Без прогрева навигация
   работает на `ATLAS/manifest.json`.
-- **Задачи/Банчи:** Backlog.md (`backlog init`, затем `backlog board`/MCP).
-  Связь задача→узел: поле `nexus_nodes: [node_id]` во frontmatter задачи.
+- **Задачи/Банчи:** Backlog.md **уже инициализирован** (`backlog/config.yml` + `AGENTS.md`,
+  настройка не нужна). Создать задачу: `backlog task create "..."`; доска: `backlog board`.
+  Связь задача→узел: навесь label `nexus:<node_id>` (`backlog task edit <id> -l nexus:aip-…`).
+  ⚠️ Не используй кастомное поле `nexus_nodes` во frontmatter — Backlog.md вырезает неизвестные
+  поля при редактировании; выживает только label.
 
 См. спецификацию: `docs/superpowers/specs/2026-06-21-paf-team-os-design.md` (§2.2, §7).
