@@ -1,0 +1,10 @@
+# GROUND/NEXUS/_registry.yaml
+# Реестр Нексусов, инстанцированных для данного клиента.
+# /paf-init      → создаёт дефолтный минимум (source: default)
+# /paf-nexus-create → добавляет кастомные (source: custom)
+# /paf-onboard   → работает по всему реестру
+nexus_types:
+  - {slug: market,   source: default, onboarded: todo}
+  - {slug: customer, source: default, onboarded: todo}
+  - {slug: product,  source: default, onboarded: todo}
+  - {slug: growth,   source: default, onboarded: todo}

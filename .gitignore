@@ -1,0 +1,11 @@
+# ruflo runtime artifacts (regenerable via sa_documentation/nexus_index.py)
+.claude/*.db
+.swarm/
+
+# OS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
