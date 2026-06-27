@@ -177,3 +177,70 @@ def build_manifest(nodes, tasks, agents, today):
         "agents": agents,
         "nexuses": nexus_aggregates(nodes, today),
     }
+
+
+import json
+
+MARK_START = "<!-- ATLAS:GENERATED:START -->"
+MARK_END = "<!-- ATLAS:GENERATED:END -->"
+
+NODE_ROOTS = ["GROUND/NEXUS", "AI-PROCESSES"]
+TASKS_DIR = "backlog/tasks"
+AGENTS_DIR = ".claude/agents"
+
+
+def render_index_block(m):
+    """Markdown for the generated INDEX block (between markers)."""
+    lines = [f"_Сгенерировано: {m['generated']}_", ""]
+    lines += ["## Нексусы", "", "| Нексус | Узлов | Context Ripeness |",
+              "|---|---|---|"]
+    for nx in m["nexuses"]:
+        lines.append(f"| {nx['slug']} | {nx['count']} | {nx['context_ripeness']} |")
+    lines += ["", "## Кортекс (агенты)", "", "| Агент | Фаза |", "|---|---|"]
+    for a in m["agents"]:
+        lines.append(f"| {a['name']} | {a.get('phase') or '—'} |")
+    counts = {}
+    for t in m["tasks"]:
+        counts[t.get("status")] = counts.get(t.get("status"), 0) + 1
+    lines += ["", "## Задачи", "", "| Статус | Кол-во |", "|---|---|"]
+    for st in sorted(counts, key=lambda s: (s is None, s)):
+        lines.append(f"| {st} | {counts[st]} |")
+    return "\n".join(lines)
+
+
+def _replace_between_markers(text, block):
+    pattern = re.compile(
+        re.escape(MARK_START) + r".*?" + re.escape(MARK_END), re.S)
+    replacement = f"{MARK_START}\n{block}\n{MARK_END}"
+    if pattern.search(text):
+        return pattern.sub(lambda _: replacement, text)
+    return text.rstrip() + "\n\n" + replacement + "\n"
+
+
+def _json_default(o):
+    if isinstance(o, datetime.date):
+        return o.isoformat()
+    raise TypeError(f"not serializable: {type(o)}")
+
+
+def write_atlas(repo_root, today):
+    """Generate ATLAS/manifest.json + INDEX.md block. Returns the manifest."""
+    repo_root = pathlib.Path(repo_root)
+    nodes = collect_nodes(NODE_ROOTS, repo_root)
+    tasks = collect_tasks(TASKS_DIR, repo_root)
+    agents = collect_agents(AGENTS_DIR, repo_root)
+    m = build_manifest(nodes, tasks, agents, today)
+
+    atlas = repo_root / "ATLAS"
+    atlas.mkdir(parents=True, exist_ok=True)
+    (atlas / "manifest.json").write_text(
+        json.dumps(m, ensure_ascii=False, indent=2, sort_keys=True,
+                   default=_json_default) + "\n",
+        encoding="utf-8")
+
+    idx_p = atlas / "INDEX.md"
+    base = idx_p.read_text(encoding="utf-8") if idx_p.exists() else (
+        f"# ATLAS INDEX\n\n{MARK_START}\n{MARK_END}\n")
+    idx_p.write_text(_replace_between_markers(base, render_index_block(m)),
+                     encoding="utf-8")
+    return m
