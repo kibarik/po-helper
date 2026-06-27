@@ -85,3 +85,42 @@ def collect_nodes(roots, repo_root):
             rel = p.relative_to(repo_root).as_posix()
             nodes.append(node_record(fm, body, rel))
     return nodes
+
+
+import datetime
+
+
+def freshness_score(rec, today):
+    """clamp(1 - age/ttl, 0, 1) per nexus_schema.md §4."""
+    u = rec.get("updated")
+    ttl = rec.get("ttl_days")
+    if not isinstance(u, datetime.date) or not ttl:
+        return 0.0
+    p = (today - u).days / float(ttl)
+    return max(0.0, min(1.0, 1.0 - p))
+
+
+def _completeness(nodes):
+    if not nodes:
+        return 0.0
+    return sum(1 for n in nodes if n.get("complete")) / len(nodes)
+
+
+def nexus_aggregates(nodes, today):
+    """Per-nexus {slug, count, context_ripeness=completeness*weighted_freshness}."""
+    by = {}
+    for n in nodes:
+        by.setdefault(n.get("nexus"), []).append(n)
+    out = []
+    for slug in sorted(by, key=lambda s: (s is None, s)):
+        ns = by[slug]
+        comp = _completeness(ns)
+        num = sum(freshness_score(n, today) * float(n.get("confidence") or 0) for n in ns)
+        den = sum(float(n.get("confidence") or 0) for n in ns)
+        fresh = num / den if den else 0.0
+        out.append({
+            "slug": slug,
+            "count": len(ns),
+            "context_ripeness": round(comp * fresh, 3),
+        })
+    return out

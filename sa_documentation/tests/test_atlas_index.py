@@ -80,3 +80,36 @@ def test_collect_nodes_marks_incomplete(tmp_path):
     _write(tmp_path / "AI-PROCESSES/z.md", partial)
     nodes = collect_nodes(["AI-PROCESSES"], tmp_path)
     assert nodes[0]["complete"] is False
+
+
+def test_freshness_and_aggregates(tmp_path):
+    from sa_documentation.atlas_index import (
+        collect_nodes, freshness_score, nexus_aggregates,
+    )
+    today = datetime.date(2026, 6, 20)
+    _write(tmp_path / "AI-PROCESSES/om.md", NODE_OK)  # updated today, ttl 365
+    nodes = collect_nodes(["AI-PROCESSES"], tmp_path)
+    # age 0 -> freshness 1.0
+    assert freshness_score(nodes[0], today) == 1.0
+    aggs = nexus_aggregates(nodes, today)
+    assert aggs == [{"slug": "product", "count": 1, "context_ripeness": 1.0}]
+
+
+def test_freshness_clamps_to_zero():
+    from sa_documentation.atlas_index import freshness_score
+    rec = {"updated": datetime.date(2025, 1, 1), "ttl_days": 90, "confidence": 1.0}
+    # age >> ttl -> p>1 -> clamped 0
+    assert freshness_score(rec, datetime.date(2026, 6, 20)) == 0.0
+
+
+def test_aggregate_incomplete_lowers_completeness(tmp_path):
+    from sa_documentation.atlas_index import collect_nodes, nexus_aggregates
+    today = datetime.date(2026, 6, 20)
+    _write(tmp_path / "AI-PROCESSES/om.md", NODE_OK)
+    _write(tmp_path / "AI-PROCESSES/z.md",
+           "---\nnode_id: z\nnexus: product\n---\n# Z\n")
+    nodes = collect_nodes(["AI-PROCESSES"], tmp_path)
+    aggs = nexus_aggregates(nodes, today)
+    # 1 of 2 complete -> completeness 0.5; fresh node weight only -> fresh≈1
+    assert aggs[0]["count"] == 2
+    assert aggs[0]["context_ripeness"] == 0.5
