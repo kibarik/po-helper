@@ -74,6 +74,7 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `bootstrap` | Step 0 Foundation | STEP-0-FOUNDATION/* |
 | `step-overview` | overview шага | STEP-N-*/overview.md |
 | `sprint-phase` | Фаза цикла Sprint | STEP-N-*/{pulse,scout,bunch,pitch,execute,harvest}.md |
+| `person` | Нексус `team` — персона | GROUND/NEXUS/team/*.md |
 
 ---
 
@@ -143,4 +144,4 @@ tags: [pmf, fit-point]
 ```
 
 ---
-**Version:** 1.1 (v3: open nexus + custom types + empirical client nodes) · **Last updated:** 2026-06-21 · **Связанные:** [[nexus_catalog]] · [[naming_conventions]] · [[ground_schema]] · [[AI-PROCESSES/operating-model|operating-model]] · [[AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup|1.nexus-setup]]
+**Version:** 1.2 (v4: добавлен node_type: person для team-нексуса) · **Last updated:** 2026-06-24 · **Связанные:** [[nexus_catalog]] · [[naming_conventions]] · [[ground_schema]] · [[AI-PROCESSES/operating-model|operating-model]] · [[AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup|1.nexus-setup]]

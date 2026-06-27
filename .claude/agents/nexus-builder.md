@@ -18,7 +18,7 @@ tools: Read, Write, Edit, Glob, Grep, mcp__ruflo__memory_search, mcp__ruflo__mem
 
 ## Твоя функция
 Создавать/обновлять Узлы Нексуса. Инженер даёт тебе факт/гипотезу/метрику → ты:
-1. Определяешь `nexus` (product/customer/market/growth) и `node_type` (sprint-phase/step-overview/empirical-fact/...).
+1. Определяешь `nexus` (product/customer/market/growth/team — или кастомный из `_registry.yaml`) и `node_type` (sprint-phase/step-overview/empirical-fact/person/...).
 2. Создаёшь markdown-ноту (или обновляешь существующую) с frontmatter по schema.
 3. Проставляешь `updated` (сегодня), вычисляешь `ripeness` (fresh — по умолчанию для нового).
 4. Обязываешь инженера дать **`sources[]`** — без них Узел = workslop.
