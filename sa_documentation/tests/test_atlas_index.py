@@ -147,3 +147,25 @@ def test_collect_agents(tmp_path):
         "description": "Builds nodes.",
         "path": ".claude/agents/nexus-builder.md",
     }]
+
+
+def test_build_manifest_shape(tmp_path):
+    from sa_documentation.atlas_index import (
+        collect_nodes, collect_tasks, collect_agents, build_manifest,
+    )
+    today = datetime.date(2026, 6, 20)
+    _write(tmp_path / "AI-PROCESSES/om.md", NODE_OK)
+    _write(tmp_path / "backlog/tasks/task-10 - X.md",
+           "---\nid: task-10\ntitle: X\nstatus: todo\nnexus_nodes: [aip-x]\n---\nb\n")
+    _write(tmp_path / ".claude/agents/a.md",
+           "---\nname: a\ndescription: d\n---\nb\n")
+    nodes = collect_nodes(["AI-PROCESSES"], tmp_path)
+    tasks = collect_tasks("backlog/tasks", tmp_path)
+    agents = collect_agents(".claude/agents", tmp_path)
+    m = build_manifest(nodes, tasks, agents, today)
+    assert m["schema_version"] == "1.0"
+    assert m["generated"] == "2026-06-20"
+    assert len(m["nodes"]) == 1 and m["nodes"][0]["node_id"] == "aip-x"
+    assert m["tasks"][0]["task_id"] == "task-10"
+    assert m["agents"][0]["name"] == "a"
+    assert m["nexuses"] == [{"slug": "product", "count": 1, "context_ripeness": 1.0}]
