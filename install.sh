@@ -31,6 +31,29 @@ if [ ! -d "$SRC_SKILLS" ]; then
   exit 1
 fi
 
+# --- проверка ruflo (глобальный CLI, MCP-сервер из .mcp.json) ---
+# Не часть репозитория; ставится через npm. Требуется >= RUFLO_MIN.
+RUFLO_MIN="3.14.4"
+check_ruflo() {
+  if ! command -v ruflo >/dev/null 2>&1; then
+    echo "  ⚠ ruflo не найден. Установите: npm install -g ruflo@latest (нужна >= $RUFLO_MIN)"
+    return
+  fi
+  local cur
+  cur="$(ruflo --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
+  if [ -z "$cur" ]; then
+    echo "  ⚠ ruflo найден, но версию определить не удалось. Нужна >= $RUFLO_MIN"
+    return
+  fi
+  # сравнение semver: младшая из (cur, RUFLO_MIN) должна быть RUFLO_MIN
+  if [ "$(printf '%s\n%s\n' "$RUFLO_MIN" "$cur" | sort -V | head -1)" != "$RUFLO_MIN" ]; then
+    echo "  ⚠ ruflo $cur устарел (нужна >= $RUFLO_MIN). Обновите: npm install -g ruflo@latest"
+  else
+    echo "  ✓ ruflo $cur (>= $RUFLO_MIN)"
+  fi
+}
+check_ruflo
+
 DEST_ROOT="${DEST_ROOT:-$PWD/.claude}"
 DEST_SKILLS="$DEST_ROOT/skills"
 DEST_COMMANDS="$DEST_ROOT/commands"
