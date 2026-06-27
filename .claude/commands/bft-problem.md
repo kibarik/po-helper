@@ -25,7 +25,7 @@ description: 'Диагноз проблемы для БФТ — rich picture + A
 ### Этап 1: Загрузка роли и входа
 1. Прочитай `skills/bft-writer/SKILL.md` (особенно As-Is→Gap→To-Be, эпистемическая честность).
 2. Прочитай `resources/anchor_rules.md` — ранги якорей (As-Is → R1/R2).
-3. Прочитай контекст-пак: `<workspace>/<epic>/bft-context-pack.md`.
+3. Прочитай контекст-пак: `po-helper/БФТ/<EPIC>/context/bft-context-pack.md`.
 
 ### Этап 2: Rich Picture (реконструкция проблемной ситуации)
 Собери «богатую картину»:
@@ -51,10 +51,10 @@ description: 'Диагноз проблемы для БФТ — rich picture + A
 - Все неясности/блокеры/противоречия (включая конфликты worldviews из Этапа 2) — список с «у кого уточнить».
 
 ### Этап 7: Сохранение + STOP
-- Сохрани `<workspace>/<epic>/problem.md` (Rich Picture, As-Is, Gap, Затронутые компоненты, Открытые вопросы, Якоря).
+- Сохрани `po-helper/БФТ/<EPIC>/problem/problem.md` (Rich Picture, As-Is, Gap, Затронутые компоненты, Открытые вопросы, Якоря).
 - **Выведи и ОСТАНОВИСЬ:**
   ```
-  Диагноз готов: <workspace>/<epic>/problem.md
+  Диагноз готов: po-helper/БФТ/<EPIC>/problem/problem.md
   Rich picture: <акторы/worldviews/конфликты кратко>. As-Is: <>. Gap: <>. [УТОЧНИТЬ]: N шт.
   ── СТОП ── PO/СА: проверьте диагноз и конфликты worldviews. Дальше — /bft-concept <epic>.
   ```
