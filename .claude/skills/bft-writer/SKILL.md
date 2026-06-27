@@ -38,24 +38,27 @@
 
 | Стадия | Команда | Роль | Артефакт |
 |---|---|---|---|
-| 0 Контекст | `/bft-context-gen` | Context Builder | `context-pack.md` |
-| 1 Проблема | `/bft-problem` | Problem Analyst (диагноз, не решение) | `problem.md` |
-| 2 Концепты | `/bft-concept` | Solution Designer (2-3 варианта) | `concept.md` |
-| 3 Дебаты | `/bft-debate` | Architect vs Devil's Advocate | вердикт в `concept.md` |
-| 4 Требования | `/bft-draft` | Requirements Writer | черновик БФТ |
-| 5 Валидация | `/bft-validate` | Validator (свежий взгляд) | `validation.md` |
+| 0 Контекст | `/bft-context-gen` | Context Builder | `artefacts/bft-context-pack.md` |
+| 1 Проблема | `/bft-problem` | Problem Analyst (диагноз, не решение) | `artefacts/problem.md` |
+| 2 Концепты | `/bft-concept` | Solution Designer (2-3 варианта) | `artefacts/concept.md` |
+| 3 Дебаты | `/bft-debate` | Architect vs Devil's Advocate | вердикт в `artefacts/concept.md` |
+| 4 Требования | `/bft-draft` | Requirements Writer | `<epic>.md` (финальный БФТ) |
+| 5 Валидация | `/bft-validate` | Validator (свежий взгляд) | `artefacts/validation.md` |
 
 **Почему разделение:** разные роли не «загрязняют» друг друга (диагноз ≠ решение ≠ требование); adversarial отдельным запуском ломает confirmation bias; артефакты-передачи проверяемы; STOP-паузы дают human-in-the-loop ревью.
 
 ### Рабочая папка эпика
 ```
 <workspace>/<epic>/
-├── bft-context-pack.md   (/bft-context-gen)
-├── problem.md            (/bft-problem)
-├── concept.md            (/bft-concept → +вердикт от /bft-debate)
-├── draft.md              (/bft-draft) → финальный БФТ
-└── validation.md         (/bft-validate)
+├── <epic>.md                 (/bft-draft) → ФИНАЛЬНЫЙ БФТ (главный документ)
+└── artefacts/                промежуточные артефакты пайплайна
+    ├── bft-context-pack.md   (/bft-context-gen)
+    ├── problem.md            (/bft-problem)
+    ├── concept.md            (/bft-concept → +вердикт от /bft-debate)
+    └── validation.md         (/bft-validate)
 ```
+
+Финальный БФТ лежит в корне папки эпика под именем `<epic>.md` — это то, что открывает PO. Всё остальное (контекст, диагноз, концепты, отчёт валидации) — служебные артефакты в `artefacts/`.
 
 ---
 
