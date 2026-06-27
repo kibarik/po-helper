@@ -27,6 +27,20 @@ def test_parse_frontmatter_no_frontmatter():
     assert body == "# Just body\n"
 
 
+def test_parse_frontmatter_malformed_yaml_returns_empty_dict():
+    """Guard: broken YAML must not raise — return ({}, original_text) instead."""
+    text = (
+        "---\n"
+        "description: text with: bad: colons and «unbalanced\n"
+        "tools: Read\n"
+        "---\n"
+        "# Body\n"
+    )
+    fm, body = parse_frontmatter(text)
+    assert fm == {}
+    assert "# Body" in body
+
+
 def test_extract_title_and_links():
     body = "# My Title\n\nSee [[a]] and [[b|alias]].\n"
     assert extract_title(body) == "My Title"
