@@ -19,7 +19,7 @@
       "phase": null
     },
     {
-      "description": null,
+      "description": "Red-team Банча в Pitching of Trust — пытается «завалить» слабые аргументы перед гейтом (фаза PITCH цикла Sprint). Используй, когда Банч сформирован (bunch-former) и нужна состязательная проверка: выявить слабые звенья, предложить что выкинуть, nominate кандидатов на осознанный отказ. Аугментация — антагонист по дизайну, не штампует.",
       "name": "pitching-opponent",
       "path": ".claude/agents/pitching-opponent.md",
       "phase": null
