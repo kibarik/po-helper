@@ -27,7 +27,7 @@ description: 'Концепты решения для БФТ — 2-3 вариан
 ### Этап 1: Загрузка роли и входа
 1. Прочитай `skills/bft-writer/SKILL.md`.
 2. Прочитай `resources/catwoe.md` — метод CATWOE.
-3. Прочитай диагноз: `po-helper/БФТ/<EPIC>/problem/problem.md` (+ context-pack).
+3. Прочитай диагноз: `<workspace>/<epic>/artefacts/problem.md` (+ context-pack).
 
 ### Этап 2: Генерация концептов (2-3)
 Спектр:
@@ -55,10 +55,10 @@ description: 'Концепты решения для БФТ — 2-3 вариан
 - Какие открытые вопросы / конфликты worldviews из problem.md каждый концепт закрывает / оставляет.
 
 ### Этап 6: Сохранение + STOP
-- Сохрани `po-helper/БФТ/<EPIC>/concept/concept.md` (концепты + CATWOE + сравнительная таблица).
+- Сохрани `<workspace>/<epic>/artefacts/concept.md` (концепты + CATWOE + сравнительная таблица).
 - **Выведи и ОСТАНОВИСЬ:**
   ```
-  Концепты готовы: po-helper/БФТ/<EPIC>/concept/concept.md (N вариантов, каждый с CATWOE)
+  Концепты готовы: <workspace>/<epic>/artefacts/concept.md (N вариантов, каждый с CATWOE)
   1. <чистый> · 2. <компромисс> · 3. <быстрый>
   ── СТОП ── Дальше — /bft-debate <epic> (красная команда выберет/усилит).
   ```
