@@ -113,3 +113,37 @@ def test_aggregate_incomplete_lowers_completeness(tmp_path):
     # 1 of 2 complete -> completeness 0.5; fresh node weight only -> fresh≈1
     assert aggs[0]["count"] == 2
     assert aggs[0]["context_ripeness"] == 0.5
+
+
+def test_collect_tasks(tmp_path):
+    from sa_documentation.atlas_index import collect_tasks
+    _write(tmp_path / "backlog/tasks/task-10 - Add search.md",
+           "---\nid: task-10\ntitle: Add search\nstatus: in-progress\n"
+           "nexus_nodes: [aip-x]\n---\nbody\n")
+    tasks = collect_tasks("backlog/tasks", tmp_path)
+    assert tasks == [{
+        "task_id": "task-10",
+        "title": "Add search",
+        "status": "in-progress",
+        "nexus_nodes": ["aip-x"],
+        "path": "backlog/tasks/task-10 - Add search.md",
+    }]
+
+
+def test_collect_tasks_missing_dir(tmp_path):
+    from sa_documentation.atlas_index import collect_tasks
+    assert collect_tasks("backlog/tasks", tmp_path) == []
+
+
+def test_collect_agents(tmp_path):
+    from sa_documentation.atlas_index import collect_agents
+    _write(tmp_path / ".claude/agents/nexus-builder.md",
+           "---\nname: nexus-builder\ndescription: Builds nodes.\n"
+           "sprint_phase: cross\n---\nbody\n")
+    agents = collect_agents(".claude/agents", tmp_path)
+    assert agents == [{
+        "name": "nexus-builder",
+        "phase": "cross",
+        "description": "Builds nodes.",
+        "path": ".claude/agents/nexus-builder.md",
+    }]
