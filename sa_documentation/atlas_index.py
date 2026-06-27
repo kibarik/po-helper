@@ -5,6 +5,9 @@ agents and Backlog.md tasks. Emits ATLAS/manifest.json + INDEX.md block.
 Pure-Python, does NOT call ruflo — works on a fresh checkout without .swarm/.
 Usage: python3 sa_documentation/atlas_index.py --atlas [--root <repo_root>]
 """
+import datetime
+import json
+import pathlib
 import re
 import yaml
 
@@ -40,8 +43,6 @@ def extract_links(body):
             out.append(t)
     return out
 
-
-import pathlib
 
 # Required Node-schema keys (nexus_schema.md §2). paf_step value may be null,
 # but the key must be present for the node to count as "complete".
@@ -90,14 +91,22 @@ def collect_nodes(roots, repo_root):
     return nodes
 
 
-import datetime
-
-
 def freshness_score(rec, today):
-    """clamp(1 - age/ttl, 0, 1) per nexus_schema.md §4."""
+    """clamp(1 - age/ttl, 0, 1) per nexus_schema.md §4.
+
+    `updated` may be a datetime.date or an ISO-format string; anything
+    else (None, malformed string, missing ttl) returns 0.0.
+    """
     u = rec.get("updated")
     ttl = rec.get("ttl_days")
-    if not isinstance(u, datetime.date) or not ttl:
+    if not ttl:
+        return 0.0
+    if isinstance(u, str):
+        try:
+            u = datetime.date.fromisoformat(u.strip())
+        except ValueError:
+            return 0.0
+    if not isinstance(u, datetime.date):
         return 0.0
     p = (today - u).days / float(ttl)
     return max(0.0, min(1.0, 1.0 - p))
@@ -120,7 +129,13 @@ def nexus_aggregates(nodes, today):
         comp = _completeness(ns)
         num = sum(freshness_score(n, today) * float(n.get("confidence") or 0) for n in ns)
         den = sum(float(n.get("confidence") or 0) for n in ns)
-        fresh = num / den if den else 0.0
+        if den:
+            fresh = num / den
+        else:
+            # All confidence weights are 0 or absent — fall back to the
+            # unweighted mean of freshness_score so valid, fresh nodes
+            # don't collapse the gate metric to 0.
+            fresh = sum(freshness_score(n, today) for n in ns) / len(ns)
         out.append({
             "slug": slug,
             "count": len(ns),
@@ -181,8 +196,6 @@ def build_manifest(nodes, tasks, agents, today):
         "nexuses": nexus_aggregates(nodes, today),
     }
 
-
-import json
 
 MARK_START = "<!-- ATLAS:GENERATED:START -->"
 MARK_END = "<!-- ATLAS:GENERATED:END -->"

@@ -223,6 +223,103 @@ def test_write_atlas_idempotent(tmp_path):
     assert (tmp_path / "ATLAS/manifest.json").read_text() == man1
 
 
+# ---------------------------------------------------------------------------
+# I1 — zero-confidence fallback to unweighted mean
+# ---------------------------------------------------------------------------
+
+def test_zero_confidence_falls_back_to_unweighted(tmp_path):
+    """Nodes with confidence 0 must not collapse context_ripeness to 0."""
+    from sa_documentation.atlas_index import collect_nodes, nexus_aggregates
+    today = datetime.date(2026, 6, 20)
+    # Two complete, fresh nodes with confidence: 0  (key present, value 0)
+    node_zero_conf = (
+        "---\n"
+        "nexus: zerotest\n"
+        "node_id: zt-1\n"
+        "node_type: operating-model\n"
+        "paf_step: null\n"
+        "kind: normative\n"
+        "owner: ops\n"
+        "confidence: 0\n"
+        "sources: [\"[S1]\"]\n"
+        "updated: 2026-06-20\n"
+        "ttl_days: 365\n"
+        "ripeness: fresh\n"
+        "---\n"
+        "# Node ZT-1\n"
+    )
+    node_zero_conf2 = node_zero_conf.replace("zt-1", "zt-2").replace("ZT-1", "ZT-2")
+    _write(tmp_path / "AI-PROCESSES/zt1.md", node_zero_conf)
+    _write(tmp_path / "AI-PROCESSES/zt2.md", node_zero_conf2)
+    nodes = collect_nodes(["AI-PROCESSES"], tmp_path)
+    assert len(nodes) == 2
+    aggs = nexus_aggregates(nodes, today)
+    assert len(aggs) == 1
+    nx = aggs[0]
+    # completeness = 1.0 (both complete), unweighted freshness ≈ 1.0
+    # context_ripeness should be ≈ 1.0, NOT 0.0
+    assert nx["context_ripeness"] > 0.9, (
+        f"Expected ~1.0 but got {nx['context_ripeness']} — "
+        "zero-weight fallback not implemented"
+    )
+
+
+# ---------------------------------------------------------------------------
+# I2 — freshness_score accepts ISO date strings
+# ---------------------------------------------------------------------------
+
+def test_freshness_accepts_iso_string():
+    from sa_documentation.atlas_index import freshness_score
+    today = datetime.date(2026, 6, 20)
+    # updated as string, same as today -> freshness == 1.0
+    rec_str = {"updated": "2026-06-20", "ttl_days": 365, "confidence": 1.0}
+    assert freshness_score(rec_str, today) == 1.0
+    # malformed string -> graceful 0.0
+    rec_bad = {"updated": "not-a-date", "ttl_days": 365, "confidence": 1.0}
+    assert freshness_score(rec_bad, today) == 0.0
+
+
+# ---------------------------------------------------------------------------
+# Gap test — _replace_between_markers append branch
+# ---------------------------------------------------------------------------
+
+def test_replace_between_markers_append_branch():
+    from sa_documentation.atlas_index import (
+        _replace_between_markers, MARK_START, MARK_END,
+    )
+    result = _replace_between_markers("# Doc\n\nbody\n", "BLOCK")
+    assert MARK_START in result
+    assert MARK_END in result
+    assert "BLOCK" in result
+    assert "body" in result
+
+
+# ---------------------------------------------------------------------------
+# Gap test — manifest JSON sort is deterministic
+# ---------------------------------------------------------------------------
+
+def test_manifest_json_is_sorted_deterministic(tmp_path):
+    import json
+    from sa_documentation.atlas_index import (
+        collect_nodes, collect_tasks, collect_agents, build_manifest,
+        _json_default,
+    )
+    today = datetime.date(2026, 6, 20)
+    _write(tmp_path / "AI-PROCESSES/om.md", NODE_OK)
+    nodes = collect_nodes(["AI-PROCESSES"], tmp_path)
+    tasks = collect_tasks("backlog/tasks", tmp_path)      # empty dir
+    agents = collect_agents(".claude/agents", tmp_path)    # empty dir
+    m = build_manifest(nodes, tasks, agents, today)
+    dump1 = json.dumps(m, sort_keys=True, default=_json_default)
+    dump2 = json.dumps(m, sort_keys=True, default=_json_default)
+    assert dump1 == dump2
+    # top-level keys appear in sorted order when sort_keys=True
+    top_keys = list(json.loads(dump1).keys())
+    assert top_keys == sorted(top_keys)
+
+
+# ---------------------------------------------------------------------------
+
 def test_cli_main_runs_without_ruflo(tmp_path, monkeypatch):
     # Generation must not depend on ruflo/.swarm — simulate absent binary.
     import sa_documentation.atlas_index as ai
