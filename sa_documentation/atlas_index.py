@@ -162,3 +162,18 @@ def collect_agents(agents_dir, repo_root):
             "path": p.relative_to(repo_root).as_posix(),
         })
     return agents
+
+
+SCHEMA_VERSION = "1.0"
+
+
+def build_manifest(nodes, tasks, agents, today):
+    """Assemble the manifest dict (deterministic; `today` injected)."""
+    return {
+        "generated": today.isoformat(),
+        "schema_version": SCHEMA_VERSION,
+        "nodes": nodes,
+        "tasks": tasks,
+        "agents": agents,
+        "nexuses": nexus_aggregates(nodes, today),
+    }
