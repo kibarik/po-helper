@@ -35,4 +35,16 @@ GROUND/
 - **Работайте только в `GROUND/`.** Это ваш контекст; всё остальное — дистрибутив.
 - `GROUND/` отслеживается в git (контекст клиента). `.claude/memory.db`, `.swarm/` — gitignored.
 
+## ATLAS (навигация) и задачи
+
+- **Навигация:** `python3 sa_documentation/atlas_index.py --atlas` генерирует
+  `ATLAS/manifest.json` (LLM) + ген-блок `ATLAS/INDEX.md` (человек). Запускать
+  после изменения узлов. Не требует ruflo/`.swarm`.
+- **RAG-прогрев (опц.):** на свежем clone/worktree `.swarm/` пуст (gitignored).
+  Семантический поиск агентов заработает только после
+  `python3 sa_documentation/nexus_index.py` в рабочей CWD. Без прогрева навигация
+  работает на `ATLAS/manifest.json`.
+- **Задачи/Банчи:** Backlog.md (`backlog init`, затем `backlog board`/MCP).
+  Связь задача→узел: поле `nexus_nodes: [node_id]` во frontmatter задачи.
+
 См. спецификацию: `docs/superpowers/specs/2026-06-21-paf-team-os-design.md` (§2.2, §7).
