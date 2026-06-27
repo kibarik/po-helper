@@ -169,3 +169,41 @@ def test_build_manifest_shape(tmp_path):
     assert m["tasks"][0]["task_id"] == "task-10"
     assert m["agents"][0]["name"] == "a"
     assert m["nexuses"] == [{"slug": "product", "count": 1, "context_ripeness": 1.0}]
+
+
+def test_render_index_block_contains_tables():
+    from sa_documentation.atlas_index import render_index_block
+    m = {
+        "generated": "2026-06-20",
+        "nexuses": [{"slug": "product", "count": 2, "context_ripeness": 0.7}],
+        "agents": [{"name": "a", "phase": "scout", "description": "d", "path": "x"}],
+        "tasks": [{"task_id": "t1", "status": "todo"},
+                  {"task_id": "t2", "status": "todo"}],
+    }
+    block = render_index_block(m)
+    assert "product" in block and "0.7" in block
+    assert "| a |" in block
+    assert "todo" in block and "2" in block
+
+
+MARKED_INDEX = (
+    "# ATLAS INDEX\n\nintro text\n\n"
+    "<!-- ATLAS:GENERATED:START -->\nOLD\n<!-- ATLAS:GENERATED:END -->\n"
+)
+
+
+def test_write_atlas_idempotent(tmp_path):
+    from sa_documentation.atlas_index import write_atlas
+    import json
+    today = datetime.date(2026, 6, 20)
+    _write(tmp_path / "AI-PROCESSES/om.md", NODE_OK)
+    _write(tmp_path / "ATLAS/INDEX.md", MARKED_INDEX)
+    write_atlas(tmp_path, today)
+    idx1 = (tmp_path / "ATLAS/INDEX.md").read_text()
+    man1 = (tmp_path / "ATLAS/manifest.json").read_text()
+    assert "intro text" in idx1            # manual text preserved
+    assert "OLD" not in idx1               # generated block replaced
+    assert json.loads(man1)["nodes"][0]["node_id"] == "aip-x"
+    write_atlas(tmp_path, today)           # second run
+    assert (tmp_path / "ATLAS/INDEX.md").read_text() == idx1   # idempotent
+    assert (tmp_path / "ATLAS/manifest.json").read_text() == man1
