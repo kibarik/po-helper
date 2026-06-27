@@ -12,11 +12,14 @@ _FM_RE = re.compile(r"^---\n(.*?)\n---\n?", re.S)
 
 
 def parse_frontmatter(text):
-    """Return (frontmatter_dict, body_str). Empty dict if no frontmatter."""
+    """Return (frontmatter_dict, body_str). Empty dict if no/invalid frontmatter."""
     m = _FM_RE.match(text)
     if not m:
         return {}, text
-    fm = yaml.safe_load(m.group(1)) or {}
+    try:
+        fm = yaml.safe_load(m.group(1)) or {}
+    except yaml.YAMLError:
+        fm = {}
     if not isinstance(fm, dict):
         fm = {}
     return fm, text[m.end():]
@@ -244,3 +247,25 @@ def write_atlas(repo_root, today):
     idx_p.write_text(_replace_between_markers(base, render_index_block(m)),
                      encoding="utf-8")
     return m
+
+
+def main(argv=None):
+    import argparse
+    ap = argparse.ArgumentParser(description="ATLAS manifest/INDEX generator")
+    ap.add_argument("--atlas", action="store_true", help="generate ATLAS/")
+    ap.add_argument("--root", default=".", help="repo root (default: cwd)")
+    ap.add_argument("--today", default=None, help="ISO date override (tests)")
+    args = ap.parse_args(argv)
+    if not args.atlas:
+        ap.error("nothing to do; pass --atlas")
+    today = (datetime.date.fromisoformat(args.today) if args.today
+             else datetime.date.today())
+    m = write_atlas(args.root, today)
+    print(f"atlas: {len(m['nodes'])} nodes | {len(m['tasks'])} tasks | "
+          f"{len(m['agents'])} agents | {len(m['nexuses'])} nexuses")
+    return 0
+
+
+if __name__ == "__main__":
+    import sys
+    sys.exit(main())
