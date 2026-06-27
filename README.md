@@ -1,13 +1,21 @@
 <p align="center">
-  <strong>PO-Helper: BFT-Writer</strong><br>
-  <em>Multi-step pipeline для ИИ-агентов: генерация БФТ (Бизнес-Функциональные Требования) уровня enterprise</em>
+  <strong>PO-Helper</strong><br>
+  <em>Multi-step pipeline'ы для ИИ-агентов: квартальный OKR и БФТ (Бизнес-Функциональные Требования) уровня enterprise</em>
 </p>
 
 ---
 
-> **БФТ** — структурируй известное, фиксируй неизвестное. Каждый факт ← источник (трекер / PO / ТЗ).
+> **Принцип:** структурируй известное, фиксируй неизвестное. Каждый факт ← источник (трекер / PO / wiki / roadmap). Нет источника → `[УТОЧНИТЬ]`.
 >
-> Архитектура — зеркало [sa-helper](https://gitlab.com/boboden541/sa-helper) FNR-pipeline, адаптированная под forward-looking требования: якорь смещён с `code:line` на трекер / решения PO / wiki / СА. Каждая стадия — **отдельная команда, отдельная роль, STOP-пауза для ревью**.
+> Архитектура — зеркало [sa-helper](https://gitlab.com/boboden541/sa-helper) FNR-pipeline, адаптированная под forward-looking планирование: якорь смещён с `code:line` на трекер / решения PO / wiki / roadmap. Каждая стадия — **отдельная команда, отдельная роль, STOP-пауза для ревью**.
+
+**Пайплайны:**
+
+| Пайплайн | Команды | Что генерирует |
+|:---|:---|:---|
+| **OKR** | `/okr-context-gen → /okr-objectives → /okr-key-results → /okr-debate → /okr-enrich → /okr-validate → /okr-deliver` | Квартальный OKR (OBJ + KR + IMP + образ результата/действия + метрики/риски) |
+| **БФТ** | `/bft-context-gen → /bft-problem → /bft-concept → /bft-debate → /bft-draft → /bft-validate` | Бизнес-Функциональные Требования по эпику |
+| **Контекст** | `/po-research` | Контекст-пак по топику (sprint/epic/risk/decision/bft) |
 
 ---
 
@@ -18,7 +26,40 @@
 curl -ksSL https://raw.githubusercontent.com/kibarik/po-helper/main/install.sh | bash
 ```
 
-Или из клона: `bash install.sh`. Копирует `.claude/{skills/bft-writer,commands}`. Существующие файлы не удаляются.
+Или из клона:
+- `bash install.sh` — установка (существующие файлы не трогаются)
+- `bash install.sh --update` — обновление generic-слоя (framework-файлы перезаписываются)
+
+В любом режиме `.claude/domain-profile.md` проекта и доменные данные **не трогаются** — обновляется только фреймворк.
+
+### Доменный профиль (адаптация под проект)
+
+po-helper — generic-фреймворк. Предметная область выносится в **доменный профиль**:
+
+```bash
+cp .claude/domain-profile.template.md .claude/domain-profile.md
+# заполнить: пути планирования, команды, трекер, wiki, глоссарий, стейкхолдеры
+```
+
+Команды читают профиль и подставляют пути (`{planning_root}`, `{okr_workspace}`, …) и доменные термины. Примеры в навыках (`examples/`) — иллюстративные; универсальна структура, а не домен.
+
+---
+
+## 📊 Процесс генерации OKR (квартальное планирование)
+
+**6 стадий, каждая = отдельный запуск + STOP-пауза:**
+
+| Стадия | Команда | Роль | Артефакт |
+|:---|:---|:---|:---|
+| Контекст | `/okr-context-gen` | Context Builder | `context-pack.md` |
+| Цели | `/okr-objectives` | Strategy Analyst (3-5 OBJ) | `objectives.md` |
+| Key Results | `/okr-key-results` | KR Designer (KR + IMP) | `key-results.md` |
+| Дебаты | `/okr-debate` | Devil's Advocate (SMART, 3 раунда) | вердикт в `key-results.md` |
+| Обогащение | `/okr-enrich` | PO + Architect (образ действия + метрики) | `enriched-okr.md` |
+| Валидация | `/okr-validate` | Validator (12 hard gates + Светофор) | `validation.md` |
+| Отгрузка | `/okr-deliver` | Deliverer (публикация в roadmap/INDEX/KR-EPIC-MAP) | финальный OKR |
+
+Итоговый артефакт — таблица `OBJ | KR | IMP | Название | Образ результата | Образ действия | Метрики&риски&зависимости` с тегами `[RESEARCH]/[POC]/[BUG]/[ACTIVITY]`, IMP-шкалой 1–9 и БЫЛО→СТАЛО для технических KR.
 
 ---
 
