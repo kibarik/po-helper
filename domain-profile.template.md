@@ -105,7 +105,7 @@ role_bindings:
   jira:    atlassian            # роль tracker; settings ← секция tracker:
   conf:    atlassian            # роль wiki;    settings ← секция wiki:
   code:    repowise             # свой RAG-сервер → впиши его имя (напр. my-internal-rag)
-  vault:   obsidian
+  vault:   obsidian            # локальная база знаний / Obsidian Vault; замени на имя из .mcp.json
   web:     builtin              # WebSearch / WebFetch (встроенные, не из .mcp.json)
   vision:  atlassian            # confluence_get_page_images
   compute: [playwright, serena, bash]
@@ -115,7 +115,7 @@ role_bindings:
 Кастом-коннектор с нестандартными tool-именами/якорем — развёрнутая форма:
 
 ```yaml
-role_bindings:
+role_bindings:                 # пример — развёрнутая форма одной роли, не копируй целиком
   code:
     mcp:    my-internal-rag     # имя сервера из .mcp.json
     tools:  [rag_query, rag_context]
@@ -133,7 +133,7 @@ role_bindings:
 source_policy:
   on_missing_required: warn     # warn (продолжить, флаг в pack) | block (СТОП со списком)
   classes:
-    bft-critical:  [jira, conf] # /bft-context-gen-deep
+    bft-critical:  [jira, conf] # список = required-роли; /bft-context-gen-deep
     bft-normal:    [jira]       # /bft-context-gen (быстрый)
     research-deep: [jira, conf] # /po-research deep
     research-fast: [jira]       # /po-research fast
