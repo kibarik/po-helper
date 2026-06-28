@@ -27,13 +27,16 @@
   (обе версии в pack, если обе confidence ≥Medium; иначе High + Low как [УТОЧНИТЬ])
 
 ## Coverage Matrix
-> Разделы = оси домена (см. resources/domains.md). Пример для epic:
-| Раздел pack | Питающий | Статус |
-|---|---|---|
-| Границы | C1+N2 | ✅ |
-| Образ результата (БТ) | N2+N3 | ⚠️partial |
-| Зависимости | C1+N6 | [УТОЧНИТЬ] |
-| … | … | … |
+> Разделы = оси домена (см. resources/domains.md). Колонки capability: `required?` (из source_policy класса), `available?` (роль привязана+отвечает), `used?` (дал findings). Пример для epic:
+| Раздел pack | Питающий | required? | available? | used? | Статус |
+|---|---|---|---|---|---|
+| Границы | C1+conf | да | ✅ | ✅ | ✅ |
+| Образ результата (БТ) | conf+code | да | ✅ | ⚠️ | ⚠️partial |
+| Зависимости | C1+jira | да | ❌ | — | [НЕДОСТУПНО: роль jira] |
+| … | … | … | … | … | … |
+
+> Роль из `source_policy.classes[<class>]` недоступна → строка помечается `[НЕДОСТУПНО: роль <id>]`,
+> и (если `on_missing_required: block`) Synthesize выводит СТОП-список вместо pack.
 
 coverage% = sections_with_source / total_sections = <X>/<Y> = <Z>%
 Порог домена: <75/80/95>%. Зависимости — hard-gate.
@@ -54,6 +57,6 @@ coverage% = sections_with_source / total_sections = <X>/<Y> = <Z>%
 1. **CORTEX** — фон, по ссылке + выдержка, не копировать целиком.
 2. **NEXUS** — каждый факт с якорем + confidence + freshness. Нет якоря → в `[УТОЧНИТЬ]`.
 3. **Contradictions** — не прятать; обе стороны, если обе ≥Med (open Q #5, дефолт v0.2).
-4. **Coverage** — оси = разделы домена, не фикс БФТ.
+4. **Coverage** — оси = разделы домена, не фикс БФТ. Колонки `required?/available?/used?` — из `source_policy` + `role_bindings`. Недоступная required-роль → `[НЕДОСТУПНО: роль <id>]` в строке.
 5. **Evidence Quality** — в Fast блок «Refuted» пуст (скептика нет); в Deep — заполняется.
 6. **Статус источников** — честно про VPN/недоступность.
