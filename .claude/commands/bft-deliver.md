@@ -9,7 +9,7 @@ description: 'Отгрузка БФТ — публикация в JIRA+Confluenc
 ```
 
 **Параметры:**
-- `<epic_code>` — короткий код БФТ (напр. `EPIC-10`, `EPIC-FAQ`). По нему находится черновик `{bft_store}/{epic_code}*.md`.
+- `<epic_code>` — короткий код БФТ (напр. `EPIC-10`, `EPIC-FAQ`). По нему находится финальный БФТ `{bft_store}/{epic_code}/{epic_code}*.md`.
 - `[bft_space]` — Confluence space для публикации БФТ команды API-слой. **Дефолт — `wiki.space` из профиля** (из `skills/bft-writer/SKILL.md`).
 - `[bft_parent_id]` — parent page для БФТ-страницы (опц.). Если не задан → `[УТОЧНИТЬ у PO]`.
 - `[project]` — JIRA-проект для создания Эпика. **Дефолт — `bft.default_project` из профиля.**
@@ -45,9 +45,9 @@ description: 'Отгрузка БФТ — публикация в JIRA+Confluenc
 ### ТАКТ 1. СУХОЙ ПРОГОН (без записи)
 
 #### Этап 1: Загрузка входов
-1. Найди черновик БФТ: `{bft_store}/<epic_code>*.md`. Если нет → СТОП:
+1. Найди финальный БФТ: `{bft_store}/<epic_code>/<epic_code>*.md`. Если нет → СТОП:
    ```
-   🔴 Черновик БФТ <epic_code> не найден в {bft_store}/.
+   🔴 Финальный БФТ <epic_code> не найден в {bft_store}/<epic_code>/.
    → /bft-draft <epic_code>, затем /bft-validate <epic_code>.
    ```
 2. Проверь `validation.md` (в `{bft_workspace}/` или рядом). Если есть 🔴 в Hard Gates → СТОП, отгрузка запрещена:
@@ -79,7 +79,7 @@ description: 'Отгрузка БФТ — публикация в JIRA+Confluenc
 
 **Превью 3 — Страница БФТ команды API-слой** (space=`<bft_space>`, parent=`<bft_parent_id>`):
 - `title`: `[БФТ] <epic_code>: <Название>` (как H1 черновика).
-- `body`: **полное содержимое** vault-файла `{bft_store}/<epic_code>*.md` (frontmatter убери, остальное 1:1 — PlantUML-блоки сохраняй как есть).
+- `body`: **полное содержимое** vault-файла `{bft_store}/<epic_code>/<epic_code>*.md` (frontmatter убери, остальное 1:1 — PlantUML-блоки сохраняй как есть).
 - Если `bft_parent_id` не задан → пометь `[УТОЧНИТЬ у PO: parent page для БФТ в space <bft_space>]`, СТОП.
 - `content_format`: markdown.
 
