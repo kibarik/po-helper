@@ -50,6 +50,17 @@ Fast ≈ обобщённый `bft-context-gen`. Deep = **Phase 0 (опрос PO
 2. Возьми пресет домена из `resources/domains.md`: источники, seed sub-Q, разделы pack, порог.
 3. Создай `{research_workspace}/`.
 
+### Шаг 0.5. Resolve capability (роли → коннекторы)
+
+Перед Gather определи доступные роли-источники у этого сотрудника:
+
+1. Прочитай `role_bindings` из `.claude/domain-profile.md` (роль `id` → MCP-сервер / `builtin`).
+2. Каждая роль пресета: привязана в `role_bindings` И её tools доступны в сессии?
+   - да → **available**;
+   - не привязана / сервер не отвечает → **unavailable**: её раздел pack → `[НЕДОСТУПНО: роль <id>]`, источник исключается из обхода Шага 2 (не дёргаем мёртвые tools). Не выдумывать.
+3. Прочитай `source_policy`. Класс для Fast = `research-fast`. `required ∩ available`: недостающую required-роль — в отчёт (Fast: только warn, без блока).
+4. В coverage-matrix (Шаг 4) проставь колонки `required?/available?/used?`.
+
 ### Шаг 1. Plan
 Разверни seed sub-Q пресета в 3–7 атомарных вопросов. Каждому — subset источников.
 
@@ -109,6 +120,10 @@ seed:
 С собранным `seed` → Workflow `po-context-research` (`.claude/workflows/po-context-research.js`). Args: `{ domain, topic, tier, seed }`. Он крутит полный Perplexity-loop: multi-query research → critic (gap + follow-the-lead + contradiction-detect) → loop-until-dry + entity-queue → skeptic (3 refuters, kill ≥2/3) → synth. Budget-tier ← confidence KR.
 
 Workflow требует явного запроса PO (дорого, fan-out агентов) — запускать осознанно. Planner-агент получает `seed` в промпте и приоритизирует декомпозицию. Результат — тот же `context-pack.md`, но с заполненным Evidence Quality (verified/refuted) и собранный под образ результата PO, а не «вообще».
+
+> Resolve capability в Deep делает сам Workflow (planner читает `role_bindings` + `source_policy`,
+> класс = `research-deep`, исключает недоступные роли, проставляет capability-колонки coverage).
+> Phase 0 здесь capability не резолвит — только seed PO.
 
 ### Краткая форма Phase 0
 
