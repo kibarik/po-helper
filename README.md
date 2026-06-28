@@ -137,7 +137,7 @@ flowchart TD
 | 6. Валидация | `/bft-validate EPIC-10` | 🔴 → шаг 5; 🟢/🟡 → готов к ревью |
 | 7. Отгрузка | `/bft-deliver EPIC-10` | Сухой прогон → ок PO → JIRA + 2×Confluence |
 
-**Раскладка:** финальный БФТ — `<workspace>/<epic>/<epic>.md`; промежуточные артефакты — `<workspace>/<epic>/artefacts/`. Везде передавай один и тот же `<epic_code>`. Детально — [bft-writer/SKILL.md](.claude/skills/bft-writer/SKILL.md).
+**Раскладка:** финальный БФТ — `bft_documentation/<epic>/<epic>.md`; промежуточные артефакты — `bft_documentation/<epic>/artefacts/`. Везде передавай один и тот же `<epic_code>`. Детально — [bft-writer/SKILL.md](.claude/skills/bft-writer/SKILL.md).
 
 ---
 

@@ -28,10 +28,10 @@ paths:
   okr_output_doc:   "{planning_root}/OKR-{quarter}.md"
   # Рабочая папка пайплайна OKR (промежуточные артефакты стадий)
   okr_workspace:    "CORTEX/_context-packs/okr/{quarter}"
-  # Рабочая папка пайплайна BFT
-  bft_workspace:    "CORTEX/_context-packs/{epic}"
-  # Хранилище готовых БФТ
-  bft_store:        "CORTEX/БФТ"
+  # Рабочая папка пайплайна BFT (папка конкретного БФТ: финальный <epic>.md + artefacts/)
+  bft_workspace:    "bft_documentation/{epic}"
+  # Корень всех БФТ (готовые документы + золотые референсы)
+  bft_store:        "bft_documentation"
   # Рабочая папка пайплайна po-research (контекст-паки)
   research_workspace: "CORTEX/_context-packs/{domain}/{topic}"
 ```
