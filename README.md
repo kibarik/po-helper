@@ -56,8 +56,15 @@ cp .claude/domain-profile.template.md .claude/domain-profile.md
 
 | Сервер | Назначение |
 |:---|:---|
-| `ruflo` | Память, swarm, hooks-интеллект (агентная оркестрация) |
+| `ruflo` | Память, swarm, hooks-интеллект (агентная оркестрация). Требуется **ruflo ≥ 3.14.4** |
 | `excalidraw` | Рендер диаграмм/схем (MustHave для Blueprint/визуализаций) |
+
+`ruflo` — глобальный CLI (npm), а не часть репозитория. Установка/обновление до требуемой версии:
+
+```bash
+npm install -g ruflo@latest   # либо ruflo@3.14.4 для фиксированной версии
+ruflo --version               # проверка: должно быть ≥ 3.14.4
+```
 
 ---
 
