@@ -59,6 +59,9 @@ const PLAN_SCHEMA = {
         },
       },
     },
+    availableRoles:   { type: 'array', items: { type: 'string' }, description: 'роли available по role_bindings' },
+    unavailableRoles: { type: 'array', items: { type: 'string' }, description: 'роли не привязаны / не отвечают' },
+    policyMissing:    { type: 'array', items: { type: 'string' }, description: 'required-роли класса research-deep, которых нет в available' },
   },
 }
 
@@ -149,6 +152,7 @@ phase('Plan')
 const plan = await agent(
   `Ты — planner po-research. Домен="${domain}", топик="${topic}".
 Прочитай пресет домена в ${RES}/domains.md (источники, seed sub-Q, разделы pack, порог coverage) и контракт источников в ${RES}/source-registry.md.
+Прочитай role_bindings + source_policy из .claude/domain-profile.md. Резолв: роль available, если есть в role_bindings И её tools доступны в сессии; иначе unavailable. Из sources каждого sub-Q ИСКЛЮЧИ unavailable-роли (не гоняем мёртвые источники). source_policy класс research-deep: policyMissing = required \\ available. Верни availableRoles, unavailableRoles, policyMissing.
 ${seedBlock}
 Декомпозируй топик в 3–7 атомарных sub-Q. Каждому — subset источников из пресета и раздел pack. Если seed есть — приоритет sub-Q вокруг intent/hypotheses/known_anchors PO.
 Верни sections (оси coverage), coverageThreshold (0..1 из пресета), subQuestions. READ-ONLY.`,
@@ -158,6 +162,12 @@ ${seedBlock}
 const sections = plan.sections
 const threshold = (plan.coverageThreshold || T.coverageDefault)
 log(`Plan: ${plan.subQuestions.length} sub-Q, ${sections.length} разделов, порог ${Math.round(threshold * 100)}%, tier ${tier}${seed ? ', seed=PO ✅' : ', seed=—'}`)
+if (plan.unavailableRoles && plan.unavailableRoles.length) {
+  log(`Capability: недоступны роли [${plan.unavailableRoles.join(', ')}] → их разделы → [НЕДОСТУПНО]`)
+}
+if (plan.policyMissing && plan.policyMissing.length) {
+  log(`⚠️ policy(research-deep): не хватает required [${plan.policyMissing.join(', ')}] (on_missing_required=warn → продолжаю, флаг в pack)`)
+}
 
 // ── RESEARCH (multi-query) ───────────────────────────────────────────────────
 function research(q) {
@@ -167,7 +177,7 @@ function research(q) {
   return agent(
     `Ты — researcher po-research (READ-ONLY). Sub-Q: "${q.question}". Раздел: "${q.section}". Источники: ${(q.sources || []).join(', ')}.
 Multi-query sweep (G2): на каждый источник 2–3 переформулировки запроса, мерджи dedupe по anchor.
-Tools через ToolSearch: jira_* / confluence_* / repowise (get_answer,get_context,get_risk,get_why,search_codebase) / obsidian (search_query,vault_read) / WebSearch,WebFetch. ${computeNote}
+Tools резолвь по role_bindings (.claude/domain-profile.md): роль источника → MCP-сервер сотрудника. Дефолт-маппинг: jira→jira_*, conf→confluence_*, code→repowise(get_answer,get_context,get_risk,get_why,search_codebase), vault→obsidian(search_query,vault_read), web→WebSearch/WebFetch. Кастом-коннектор (развёрнутая форма role_bindings) → его явные tools. Сервер не отвечает → раздел [НЕДОСТУПНО], не выдумывать. ${computeNote}
 Каждый факт — с якорем + confidence + freshness + excerpt. Нет якоря → в unresolved. Не выдумывать.`,
     { schema: FINDINGS_SCHEMA, phase: 'Research', label: `research:${q.section}` }
   )
@@ -284,6 +294,7 @@ const verifiedClean = verified.map((f) => ({
 const pack = await agent(
   `Ты — synthesizer po-research. Собери context-pack.md строго по шаблону ${RES}/pack-template.md и запиши в ${OUT} (создай папки; используй Write).
 meta: domain=${domain} | режим=Deep | budget-tier=${tier} | seed=${seed ? 'PO ✅ (Phase 0)' : '— (автономно)'} | дата=<сегодня> | статус источников=<VPN ✅/⚠️>.
+Coverage-matrix по resources/pack-template.md с колонками required?/available?/used?. Недоступные роли (${(plan.unavailableRoles || []).join(', ') || 'нет'}) → строки [НЕДОСТУПНО: роль <id>]. policyMissing → флаг в шапке pack.
 CORTEX-фон: подключи релевантное из CORTEX/ ссылкой+выдержкой (по теме топика, не целиком).
 NEXUS (verified findings, с якорями):
 ${JSON.stringify(verifiedClean)}
