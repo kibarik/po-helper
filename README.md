@@ -1,6 +1,6 @@
 <p align="center">
   <strong>PO-Helper</strong><br>
-  <em>AI-Native продуктовая операционка: multi-step пайплайны для ИИ-агентов (OKR · БФТ · Blueprint) + методология PAF (Нексус / Кортекс / Product Sprint) и Product Discovery от Идеи до PCF</em>
+  <em>AI-Native продуктовая операционка: multi-step пайплайны для ИИ-агентов (OKR · БФТ) + онбординг PAF (GROUND Vault: Кортекс / Нексус) и методология Product Discovery от Идеи до PCF</em>
 </p>
 
 ---
@@ -11,7 +11,7 @@
 
 Репозиторий объединяет два слоя:
 
-1. **Инструменты (`.claude/`)** — исполняемые Claude-команды, навыки и агенты: пайплайны OKR, БФТ, Blueprint, контекст-брокер и операционка PAF (GROUND Vault).
+1. **Инструменты (`.claude/`)** — исполняемые Claude-команды и навыки: пайплайны OKR, БФТ, контекст-брокер, визуализатор диаграмм и онбординг PAF (GROUND Vault).
 2. **Знание-база (методология)** — `docs/AI-PROCESSES/`, `docs/AI-TRANSFORMATION/`, `docs/TRADITIONAL/`, `docs/RL/`: исполняемый Product Discovery, принципы PAF, raw-раннбуки и Research Library.
 
 ---
@@ -22,9 +22,9 @@
 |:---|:---|:---|
 | **OKR** | `/okr-context-gen → /okr-objectives → /okr-key-results → /okr-debate → /okr-enrich → /okr-validate → /okr-deliver` | Квартальный OKR (OBJ + KR + IMP + образ результата/действия + метрики/риски) |
 | **БФТ** | `/bft-context-gen → /bft-problem → /bft-concept → /bft-debate → /bft-draft → /bft-validate` (+ `/bft-deliver`, `/bft-context-gen-deep`) | Бизнес-Функциональные Требования по эпику |
-| **Blueprint** | `/blueprint-context → (/blueprint-extract \| /blueprint-discover) → /blueprint-model → /blueprint-render` | Scope Model → Grid-таблица + Mermaid-диаграмма продукта |
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research по топику (sprint/epic/risk/decision/bft) |
-| **Операционка PAF** | `/paf-init`, `/paf-nexus-create` | GROUND Vault: config + каталог Нексусов под продукт |
+| **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат |
+| **Онбординг PAF** | `/paf-init`, `/paf-nexus-create` | GROUND Vault: config + каталог Нексусов под продукт |
 
 ---
 
@@ -56,8 +56,7 @@ cp .claude/domain-profile.template.md .claude/domain-profile.md
 
 | Сервер | Назначение |
 |:---|:---|
-| `ruflo` | Память, swarm, hooks-интеллект (агентная оркестрация). Требуется **ruflo ≥ 3.14.4** |
-| `excalidraw` | Рендер диаграмм/схем (MustHave для Blueprint/визуализаций) |
+| `ruflo` | Память (RAG-дедуп/индексация Нексусов при онбординге). Опционально — коробка работает и без него. Требуется **ruflo ≥ 3.14.4** |
 
 `ruflo` — глобальный CLI (npm), а не часть репозитория. Установка/обновление до требуемой версии:
 
@@ -129,25 +128,13 @@ flowchart TD
 
 ---
 
-## 🗺️ Blueprint — карта объёма продукта (Scope Model)
+## 🖼️ Визуализация — `/diagram-view`
 
-Из готового БФТ или с нуля строит **Scope Model** (journey × слои, scope-маркеры) и рендерит Grid-таблицу + Mermaid-диаграмму с блокирующим render-гейтом.
-
-```
-/blueprint-context  → выбор режима (ENRICH | SCRATCH)
-   ├─ [enrich]  /blueprint-extract   → Scope Model из БФТ (grounded, trace к разделам)
-   └─ [scratch] /blueprint-discover  → Scope Model исследованием (context-gen, scouting, problem-analyst, Nexus)
-/blueprint-model    → нормализация + self-review гейт (omissions + hallucinations)
-/blueprint-render   → Grid + Mermaid + render-гейт → GROUND/BLUEPRINT/<task>/blueprint.md
-```
-
-- Каноническая модель: `GROUND/BLUEPRINT/<task>/scope-model.yaml` (схема — `sa_documentation/blueprint_schema.md`).
-- Валидатор: `sa_documentation/validate_scope_model.py`; рендер-гейт: `sa_documentation/blueprint_render.py` (mmdc → npx → блок).
-- Мост к экосистеме: после `bft-writer`; верхнеуровневая связь с `/arch-gen` (C4) и `/data-trace` (dataflow).
+Берёт PlantUML-исходник (например, sequence-диаграмму из БФТ) и рендерит его inline-SVG в чат. Помощник для целей 3/4 — посмотреть диаграмму прямо в обсуждении, без внешних инструментов.
 
 ---
 
-## 🌱 PAF — операционка AI-Native команды (GROUND Vault)
+## 🌱 PAF — онбординг AI-Native команды (GROUND Vault)
 
 **GROUND Vault** — персонализированный продуктовый контекст: Кортекс цифровизует контекст продукта в насыщенный **Нексус** (граф узлов знаний), вокруг которого крутится продуктовый процесс по PAF.
 
@@ -168,16 +155,7 @@ GROUND/
 └── RESULTS/             ← Harvesting (урожай: результаты и инсайты)
 ```
 
-**Агенты PAF (`.claude/agents/`)** — аугментация фаз Product Sprint:
-
-| Агент | Фаза | Что делает |
-|:---|:---|:---|
-| `scouting` | SCOUT | Скаутинг возможностей/угроз через 3 Линзы PAF (Strategy/Business/Product) |
-| `bunch-former` | BUNCH | Формирует черновой Банч из текущего состояния Нексуса |
-| `pitching-opponent` | PITCH | Red-team Банча (Pitching of Trust) — «валит» слабые аргументы |
-| `cp-scorer` | — | Оценивает Confidence Point узлов/гипотез (колесо Гилада, ICE/RICE) |
-| `nexus-builder` | — | Создаёт/обновляет узлы Нексуса (отказывается без `sources[]`) |
-| `wilting-detector` | PULSE | Пересчитывает ripeness узлов (fresh/ripening/wilting) по `updated + ttl_days` |
+**Схемы и валидатор** (`sa_documentation/`): `ground_schema.md`, `nexus_schema.md`, `nexus_catalog.md` (каталог типов Нексусов + `seed_questions`), `naming_conventions.md` (термины PAF), `validate_ground.py` (валидатор GROUND Vault) + тесты.
 
 ---
 
@@ -189,7 +167,7 @@ GROUND/
 | `docs/AI-TRANSFORMATION/` | Принципы построения AI-Native команды по PAF (Тихомиров С.); каждое утверждение маркировано источником `[S1]–[S7]` |
 | `docs/TRADITIONAL/` | Raw-раннбуки классического Product Discovery (`RB-STEP-1…8`) — ground truth для AI-PROCESSES |
 | `docs/RL/` | Research Library — заметки-исследования (рост, A/B, метрики и пр.) |
-| `sa_documentation/` | Схемы (`ground_schema`, `nexus_schema`, `blueprint_schema`), Python-валидаторы (`validate_ground.py`, `validate_scope_model.py`, `nexus_index.py`), `naming_conventions.md`, `nexus_catalog.md`, тесты |
+| `sa_documentation/` | Схемы онбординга (`ground_schema`, `nexus_schema`, `nexus_catalog`, `naming_conventions`) + валидатор `validate_ground.py` + тесты |
 | `docs/superpowers/` | Планы, спеки и compliance-gap анализ |
 
 ---
@@ -225,21 +203,19 @@ GROUND/
 │   ├── bft-writer/         роли + pipeline + принципы; resources/ (hard_gates 15 🔴, anchor_rules, bft_standards, catwoe, debate_rules, review_feedback, writing_style); examples/ (ideal_bft, golden_bft_example)
 │   ├── okr-planner/         OKR-стандарты + hard_gates + ideal_okr
 │   ├── po-research/         контекст-брокер (domains, source-registry, pack-template)
-│   ├── blueprint-*/         context · discover · extract · model · render
+│   ├── diagram-view/        рендер PlantUML inline
 │   ├── paf-init/            настройка GROUND Vault
 │   └── paf-nexus-create/    кастомные Нексусы
-├── agents/           bunch-former, cp-scorer, nexus-builder, pitching-opponent, scouting, wilting-detector
-├── workflows/        po-context-research.js
-└── CORTEX.md         статичный фон знаний
+└── workflows/        po-context-research.js
 
 GROUND/               PAF Vault (контекст клиента — отслеживается в git)
 docs/AI-PROCESSES/         9 шагов Product Discovery × Product Sprint
 docs/AI-TRANSFORMATION/    принципы PAF [S1]–[S7]
 docs/TRADITIONAL/          raw-раннбуки RB-STEP-1…8
 docs/RL/                   Research Library
-sa_documentation/     схемы + валидаторы (Python) + тесты
+sa_documentation/     схемы онбординга + валидатор GROUND + тесты
 docs/superpowers/     планы / спеки / compliance
-.mcp.json             ruflo + excalidraw
+.mcp.json             ruflo
 install.sh · domain-profile.template.md
 ```
 
@@ -255,7 +231,6 @@ install.sh · domain-profile.template.md
 | `/fnr-debate` → вердикт | `/bft-debate` → вердикт |
 | `/fnr-system-requirements` → BR/FR/NFR | `/bft-draft` → БТ/ПТ/ИТ/ФТ/НФТ |
 | `/validate-doc` → аудит | `/bft-validate` → Светофор |
-| `/arch-gen` (C4), `/data-trace` | `/blueprint-render` (Scope Model) |
 | якорь `code:line` | якорь трекер/PO/wiki/roadmap |
 
 Механика качества идентична; отличается источник «якорей истины».
