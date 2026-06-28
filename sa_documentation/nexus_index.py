@@ -6,7 +6,7 @@
 поэтому храним САНИТИРОВАННЫЙ однострочный summary: title + ключевые поля + body без markdown.
 Idempotent: store по key=node_id (upsert). Переиндексировать после изменения узлов.
 
-Usage: python3 sa_documentation/nexus_index.py [--root AI-PROCESSES] [--ns ai-kortex]
+Usage: python3 sa_documentation/nexus_index.py [--root docs/AI-PROCESSES] [--ns ai-kortex]
 """
 import pathlib, re, subprocess, sys
 
@@ -48,7 +48,7 @@ def store_ok(returncode, output):
 
 
 def main():
-    ROOT = pathlib.Path(sys.argv[sys.argv.index("--root")+1] if "--root" in sys.argv else "AI-PROCESSES")
+    ROOT = pathlib.Path(sys.argv[sys.argv.index("--root")+1] if "--root" in sys.argv else "docs/AI-PROCESSES")
     NS = sys.argv[sys.argv.index("--ns")+1] if "--ns" in sys.argv else "ai-kortex"
     MAXBODY = 1500
 
