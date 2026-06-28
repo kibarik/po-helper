@@ -10,9 +10,6 @@ Usage: python3 sa_documentation/nexus_index.py [--root AI-PROCESSES] [--ns ai-ko
 """
 import pathlib, re, subprocess, sys
 
-ROOT = pathlib.Path(sys.argv[sys.argv.index("--root")+1] if "--root" in sys.argv else "AI-PROCESSES")
-NS = sys.argv[sys.argv.index("--ns")+1] if "--ns" in sys.argv else "ai-kortex"
-MAXBODY = 1500
 
 def strip_fm(text):
     m = re.match(r'^---\n.*?\n---\n?', text, re.S)
@@ -27,7 +24,7 @@ def parse_fm(text):
                 k, v = line.split(':', 1); d[k.strip()] = v.strip()
     return d
 
-def sanitize(body):
+def sanitize(body, maxbody=1500):
     # убрать markdown-синтаксис, оставить прозу
     s = re.sub(r'```.*?```', ' ', body, flags=re.S)      # code blocks
     s = re.sub(r'`[^`]*`', ' ', s)                         # inline code
@@ -36,29 +33,46 @@ def sanitize(body):
     s = re.sub(r'^[#>\-\*\|].*$', ' ', s, flags=re.M)      # headings/quotes/list/table lines
     s = re.sub(r'[*_`#\[\]()]', ' ', s)                    # residual markup
     s = re.sub(r'\s+', ' ', s).strip()                      # collapse whitespace
-    return s[:MAXBODY]
+    return s[:maxbody]
 
 def title_of(body):
     m = re.search(r'^#\s+(.+)$', body, re.M)
     return m.group(1).strip() if m else ""
 
-stored = failed = skipped = 0
-for p in sorted(ROOT.rglob("*.md")):
-    text = p.read_text(encoding="utf-8")
-    fm = parse_fm(text)
-    nid = fm.get("node_id")
-    if not nid:
-        skipped += 1; continue
-    body = strip_fm(text)
-    meta = f"[nexus={fm.get('nexus','')} step={fm.get('paf_step','')} phase={fm.get('sprint_phase','')}]"
-    value = f"{title_of(body)} {meta} {sanitize(body)}".strip()
-    r = subprocess.run(["ruflo","memory","store","--key",nid,"--value",value,"--namespace",NS],
-                       capture_output=True, text=True)
-    # ruflo возвращает exit 0 даже при внутренней ошибке — проверяем stdout на [ERROR]/[OK]
-    out = (r.stdout or "") + (r.stderr or "")
-    if r.returncode == 0 and "[ERROR]" not in out:
-        stored += 1
-    else:
-        print(f"FAIL {nid}: {out[:160]}", file=sys.stderr); failed += 1
 
-print(f"indexed {stored} | failed {failed} | skipped {skipped} | ns={NS}")
+def store_ok(returncode, output):
+    """ruflo CLI returns exit 0 even on internal errors — detect real failure
+    from output. Success = clean exit AND no error/fail markers in output."""
+    o = (output or "").lower()
+    return returncode == 0 and "[error]" not in o and "error" not in o and "fail" not in o
+
+
+def main():
+    ROOT = pathlib.Path(sys.argv[sys.argv.index("--root")+1] if "--root" in sys.argv else "AI-PROCESSES")
+    NS = sys.argv[sys.argv.index("--ns")+1] if "--ns" in sys.argv else "ai-kortex"
+    MAXBODY = 1500
+
+    stored = failed = skipped = 0
+    for p in sorted(ROOT.rglob("*.md")):
+        text = p.read_text(encoding="utf-8")
+        fm = parse_fm(text)
+        nid = fm.get("node_id")
+        if not nid:
+            skipped += 1; continue
+        body = strip_fm(text)
+        meta = f"[nexus={fm.get('nexus','')} step={fm.get('paf_step','')} phase={fm.get('sprint_phase','')}]"
+        value = f"{title_of(body)} {meta} {sanitize(body, MAXBODY)}".strip()
+        r = subprocess.run(["ruflo","memory","store","--key",nid,"--value",value,"--namespace",NS],
+                           capture_output=True, text=True)
+        out = (r.stdout or "") + (r.stderr or "")
+        if store_ok(r.returncode, out):
+            stored += 1
+        else:
+            print(f"FAIL {nid}: {out[:160]}", file=sys.stderr); failed += 1
+
+    print(f"indexed {stored} | failed {failed} | skipped {skipped} | ns={NS}")
+    sys.exit(1 if failed else 0)
+
+
+if __name__ == "__main__":
+    main()
