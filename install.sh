@@ -148,5 +148,7 @@ echo "   Пайплайны: /bft-* (БФТ)  ·  /okr-* (квартальный
 echo ""
 echo "Дальше:"
 echo "  1) cp $DEST_ROOT/domain-profile.template.md $DEST_ROOT/domain-profile.md  и заполните под проект"
+echo "     ↳ секции role_bindings (роль→ваш MCP-сервер) + source_policy — нужны для deep-research"
+echo "     ↳ кастом-коннектор: добавьте сервер в .mcp.json и строку в role_bindings"
 echo "  2) Reload Window в IDE — команды появятся в чате"
 echo "  3) OKR: /okr-context-gen <quarter>   ·   БФТ: /bft-context-gen <epic>"
