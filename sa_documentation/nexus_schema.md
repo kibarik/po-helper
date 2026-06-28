@@ -1,7 +1,7 @@
 # Nexus Schema — конвенция Node для Obsidian-Нексуса (Phase 0)
 
 > Конкретная реализация столпа «Нексус» [S1] III.1 поверх Obsidian: каждая нота хранилища = **Узел (Node)** Нексуса. Метаданные — в **YAML frontmatter**. Это превращает vault в живой граф контекста (цифровой профиль продукта), который читает Кортекс (RAG) и который не гниёт в документацию (логика wilting).
-> Базируется на `AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup.md` (Node schema) и `operating-model.md` (столп 1, 4).
+> Базируется на `docs/AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup.md` (Node schema) и `operating-model.md` (столп 1, 4).
 > Принцип: **ноль галлюцинаций** — Узел без `sources` = workslop, не попадает в Нексус [S2] III.7.
 
 ---
@@ -96,7 +96,7 @@ freshness(X)    = weighted_mean( freshness_score(узел), weight=confidence )
                   где freshness_score = clamp(1 − p, 0, 1)
 ContextRipeness(X) = completeness(X) × freshness(X)
 ```
-- **Целевой порог** Context Ripeness ≥ 0.6 для перехода между шагами (см. `AI-PROCESSES/fit-points.md`).
+- **Целевой порог** Context Ripeness ≥ 0.6 для перехода между шагами (см. `docs/AI-PROCESSES/fit-points.md`).
 - Pulse-агент в начале каждого шага читает `Context Ripeness` по всем 4 Нексусам → заполняет шаблон Progress Pulse (`STEP-0-FOUNDATION/4.progress-pulse.md`).
 
 ---
@@ -144,4 +144,4 @@ tags: [pmf, fit-point]
 ```
 
 ---
-**Version:** 1.2 (v4: добавлен node_type: person для team-нексуса) · **Last updated:** 2026-06-24 · **Связанные:** [[nexus_catalog]] · [[naming_conventions]] · [[ground_schema]] · [[AI-PROCESSES/operating-model|operating-model]] · [[AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup|1.nexus-setup]]
+**Version:** 1.2 (v4: добавлен node_type: person для team-нексуса) · **Last updated:** 2026-06-24 · **Связанные:** [[nexus_catalog]] · [[naming_conventions]] · [[ground_schema]] · [[docs/AI-PROCESSES/operating-model|operating-model]] · [[docs/AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup|1.nexus-setup]]

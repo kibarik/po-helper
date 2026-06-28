@@ -12,7 +12,7 @@
 | **[S2]** | [productframework.ru/ai_product_roles](https://productframework.ru/ai_product_roles) | Трансформация роли PM в эпоху ИИ | ✅ полный |
 | **[S3]** | [productframework.ru/skill_map](https://productframework.ru/skill_map) | Карта навыков менеджера продукта | ✅ полный |
 | **[S4]** | [Профстандарт 06.012](https://profstandart.rosmintrud.ru/obshchiy-informatsionnyy-blok/natsionalnyy-reestr-professionalnykh-standartov/reestr-professionalnykh-standartov/index.php?ELEMENT_ID=50430) | Гос. стандарт «Менеджер продуктов ИТ» | ✅ полный |
-| **[S5]** | Medium / Typical Company (В. Розова) | Навыки PM | ⚠️ частично (paywall) — [разбор](../sa_documentation/sources/S5_medium.md) |
+| **[S5]** | Medium / Typical Company (В. Розова) | Навыки PM | ⚠️ частично (paywall) — [разбор](../../sa_documentation/sources/S5_medium.md) |
 | **[S6]** | [Google Sheet Product Mindset v1.2](https://docs.google.com/spreadsheets/d/1DC61vKVcPcxb2OgGZ98hKSlzM1c07YfhAywu1WFy8Eg/edit?gid=51611207) | Табличная карта навыков | ⚠️ только заголовок |
 | **[S7]** | [Miro board](https://miro.com/app/board/uXjVOs817Gs=/) | Визуальная карта | ❌ закрытая доска |
 
@@ -346,7 +346,7 @@ PAF-спринт — не единый поток, а «сезоны» (асин
 
 Документ построен на полных источниках **[S1]–[S4]**. Источник **[S5]** получен **частично** (paywall), **[S6]–[S7]** недоступны автоматическому разбору. Пересказу скрытого/недоступного содержимого по принципу zero hallucination **не подлежат**:
 
-- **[S5] Medium / Typical Company** — *«Какие навыки нужны менеджеру продукта»* (**Валерия Розова**). Получен через **Playwright** (real Chromium + Google referer, HTTP 200): заголовок, автор, публикация, вводные абзацы, дисклеймер автора. **Полный список навыков скрыт metered/member paywall** Medium и НЕ реконструируется. Детали: [`sa_documentation/sources/S5_medium.md`](../sa_documentation/sources/S5_medium.md). Известно: авторский hard&soft-skills чек-лист, регулярно обновляется (совпадает с упоминанием «Typical/Розова» в [S3]).
+- **[S5] Medium / Typical Company** — *«Какие навыки нужны менеджеру продукта»* (**Валерия Розова**). Получен через **Playwright** (real Chromium + Google referer, HTTP 200): заголовок, автор, публикация, вводные абзацы, дисклеймер автора. **Полный список навыков скрыт metered/member paywall** Medium и НЕ реконструируется. Детали: [`sa_documentation/sources/S5_medium.md`](../../sa_documentation/sources/S5_medium.md). Известно: авторский hard&soft-skills чек-лист, регулярно обновляется (совпадает с упоминанием «Typical/Розова» в [S3]).
 - **[S6] Google Sheet «[Product Mindset] Навыки менеджера продуктов v1.2»** — получен **только заголовок** (JS-рендер, ячейки не извлекаются). Табличная карта навыков (Product Mindset / Юра Агеев). Содержимое **не цитируется**.
 - **[S7] Miro board uXjVOs817Gs** — закрытая интерактивная доска (canvas требует рендер/доступ). Указана как **визуальный артефакт без пересказа**.
 

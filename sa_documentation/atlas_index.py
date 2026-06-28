@@ -221,7 +221,7 @@ def build_manifest(nodes, tasks, agents, today):
 MARK_START = "<!-- ATLAS:GENERATED:START -->"
 MARK_END = "<!-- ATLAS:GENERATED:END -->"
 
-NODE_ROOTS = ["GROUND/NEXUS", "AI-PROCESSES"]
+NODE_ROOTS = ["GROUND/NEXUS", "docs/AI-PROCESSES"]
 TASKS_DIR = "backlog/tasks"
 AGENTS_DIR = ".claude/agents"
 

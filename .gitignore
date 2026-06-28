@@ -2,8 +2,18 @@
 .claude/*.db
 .swarm/
 
+# Claude Code worktrees (on-disk scratch, never commit)
+.claude/worktrees/
+
+# Generated artifacts (regenerable — do not track)
+repomix-output.xml
+**/repomix-output.xml
+**/repomix-*.xml
+ATLAS/manifest.json
+
 # OS
 .DS_Store
+**/.DS_Store
 
 # Python
 __pycache__/
