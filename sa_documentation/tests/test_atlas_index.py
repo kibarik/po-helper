@@ -210,7 +210,7 @@ def test_write_atlas_idempotent(tmp_path):
     from sa_documentation.atlas_index import write_atlas
     import json
     today = datetime.date(2026, 6, 20)
-    _write(tmp_path / "AI-PROCESSES/om.md", NODE_OK)
+    _write(tmp_path / "docs/AI-PROCESSES/om.md", NODE_OK)
     _write(tmp_path / "ATLAS/INDEX.md", MARKED_INDEX)
     write_atlas(tmp_path, today)
     idx1 = (tmp_path / "ATLAS/INDEX.md").read_text()

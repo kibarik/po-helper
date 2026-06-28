@@ -12,7 +12,7 @@
 Репозиторий объединяет два слоя:
 
 1. **Инструменты (`.claude/`)** — исполняемые Claude-команды, навыки и агенты: пайплайны OKR, БФТ, Blueprint, контекст-брокер и операционка PAF (GROUND Vault).
-2. **Знание-база (методология)** — `AI-PROCESSES/`, `AI-TRANSFORMATION/`, `TRADITIONAL/`, `RL/`: исполняемый Product Discovery, принципы PAF, raw-раннбуки и Research Library.
+2. **Знание-база (методология)** — `docs/AI-PROCESSES/`, `docs/AI-TRANSFORMATION/`, `docs/TRADITIONAL/`, `docs/RL/`: исполняемый Product Discovery, принципы PAF, raw-раннбуки и Research Library.
 
 ---
 
@@ -185,10 +185,10 @@ GROUND/
 
 | Каталог | Что внутри |
 |:---|:---|
-| `AI-PROCESSES/` | Исполняемый StepByStep-фреймворк: 9 вех Product Discovery (Step 0…8, от Идеи до **PCF**) × движок **Product Sprint** (`PULSE → SCOUT → BUNCH → PITCH → EXECUTE → HARVEST`) + опер-модель и fit-точки (Stage-Gate по Confidence Point) |
-| `AI-TRANSFORMATION/` | Принципы построения AI-Native команды по PAF (Тихомиров С.); каждое утверждение маркировано источником `[S1]–[S7]` |
-| `TRADITIONAL/` | Raw-раннбуки классического Product Discovery (`RB-STEP-1…8`) — ground truth для AI-PROCESSES |
-| `RL/` | Research Library — заметки-исследования (рост, A/B, метрики и пр.) |
+| `docs/AI-PROCESSES/` | Исполняемый StepByStep-фреймворк: 9 вех Product Discovery (Step 0…8, от Идеи до **PCF**) × движок **Product Sprint** (`PULSE → SCOUT → BUNCH → PITCH → EXECUTE → HARVEST`) + опер-модель и fit-точки (Stage-Gate по Confidence Point) |
+| `docs/AI-TRANSFORMATION/` | Принципы построения AI-Native команды по PAF (Тихомиров С.); каждое утверждение маркировано источником `[S1]–[S7]` |
+| `docs/TRADITIONAL/` | Raw-раннбуки классического Product Discovery (`RB-STEP-1…8`) — ground truth для AI-PROCESSES |
+| `docs/RL/` | Research Library — заметки-исследования (рост, A/B, метрики и пр.) |
 | `sa_documentation/` | Схемы (`ground_schema`, `nexus_schema`, `blueprint_schema`), Python-валидаторы (`validate_ground.py`, `validate_scope_model.py`, `nexus_index.py`), `naming_conventions.md`, `nexus_catalog.md`, тесты |
 | `docs/superpowers/` | Планы, спеки и compliance-gap анализ |
 
@@ -233,10 +233,10 @@ GROUND/
 └── CORTEX.md         статичный фон знаний
 
 GROUND/               PAF Vault (контекст клиента — отслеживается в git)
-AI-PROCESSES/         9 шагов Product Discovery × Product Sprint
-AI-TRANSFORMATION/    принципы PAF [S1]–[S7]
-TRADITIONAL/          raw-раннбуки RB-STEP-1…8
-RL/                   Research Library
+docs/AI-PROCESSES/         9 шагов Product Discovery × Product Sprint
+docs/AI-TRANSFORMATION/    принципы PAF [S1]–[S7]
+docs/TRADITIONAL/          raw-раннбуки RB-STEP-1…8
+docs/RL/                   Research Library
 sa_documentation/     схемы + валидаторы (Python) + тесты
 docs/superpowers/     планы / спеки / compliance
 .mcp.json             ruflo + excalidraw
@@ -264,4 +264,4 @@ install.sh · domain-profile.template.md
 
 ## Лицензия
 
-MIT — используйте, форкайте, адаптируйте под свой домен. Методология PAF (`AI-TRANSFORMATION/`) — CC BY-SA 4.0 (Тихомиров Сергей).
+MIT — используйте, форкайте, адаптируйте под свой домен. Методология PAF (`docs/AI-TRANSFORMATION/`) — CC BY-SA 4.0 (Тихомиров Сергей).
