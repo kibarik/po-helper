@@ -1,4 +1,4 @@
-# ruflo runtime artifacts (regenerable via sa_documentation/nexus_index.py)
+# ruflo runtime artifacts
 .claude/*.db
 .swarm/
 
@@ -9,7 +9,6 @@
 repomix-output.xml
 **/repomix-output.xml
 **/repomix-*.xml
-ATLAS/manifest.json
 
 # OS
 .DS_Store
