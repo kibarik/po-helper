@@ -1,4 +1,4 @@
-# tasks.md — декомпозиция требований к AI-TRANSFORMATION/index.md
+# tasks.md — декомпозиция требований к docs/AI-TRANSFORMATION/index.md
 
 > Контекст: SA-Helper context-gen (адаптация под doc-задачу). Ground truth — 7 источников [S1]–[S7] (см. `repomix-output.xml`, `naming_conventions.md`).
 > Принцип: каждое утверждение в index.md маркируется источником. Недоступные источники [S5–S7] НЕ пересказываются по содержимому — только упоминание существования.
@@ -101,5 +101,5 @@ Ground truth: 7 источников ([S1–S4] полный, [S5–S7] недо
 План задач сформирован в sa_documentation/tasks.md (10 задач покрытия + валидация).
 Сформирован словарь проекта: sa_documentation/naming_conventions.md.
 ---
-Далее: перестройка AI-TRANSFORMATION/index.md по задачам T1–T10 → /validate-doc.
+Далее: перестройка docs/AI-TRANSFORMATION/index.md по задачам T1–T10 → /validate-doc.
 ```
