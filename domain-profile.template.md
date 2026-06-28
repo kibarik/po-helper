@@ -93,6 +93,54 @@ cortex:
   sa_store:        "CORTEX/SA/"                                  # смежные системные анализы
 ```
 
+## 4b. Привязка ролей к коннекторам (role_bindings) — для deep-research
+
+Семантический слой: какая роль-источник каким MCP-сервером из `.mcp.json` обслуживается.
+`.mcp.json` знает «есть сервер `atlassian`», но не знает, что он играет роль `jira`/`conf`.
+Эту привязку объявляем здесь. Settings (base_url/space/projects) НЕ дублируются — берутся
+из секций `tracker:`/`wiki:`/`cortex:` выше.
+
+```yaml
+role_bindings:
+  jira:    atlassian            # роль tracker; settings ← секция tracker:
+  conf:    atlassian            # роль wiki;    settings ← секция wiki:
+  code:    repowise             # свой RAG-сервер → впиши его имя (напр. my-internal-rag)
+  vault:   obsidian
+  web:     builtin              # WebSearch / WebFetch (встроенные, не из .mcp.json)
+  vision:  atlassian            # confluence_get_page_images
+  compute: [playwright, serena, bash]
+  # роль НЕ указана  =>  недоступна (её раздел pack → [НЕДОСТУПНО])
+```
+
+Кастом-коннектор с нестандартными tool-именами/якорем — развёрнутая форма:
+
+```yaml
+role_bindings:
+  code:
+    mcp:    my-internal-rag     # имя сервера из .mcp.json
+    tools:  [rag_query, rag_context]
+    anchor: symbol_id
+```
+
+Подключить новый источник (D): добавь сервер в `.mcp.json` + одну строку сюда. Скиллы не трогаются.
+
+## 4c. Минимум источников по классу (source_policy) — governance
+
+Обязательные роли для класса исследования. Deep-research сверяет `required ∩ available`;
+недостающую required-роль — warn/block (по `on_missing_required`) + явно в coverage-matrix.
+
+```yaml
+source_policy:
+  on_missing_required: warn     # warn (продолжить, флаг в pack) | block (СТОП со списком)
+  classes:
+    bft-critical:  [jira, conf] # /bft-context-gen-deep
+    bft-normal:    [jira]       # /bft-context-gen (быстрый)
+    research-deep: [jira, conf] # /po-research deep
+    research-fast: [jira]       # /po-research fast
+```
+
+Роль из `required` отсутствует в `role_bindings` или сервер не отвечает → срабатывает политика.
+
 ### BFT-дефолты
 
 ```yaml
