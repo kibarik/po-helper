@@ -33,7 +33,7 @@ Fast ≈ обобщённый `bft-context-gen`. Deep = **Phase 0 (опрос PO
 
 ## Модель (4 слоя)
 
-- **L1 Source Registry** — `resources/source-registry.md`. 7 источников, проверенные tools, finding-схема, compute-whitelist.
+- **L1 Source Registry** — `resources/source-registry.md`. 7 ролей-источников, резолв tools через role_bindings, finding-схема, compute-whitelist.
 - **L2 Broker** — fan-out researchers (multi-query sweep) → finding-объекты → merge (dedupe по anchor, rank confidence×freshness×relevance) → coverage-matrix.
 - **L3 Deep Loop** — plan→research→critic→loop-until-dry(K=2)→skeptic→synth. Только Deep.
 - **L4 Store** — `{research_workspace}/`.

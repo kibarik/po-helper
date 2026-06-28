@@ -67,7 +67,7 @@ description: Углублённый контекст-пак для БФТ — п
    Маппинг агентов на роли: A→`jira`, B→`conf`, C→`code`, D→`conf`+`code`, E→синтез (без своих tools).
 2. Роль не привязана / сервер не отвечает → **соответствующего субагента НЕ спавним**; его раздел в pack → `[НЕДОСТУПНО: роль <id> не привязана/недоступна]`. Не выдумывать факты за недоступный источник.
 3. Прочитай `source_policy`, класс = `bft-critical`. Посчитай `required ∩ available`:
-   - `on_missing_required: block` → **СТОП**: «<роль> недоступна — `bft-critical` требует [jira, conf]. Проверь `.mcp.json`/`role_bindings` или используй `/bft-context-gen` (быстрый).»
+   - `on_missing_required: block` → **СТОП**: «<роль> недоступна — `bft-critical` требует роли из source_policy.classes.bft-critical (дефолт [jira, conf]). Проверь `.mcp.json`/`role_bindings` или используй `/bft-context-gen` (быстрый).»
    - `on_missing_required: warn` → продолжай, флаг в шапке pack и в матрице покрытия.
 4. В матрице покрытия (Этап 4) добавь колонки `required?/available?/used?`.
 
@@ -199,18 +199,18 @@ description: Углублённый контекст-пак для БФТ — п
 
 | Раздел БФТ | Питающий источник | Агент | required? | available? | used? | Статус |
 |---|---|---|---|---|---|---|
-| Домен и контекст | JIRA + C1 | A + CORTEX | ✅/[УТОЧНИТЬ] |
-| As-Is (код) | repowise + {cortex.sa_store} | C | ✅/[УТОЧНИТЬ] |
-| As-Is (документация) | Confluence | B | ✅/[УТОЧНИТЬ] |
-| Стейкхолдеры | JIRA + Confluence + C1 | A + B + E | ✅/[УТОЧНИТЬ] |
-| БТ (ценность) | JIRA + Confluence ТЗ | A + B | ✅/[УТОЧНИТЬ] |
-| ПТ (story) | Confluence + ADR | B + D | ✅/[УТОЧНИТЬ] |
-| ФТ (поведение) | ADR + Confluence | D + B | ✅/[УТОЧНИТЬ] |
-| НФТ (нагрузка/SLA) | код-метрики + C1 | C | ✅/[УТОЧНИТЬ] |
-| Negative flows | код + ADR | C + D | ✅/[УТОЧНИТЬ] |
-| Риски/Compliance | C3 + Confluence | CORTEX + B | ✅/[УТОЧНИТЬ] |
-| Зависимости | C1 + JIRA + Conf | E | ✅/[УТОЧНИТЬ] |
-| Дочерние задачи | JIRA children | A | ✅/[УТОЧНИТЬ] |
+| Домен и контекст | JIRA + C1 | A + CORTEX | да | — | — | ✅/[УТОЧНИТЬ] |
+| As-Is (код) | repowise + {cortex.sa_store} | C | — | — | — | ✅/[УТОЧНИТЬ] |
+| As-Is (документация) | Confluence | B | да | — | — | ✅/[УТОЧНИТЬ] |
+| Стейкхолдеры | JIRA + Confluence + C1 | A + B + E | да | — | — | ✅/[УТОЧНИТЬ] |
+| БТ (ценность) | JIRA + Confluence ТЗ | A + B | да | — | — | ✅/[УТОЧНИТЬ] |
+| ПТ (story) | Confluence + ADR | B + D | да | — | — | ✅/[УТОЧНИТЬ] |
+| ФТ (поведение) | ADR + Confluence | D + B | да | — | — | ✅/[УТОЧНИТЬ] |
+| НФТ (нагрузка/SLA) | код-метрики + C1 | C | — | — | — | ✅/[УТОЧНИТЬ] |
+| Negative flows | код + ADR | C + D | — | — | — | ✅/[УТОЧНИТЬ] |
+| Риски/Compliance | C3 + Confluence | CORTEX + B | да | — | — | ✅/[УТОЧНИТЬ] |
+| Зависимости | C1 + JIRA + Conf | E | да | — | — | ✅/[УТОЧНИТЬ] |
+| Дочерние задачи | JIRA children | A | да | — | — | ✅/[УТОЧНИТЬ] |
 
 ### Этап 5: Сборка финального pack
 

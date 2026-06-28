@@ -109,7 +109,7 @@ role_bindings:
   web:     builtin              # WebSearch / WebFetch (встроенные, не из .mcp.json)
   vision:  atlassian            # confluence_get_page_images
   compute: [playwright, serena, bash]
-  # роль НЕ указана  =>  недоступна (её раздел pack → [НЕДОСТУПНО])
+  # роль НЕ указана  =>  недоступна (её раздел pack → [НЕДОСТУПНО: роль <id>])
 ```
 
 Кастом-коннектор с нестандартными tool-именами/якорем — развёрнутая форма:
