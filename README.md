@@ -1,30 +1,35 @@
 <p align="center">
   <strong>PO-Helper</strong><br>
-  <em>AI-Native продуктовая операционка: multi-step пайплайны для ИИ-агентов (OKR · БФТ) + онбординг PAF (GROUND Vault: Кортекс / Нексус) и методология Product Discovery от Идеи до PCF</em>
+  <em>AI-Native продуктовая операционка: multi-step пайплайны для ИИ-агентов (OKR · БФТ), онбординг PAF (GROUND Vault) и методология Product Discovery от Идеи до PCF</em>
 </p>
 
 ---
 
-> **Принцип сквозной:** структурируй известное, фиксируй неизвестное. Каждый факт ← источник (трекер / PO / wiki / roadmap / `[S1]–[S7]`). Нет источника → `[УТОЧНИТЬ]`. Нулевой допуск к галлюцинациям.
+> **Принцип сквозной:** структурируй известное, фиксируй неизвестное. Каждый факт ← источник (трекер / PO / wiki / roadmap). Нет источника → `[УТОЧНИТЬ]`. Нулевой допуск к галлюцинациям.
 >
-> Архитектура пайплайнов — зеркало [sa-helper](https://gitlab.com/boboden541/sa-helper) FNR-pipeline, адаптированное под forward-looking планирование: якорь смещён с `code:line` на трекер / решения PO / wiki / roadmap. Каждая стадия — **отдельная команда, отдельная роль, STOP-пауза для ревью**.
+> Архитектура — зеркало [sa-helper](https://gitlab.com/boboden541/sa-helper) FNR-pipeline, адаптированное под forward-looking планирование. Каждая стадия — **отдельная команда, отдельная роль, STOP-пауза для ревью**.
 
-Репозиторий объединяет два слоя:
+## 🧰 Что внутри
 
-1. **Инструменты (`.claude/`)** — исполняемые Claude-команды и навыки: пайплайны OKR, БФТ, контекст-брокер, визуализатор диаграмм и онбординг PAF (GROUND Vault).
-2. **Знание-база (методология)** — `docs/AI-PROCESSES/`, `docs/AI-TRANSFORMATION/`, `docs/TRADITIONAL/`, `docs/RL/`: исполняемый Product Discovery, принципы PAF, raw-раннбуки и Research Library.
+| Сценарий | Команды | Результат | Детально |
+|:---|:---|:---|:---|
+| **OKR** | `/okr-context-gen … /okr-deliver` (7 стадий) | Квартальный OKR (OBJ + KR + IMP) | [↓ OKR](#-okr--квартальное-планирование) |
+| **БФТ** | `/bft-context-gen … /bft-deliver` (7 стадий) | Бизнес-Функциональные Требования по эпику | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
+| **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
+| **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
+| **Онбординг** | `/paf-init`, `/paf-nexus-create` | GROUND Vault под продукт | [↓ Онбординг](#-онбординг-paf) |
 
 ---
 
-## 🧰 Пайплайны и команды
+## 📖 Теория
 
-| Пайплайн | Команды | Что генерирует |
+Инструмент построен на методологии **AI-Native Product Discovery** (PAF). Качество достигается за счёт разделения ролей, STOP-пауз human-in-the-loop, adversarial-стадий и hard gates — подробно в [«За счёт чего качество»](#-за-счёт-чего-качество).
+
+| Слой | Что внутри | Ссылка |
 |:---|:---|:---|
-| **OKR** | `/okr-context-gen → /okr-objectives → /okr-key-results → /okr-debate → /okr-enrich → /okr-validate → /okr-deliver` | Квартальный OKR (OBJ + KR + IMP + образ результата/действия + метрики/риски) |
-| **БФТ** | `/bft-context-gen → /bft-problem → /bft-concept → /bft-debate → /bft-draft → /bft-validate` (+ `/bft-deliver`, `/bft-context-gen-deep`) | Бизнес-Функциональные Требования по эпику |
-| **Контекст** | `/po-research` | Контекст-пак уровня Deep Research по топику (sprint/epic/risk/decision/bft) |
-| **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат |
-| **Онбординг PAF** | `/paf-init`, `/paf-nexus-create` | GROUND Vault: config + каталог Нексусов под продукт |
+| Процесс | 9 вех Product Discovery (Step 0…8) × движок Product Sprint | [docs/AI-PROCESSES](docs/AI-PROCESSES/README.md) |
+| Принципы | AI-Native команда по PAF, источники `[S1]–[S7]` | [docs/AI-TRANSFORMATION](docs/AI-TRANSFORMATION/index.md) |
+| Первоисточники | Raw-раннбуки `RB-STEP-1…8` + Research Library | [docs/README](docs/README.md) |
 
 ---
 
@@ -35,189 +40,146 @@
 curl -ksSL https://raw.githubusercontent.com/kibarik/po-helper/main/install.sh | bash
 ```
 
-Или из клона:
-- `bash install.sh` — установка (существующие файлы не трогаются)
-- `bash install.sh --update` — обновление generic-слоя (framework-файлы перезаписываются)
+| Команда | Что делает |
+|:---|:---|
+| `bash install.sh` | Установка (существующие файлы не трогаются) |
+| `bash install.sh --update` | Обновление generic-слоя (framework-файлы перезаписываются) |
 
-В любом режиме `.claude/domain-profile.md` проекта и доменные данные (`GROUND/`) **не трогаются** — обновляется только фреймворк.
-
-### Доменный профиль (адаптация под проект)
-
-po-helper — generic-фреймворк. Предметная область выносится в **доменный профиль**:
+Доменный профиль и данные (`GROUND/`) при обновлении **не трогаются**. po-helper — generic-каркас; предметная область выносится в доменный профиль:
 
 ```bash
 cp .claude/domain-profile.template.md .claude/domain-profile.md
-# заполнить: пути планирования, команды, трекер, wiki, глоссарий, стейкхолдеры
+# заполнить: пути планирования, трекер, wiki, глоссарий, стейкхолдеры
 ```
 
-Команды читают профиль и подставляют пути (`{planning_root}`, `{okr_workspace}`, `<workspace>`…) и доменные термины. Примеры в навыках (`examples/`) — иллюстративные; универсальна структура, а не домен.
+> **MCP `ruflo`** (опционально, память для онбординга) — глобальный CLI: `npm i -g ruflo@latest` (нужна ≥ 3.14.4). Коробка работает и без него.
 
-### MCP-серверы (`.mcp.json`)
-
-| Сервер | Назначение |
-|:---|:---|
-| `ruflo` | Память (RAG-дедуп/индексация Нексусов при онбординге). Опционально — коробка работает и без него. Требуется **ruflo ≥ 3.14.4** |
-
-`ruflo` — глобальный CLI (npm), а не часть репозитория. Установка/обновление до требуемой версии:
-
-```bash
-npm install -g ruflo@latest   # либо ruflo@3.14.4 для фиксированной версии
-ruflo --version               # проверка: должно быть ≥ 3.14.4
-```
+Подробнее — [install.sh](install.sh) · [domain-profile.template.md](domain-profile.template.md).
 
 ---
 
-## 📊 OKR — квартальное планирование
+## 🌱 Онбординг PAF
 
-**7 стадий, каждая = отдельный запуск + STOP-пауза:**
+Создаёт **GROUND Vault** — персонализированный продуктовый контекст (Кортекс → Нексус → продуктовый процесс), который питает стадии `*-context-gen`.
 
-| Стадия | Команда | Роль | Артефакт |
-|:---|:---|:---|:---|
-| Контекст | `/okr-context-gen` | Context Builder | `context-pack.md` |
-| Цели | `/okr-objectives` | Strategy Analyst (3-5 OBJ) | `objectives.md` |
-| Key Results | `/okr-key-results` | KR Designer (KR + IMP) | `key-results.md` |
-| Дебаты | `/okr-debate` | Devil's Advocate (SMART, 3 раунда) | вердикт в `key-results.md` |
-| Обогащение | `/okr-enrich` | PO + Architect (образ действия + метрики) | `enriched-okr.md` |
-| Валидация | `/okr-validate` | Validator (12 hard gates + Светофор) | `validation.md` |
-| Отгрузка | `/okr-deliver` | Deliverer (публикация в roadmap/INDEX/KR-EPIC-MAP) | финальный OKR |
+```mermaid
+flowchart LR
+    A["git clone"] --> B["/paf-init"]
+    B -->|"config + скелет + дефолтные Нексусы"| C["GROUND Vault"]
+    C -.->|"опц."| D["/paf-nexus-create"]
+    D -->|"кастомные Нексусы: sellers, buyers, team…"| C
+    style B fill:#4a9eff,color:#fff
+    style D fill:#ffd43b,color:#000
+    style C fill:#51cf66,color:#fff
+```
 
-Итоговый артефакт — таблица `OBJ | KR | IMP | Название | Образ результата | Образ действия | Метрики&риски&зависимости` с тегами `[RESEARCH]/[POC]/[BUG]/[ACTIVITY]`, IMP-шкалой 1–9 и БЫЛО→СТАЛО для технических KR.
+| Команда | Когда | Результат |
+|:---|:---|:---|
+| `/paf-init` | один раз после `git clone` | `config.yaml` + скелет GROUND + дефолтный каталог Нексусов |
+| `/paf-nexus-create` | по необходимости | кастомные Нексусы (`sellers`, `buyers`, `team`…) + запись в реестр |
+
+Схемы и валидатор Vault — [sa_documentation/](sa_documentation/) (`ground_schema`, `nexus_schema`, `nexus_catalog`, `validate_ground.py`).
 
 ---
 
-## 📊 БФТ — Бизнес-Функциональные Требования (multi-step, как sa-helper)
+## 🎯 OKR — квартальное планирование
+
+7 стадий, каждая = отдельный запуск + STOP-пауза. Передавай результат стадии дальше после ревью.
+
+```mermaid
+flowchart LR
+    A["/okr-context-gen"] --> B["/okr-objectives"] --> C["/okr-key-results"]
+    C --> D["/okr-debate"] --> E["/okr-enrich"] --> F["/okr-validate"] --> G(("/okr-deliver"))
+    style A fill:#4a9eff,color:#fff
+    style D fill:#ff6b6b,color:#fff
+    style F fill:#ff6b6b,color:#fff
+    style G fill:#51cf66,color:#fff
+```
+
+| Стадия | Команда | Роль |
+|:---|:---|:---|
+| Контекст → Цели → KR | `/okr-context-gen` · `/okr-objectives` · `/okr-key-results` | Context Builder · Strategy Analyst · KR Designer |
+| Дебаты → Обогащение | `/okr-debate` · `/okr-enrich` | Devil's Advocate (3 раунда) · PO + Architect |
+| Валидация → Отгрузка | `/okr-validate` (12 gates) · `/okr-deliver` | Validator · Deliverer (roadmap/INDEX) |
+
+Итог — таблица `OBJ \| KR \| IMP \| Образ результата \| Образ действия \| Метрики&риски` с IMP-шкалой 1–9. Детально — [okr-planner/SKILL.md](.claude/skills/okr-planner/SKILL.md).
+
+---
+
+## 📋 БФТ — Бизнес-Функциональные Требования
+
+Навык **`bft-writer`**: один эпик трекера → готовый документ БТ/ПТ/ИТ/ФТ/НФТ. Не «генерация за один промт», а конвейер из 7 команд со STOP-паузой после каждой.
 
 ```mermaid
 flowchart TD
-    A["/bft-context-gen"] -->|"context-pack"| B["/bft-problem"]
-    B -->|"problem.md"| C["/bft-concept"]
-    C -->|"concept.md · 2-3 концепта"| D["/bft-debate"]
-    D -->|"вердикт в concept.md"| E{Вердикт?}
-
+    A["/bft-context-gen"] --> B["/bft-problem"] --> C["/bft-concept"] --> D["/bft-debate"]
+    D --> E{Вердикт?}
     E -->|"Принят"| F["/bft-draft"]
     E -->|"Забраковано"| C
-
-    F -->|"<epic>.md"| G["/bft-validate"]
+    F --> G["/bft-validate"]
     G -->|"🟢/🟡"| H(("/bft-deliver"))
-    G -->|"🔴 нарушен gate"| F
-
+    G -->|"🔴 gate"| F
     style A fill:#4a9eff,color:#fff
-    style B fill:#ffd43b,color:#000
-    style C fill:#ffd43b,color:#000
     style D fill:#ffd43b,color:#000
-    style F fill:#ffd43b,color:#000
     style G fill:#ff6b6b,color:#fff
     style H fill:#51cf66,color:#fff
 ```
 
-**Стадии, каждая = отдельный запуск + STOP-пауза:**
+**Рабочий цикл по эпику** (пример: код БФТ `EPIC-10`, эпик трекера `PROJ-101`):
 
-| Стадия | Команда | Роль | Артефакт |
-|:---|:---|:---|:---|
-| Контекст | `/bft-context-gen` (быстрый) · `/bft-context-gen-deep` (полный) | Context Builder (Кортексы + Нексусы) | `artefacts/bft-context-pack.md` |
-| Проблема | `/bft-problem` | Problem Analyst (диагноз, без решения) | `artefacts/problem.md` |
-| Концепты | `/bft-concept` | Solution Designer (2-3 варианта) | `artefacts/concept.md` |
-| Дебаты | `/bft-debate` | Architect vs Devil's Advocate | вердикт в `artefacts/concept.md` |
-| Требования | `/bft-draft` | Requirements Writer | `<epic>.md` (финальный БФТ) |
-| Валидация | `/bft-validate` | Validator (15 hard gates + Светофор) | `artefacts/validation.md` |
-| Отгрузка | `/bft-deliver` | Deliverer (JIRA Эпик + Confluence + связи) | `delivery.md` |
+| Шаг | Команда | Что на STOP-паузе |
+|:--|:--|:--|
+| 1. Контекст | `/bft-context-gen EPIC-10 PROJ-101` | Дозаполни `[УТОЧНИТЬ]`; незнакомый эпик → `/bft-context-gen-deep` |
+| 2. Проблема | `/bft-problem EPIC-10` | Проверь: это диагноз, не решение |
+| 3. Концепты | `/bft-concept EPIC-10` | Сравни 2-3 варианта |
+| 4. Дебаты | `/bft-debate EPIC-10` | Забраковано → шаг 3; Принят → дальше |
+| 5. Черновик | `/bft-draft EPIC-10` | Появляется `<epic>.md`; вычитай типы/НФТ/границы |
+| 6. Валидация | `/bft-validate EPIC-10` | 🔴 → шаг 5; 🟢/🟡 → готов к ревью |
+| 7. Отгрузка | `/bft-deliver EPIC-10` | Сухой прогон → ок PO → JIRA + 2×Confluence |
 
-**Раскладка эпика:** финальный БФТ — в корне `<workspace>/<epic>/<epic>.md`; промежуточные артефакты — в `<workspace>/<epic>/artefacts/`.
-
-**Циклы:** дебаты забракованы → `/bft-concept`; валидация 🔴 → `/bft-draft`.
-
----
-
-## 🖼️ Визуализация — `/diagram-view`
-
-Берёт PlantUML-исходник (например, sequence-диаграмму из БФТ) и рендерит его inline-SVG в чат. Помощник для целей 3/4 — посмотреть диаграмму прямо в обсуждении, без внешних инструментов.
-
----
-
-## 🌱 PAF — онбординг AI-Native команды (GROUND Vault)
-
-**GROUND Vault** — персонализированный продуктовый контекст: Кортекс цифровизует контекст продукта в насыщенный **Нексус** (граф узлов знаний), вокруг которого крутится продуктовый процесс по PAF.
-
-**Онбординг:**
-1. `/paf-init` — `config.yaml` + скелет GROUND + дефолтный каталог Нексусов (one-shot после `git clone`).
-2. `/paf-nexus-create` *(опц.)* — кастомные Нексусы под продукт (`sellers`, `buyers`, …) и каталожные типы: `team` (People Graph, засев из `team.roster`), `ops-model`, `company`.
-
-**Структура Vault:**
-```
-GROUND/
-├── config.yaml          ← конфиг клиента (создаётся /paf-init)
-├── _intake/             ← документы для онбординга
-├── NEXUS/               ← узлы знаний (market / customer / product / growth / team)
-│   ├── _index.md        ← MOC всех Нексусов
-│   └── _registry.yaml   ← реестр Нексусов (дефолт + кастом)
-├── PULSE/               ← Progress Pulse (динамика продукта)
-├── BUNCH/               ← Банчи (связки инициатив/экспериментов)
-└── RESULTS/             ← Harvesting (урожай: результаты и инсайты)
-```
-
-**Схемы и валидатор** (`sa_documentation/`): `ground_schema.md`, `nexus_schema.md`, `nexus_catalog.md` (каталог типов Нексусов + `seed_questions`), `naming_conventions.md` (термины PAF), `validate_ground.py` (валидатор GROUND Vault) + тесты.
-
----
-
-## 📚 Методология (знание-база)
-
-| Каталог | Что внутри |
-|:---|:---|
-| `docs/AI-PROCESSES/` | Исполняемый StepByStep-фреймворк: 9 вех Product Discovery (Step 0…8, от Идеи до **PCF**) × движок **Product Sprint** (`PULSE → SCOUT → BUNCH → PITCH → EXECUTE → HARVEST`) + опер-модель и fit-точки (Stage-Gate по Confidence Point) |
-| `docs/AI-TRANSFORMATION/` | Принципы построения AI-Native команды по PAF (Тихомиров С.); каждое утверждение маркировано источником `[S1]–[S7]` |
-| `docs/TRADITIONAL/` | Raw-раннбуки классического Product Discovery (`RB-STEP-1…8`) — ground truth для AI-PROCESSES |
-| `docs/RL/` | Research Library — заметки-исследования (рост, A/B, метрики и пр.) |
-| `sa_documentation/` | Схемы онбординга (`ground_schema`, `nexus_schema`, `nexus_catalog`, `naming_conventions`) + валидатор `validate_ground.py` + тесты |
-| `docs/superpowers/` | Планы, спеки и compliance-gap анализ |
+**Раскладка:** финальный БФТ — `<workspace>/<epic>/<epic>.md`; промежуточные артефакты — `<workspace>/<epic>/artefacts/`. Везде передавай один и тот же `<epic_code>`. Детально — [bft-writer/SKILL.md](.claude/skills/bft-writer/SKILL.md).
 
 ---
 
 ## 🧠 За счёт чего качество
 
-| # | Механизм | Что даёт |
-|:--|:--------|:---------|
-| 1 | **Разные роли = разные «мозги»** | Нет смешения «диагноз+решение+требование» |
-| 2 | **STOP-паузы human-in-the-loop** | PO ревьюит между стадиями, ловит ошибки рано |
-| 3 | **Adversarial отдельным запуском** (`/bft-debate`, `pitching-opponent`) | Ломает confirmation bias — другой агент критикует |
-| 4 | **Concept-стадия** (2-3 варианта) | Не фиксируем первый пришедший вариант |
-| 5 | **Hard Gates** (БФТ — 15 🔴, OKR — 12 🔴) | Валидация = pass/fail, не «постарайся» |
-| 6 | **Self-валидация «Светофор»** (🟢/🟡/🔴) | Многопроходная проверка свежим взглядом |
-| 7 | **Anchor Ranks** (R1 код As-Is / R2 трекер-wiki-BR-ADR / R3 PO) | Нулевой допуск к галлюцинациям; код-якорь — только для As-Is |
-| 8 | **CATWOE** (W→БТ, O→Ревью, E→НФТ) | Структурирует ценность/владельца/ограничения |
-| 9 | **Rich picture + worldviews** (SSM) | Конкурирующие взгляды в напряжении, не схлопываются |
-| 10 | **Type-distinction gate** (ПТ≠ФТ≠НФТ) | Ловит частую ошибку смешения типов |
-| 11 | **Реестр замечаний ревью** (`review_feedback.md`, гейт 15) | Lessons Learned — одну ошибку не повторять дважды |
-| 12 | **Confidence Point + ripeness** | Stage-Gate по доверию; протухший контекст подсвечивается |
-| 13 | **Артефакты-передачи** | Каждый шаг проверяем, откатываем, переиспользуем |
+| Механизм | Что даёт |
+|:--|:--|
+| **Разные роли = разные «мозги»** | Нет смешения «диагноз + решение + требование» |
+| **STOP-паузы human-in-the-loop** | PO ревьюит между стадиями, ловит ошибки рано |
+| **Adversarial отдельным запуском** | Ломает confirmation bias — другой агент критикует |
+| **Concept-стадия (2-3 варианта)** | Не фиксируем первый пришедший вариант |
+| **Hard Gates** (БФТ — 15, OKR — 12) | Валидация = pass/fail, не «постарайся» |
+| **Светофор 🟢/🟡/🔴** | Многопроходная самопроверка свежим взглядом |
+| **Anchor Ranks** (R1 код / R2 трекер-wiki / R3 PO) | Нулевой допуск к галлюцинациям |
+| **Артефакты-передачи** | Каждый шаг проверяем, откатываем, переиспользуем |
 
-> ⚠️ **Главное:** НЕ генерируй документ за один промт. STOP после каждой стадии. Только так pipeline эквивалентен sa-helper по качеству.
+> ⚠️ **Главное:** НЕ генерируй документ за один промт. STOP после каждой стадии — только так pipeline эквивалентен sa-helper по качеству.
 
 ---
 
-## 📂 Структура
+## ❓ FAQ
 
-```
-.claude/
-├── commands/         bft-* (8), okr-* (7), po-research
-├── skills/
-│   ├── bft-writer/         роли + pipeline + принципы; resources/ (hard_gates 15 🔴, anchor_rules, bft_standards, catwoe, debate_rules, review_feedback, writing_style); examples/ (ideal_bft, golden_bft_example)
-│   ├── okr-planner/         OKR-стандарты + hard_gates + ideal_okr
-│   ├── po-research/         контекст-брокер (domains, source-registry, pack-template)
-│   ├── diagram-view/        рендер PlantUML inline
-│   ├── paf-init/            настройка GROUND Vault
-│   └── paf-nexus-create/    кастомные Нексусы
-└── workflows/        po-context-research.js
+**Это инструмент конкретной компании?**
+Нет. po-helper — настраиваемый каркас для любого PO. Домен выносится в `.claude/domain-profile.md`; примеры в навыках иллюстративны.
 
-GROUND/               PAF Vault (контекст клиента — отслеживается в git)
-docs/AI-PROCESSES/         9 шагов Product Discovery × Product Sprint
-docs/AI-TRANSFORMATION/    принципы PAF [S1]–[S7]
-docs/TRADITIONAL/          raw-раннбуки RB-STEP-1…8
-docs/RL/                   Research Library
-sa_documentation/     схемы онбординга + валидатор GROUND + тесты
-docs/superpowers/     планы / спеки / compliance
-.mcp.json             ruflo
-install.sh · domain-profile.template.md
-```
+**С чего начать?**
+`install.sh` → заполни `domain-profile.md` → `/paf-init` для контекста → первый `/okr-*` или `/bft-*` пайплайн.
+
+**Обязателен ли онбординг PAF?**
+Нет, но без GROUND Vault стадии `*-context-gen` работают на общих эвристиках, а не на реальном контексте продукта.
+
+**Можно прогнать весь пайплайн за один промт?**
+Нет — это убивает качество. Каждая стадия = отдельный запуск + ревью PO. В этом вся суть.
+
+**Что если дебаты забраковали концепт / валидация дала 🔴?**
+Возврат назад с тем же кодом эпика: дебаты → `/bft-concept`, валидация 🔴 → `/bft-draft`. Артефакты сохраняются. Циклы — норма.
+
+**Быстрый или глубокий контекст для БФТ?**
+`/bft-context-gen` — домен знаком, нужно быстро. `/bft-context-gen-deep` — новый эпик, много зависимостей, нужна доказательная база без дыр.
+
+**Нужен ли `ruflo`?**
+Нет, опционально (память при онбординге). Коробка работает и без MCP.
 
 ---
 
@@ -226,11 +188,8 @@ install.sh · domain-profile.template.md
 | sa-helper (reverse-engineering) | po-helper (forward-looking) |
 |:---|:---|
 | `/context-gen` → repomix (код) | `/bft-context-gen` → Кортексы + Нексусы |
-| `/fnr-new-task` → task.md | `/bft-problem` → problem.md |
 | `/fnr-concept` → concept.md | `/bft-concept` → concept.md |
-| `/fnr-debate` → вердикт | `/bft-debate` → вердикт |
 | `/fnr-system-requirements` → BR/FR/NFR | `/bft-draft` → БТ/ПТ/ИТ/ФТ/НФТ |
-| `/validate-doc` → аудит | `/bft-validate` → Светофор |
 | якорь `code:line` | якорь трекер/PO/wiki/roadmap |
 
 Механика качества идентична; отличается источник «якорей истины».
