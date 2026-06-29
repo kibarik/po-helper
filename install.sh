@@ -64,12 +64,13 @@ echo "→ Целевой корень: $DEST_ROOT"
 mkdir -p "$DEST_SKILLS" "$DEST_COMMANDS" "$DEST_WORKFLOWS"
 
 # Навыки фреймворка (каждый — каталог с SKILL.md + resources + examples)
-SKILLS=(bft-writer okr-planner po-research)
+SKILLS=(bft-writer okr-planner sprint-planner po-research)
 
 # Команды фреймворка
 COMMANDS=(
   bft-context-gen bft-context-gen-deep bft-problem bft-concept bft-debate bft-draft bft-validate bft-deliver
   okr-context-gen okr-objectives okr-key-results okr-debate okr-enrich okr-validate okr-deliver
+  sprint-roadmap sprint-sync sprint-goal sprint-decompose sprint-load sprint-deliver
   po-research
 )
 
@@ -144,9 +145,9 @@ fi
 echo ""
 echo "✅ po-helper $MODE завершён в $DEST_ROOT"
 echo "   Навыки:  ${SKILLS[*]}"
-echo "   Пайплайны: /bft-* (БФТ)  ·  /okr-* (квартальный OKR)  ·  /po-research (контекст)"
+echo "   Пайплайны: /bft-* (БФТ)  ·  /okr-* (квартальный OKR)  ·  /sprint-* (планирование спринта)  ·  /po-research (контекст)"
 echo ""
 echo "Дальше:"
 echo "  1) cp $DEST_ROOT/domain-profile.template.md $DEST_ROOT/domain-profile.md  и заполните под проект"
 echo "  2) Reload Window в IDE — команды появятся в чате"
-echo "  3) OKR: /okr-context-gen <quarter>   ·   БФТ: /bft-context-gen <epic>"
+echo "  3) OKR: /okr-context-gen <quarter>   ·   БФТ: /bft-context-gen <epic>   ·   Спринт: /sprint-roadmap <quarter> → /sprint-sync <sprint>"

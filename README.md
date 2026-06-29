@@ -14,6 +14,7 @@
 | Сценарий | Команды | Результат | Детально |
 |:---|:---|:---|:---|
 | **OKR** | `/okr-context-gen … /okr-deliver` (7 стадий) | Квартальный OKR (OBJ + KR + IMP) | [↓ OKR](#-okr--квартальное-планирование) |
+| **Спринт** | `/sprint-roadmap` · `/sprint-sync … /sprint-deliver` | Roadmap KR×спринт + детальный план спринта (Sprint Goal + capacity + N+1) | [SKILL](.claude/skills/sprint-planner/SKILL.md) |
 | **БФТ** | `/bft-context-gen … /bft-deliver` (7 стадий) | Бизнес-Функциональные Требования по эпику | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
