@@ -16,6 +16,7 @@
 | **OKR** | `/okr-context-gen … /okr-deliver` (7 стадий) | Квартальный OKR (OBJ + KR + IMP) | [↓ OKR](#-okr--квартальное-планирование) |
 | **Спринт** | `/sprint-roadmap` · `/sprint-sync … /sprint-deliver` | Roadmap KR×спринт + детальный план спринта (Sprint Goal + capacity + N+1) | [SKILL](.claude/skills/sprint-planner/SKILL.md) |
 | **БФТ** | `/bft-context-gen … /bft-deliver` (7 стадий) | Бизнес-Функциональные Требования по эпику | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
+| **Внешние запросы** | `/req-context … /req-handoff` (7 стадий) | Скоринг внешнего запроса → SMART-задача + routing (front door перед БФТ) | [SKILL](.claude/skills/request-intake/SKILL.md) |
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
