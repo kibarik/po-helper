@@ -34,6 +34,10 @@ paths:
   bft_store:        "bft_documentation"
   # Рабочая папка пайплайна po-research (контекст-паки)
   research_workspace: "CORTEX/_context-packs/{domain}/{topic}"
+  # Рабочая папка релиза (baseline/change-log/ledger/status). {release} — подстановка
+  release_workspace:   "CORTEX/_releases/{release}"
+  # Папка алертов о дрейфе (плоская, общая на проект)
+  release_alerts_root: "CORTEX/release-alerts"
 ```
 
 Если у проекта нет какого-то документа (например `KR-EPIC-MAP`) — оставьте путь, команда при отсутствии файла предложит его создать (bootstrap), не выдумывая содержимое.
@@ -137,6 +141,24 @@ cadence:
   sprint_weeks:   2
   current_quarter: "2026Q3"
 ```
+
+---
+
+## 8. Релиз-дефолты (release) — для навыка release-guard
+
+Параметры мониторинга дрейфа объёма. Используются командами `/release-*`.
+
+```yaml
+release:
+  drift_threshold_sprints: 2          # дрейф ≥ этого → 🔴 алерт
+  staleness_n:             2          # пропущенных синков без актуализации → зона риска
+  estimate_unit:           "sprint"   # sprint | story_point | dev_day
+  sprint_capacity:         1          # единиц estimate_unit = 1 спринт (для story_point = velocity)
+  sync_period_days:        14         # период синка (по умолчанию = sprint_weeks × 7)
+  # источник «факта» по требованиям — трекер-эпик + дочерние (секция tracker выше)
+```
+
+Период `/release-sync` на cron должен совпадать с `sync_period_days` (один синк ≈ один спринт). Реже — staleness ловится с запозданием; чаще — лишний шум.
 
 ---
 
