@@ -8,7 +8,7 @@ description: 'Валидация черновика БФТ — hard gates + Св
 /bft-validate <epic_code>
 ```
 
-Вход: финальный БФТ `<workspace>/<epic>/<epic>.md` (из `/bft-draft`). Выход: отчёт `artefacts/validation.md` + правки БФТ.
+Вход: финальный БФТ `bft_documentation/<epic>/<epic>.md` (из `/bft-draft`). Выход: отчёт `artefacts/validation.md` + правки БФТ.
 
 ## Важно
 
@@ -68,7 +68,7 @@ description: 'Валидация черновика БФТ — hard gates + Св
 Таблица по слоям (Структура / Границы / Высота БФТ / Трассировка / НФТ / Negative flows / Критерии успеха / Открытые вопросы/Якоря / Риски-зависимости / Стиль и голос / Замечания ревью / Шаблон) → 🟢/🟡/🔴 с доказательством и «что исправить».
 
 ### Этап 5: Маршрут
-- Сохрани `<workspace>/<epic>/artefacts/validation.md`.
+- Сохрани `bft_documentation/<epic>/artefacts/validation.md`.
 - **Если есть 🔴:** внеси правки в БФТ ИЛИ выведи:
   ```
   🔴 Найдены нарушения Hard Gates: <список>.
@@ -76,9 +76,9 @@ description: 'Валидация черновика БФТ — hard gates + Св
   ```
 - **Если 🟢/🟡 только — выведи РОВНО это (финал пайплайна), ничего сверх:**
   ```
-  Файл БФТ: <workspace>/<epic>/<epic>.md
+  Файл БФТ: bft_documentation/<epic>/<epic>.md
 
-  Артефакты — <workspace>/<epic>/artefacts/:
+  Артефакты — bft_documentation/<epic>/artefacts/:
   | Файл | Стадия |
   |---|---|
   | bft-context-pack.md | контекст |
