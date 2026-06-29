@@ -34,6 +34,8 @@ paths:
   sprint_workspace: "CORTEX/_context-packs/sprint/{sprint}"
   # Рабочая папка пайплайна OKR (промежуточные артефакты стадий)
   okr_workspace:    "CORTEX/_context-packs/okr/{quarter}"
+  # Корень груминга OKR Фазы 2 (1 степ = 1 KR: SMART-якорь + US-декомпозиция + вопросы)
+  okr_grooming_root: "{okr_workspace}/grooming"
   # Рабочая папка пайплайна BFT (папка конкретного БФТ: финальный <epic>.md + artefacts/)
   bft_workspace:    "bft_documentation/{epic}"
   # Корень всех БФТ (готовые документы + золотые референсы)
@@ -59,6 +61,8 @@ teams:
   - { code: "TEAM-A", name: "Команда A", domain: "что делает" }   # пример
 # роли-теги в образе действия (стадия /okr-enrich, /bft-draft):
 role_tags: ["BA", "SA", "BE", "FE", "QA", "RELEASE", "ADR", "PO"]
+# модификатор [EXT] = шаг исполняет внешняя команда (напр. [BE][EXT], [FE][EXT])
+# Фаза 2 (груминг): префиксы вопросов исследования по ответственной роли — ADR# / SA# / BA# / DEL#
 ```
 
 ---
