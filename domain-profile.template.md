@@ -26,6 +26,12 @@ paths:
   kr_epic_map_doc:  "{planning_root}/KR-EPIC-MAP.md"
   # Финальный артефакт OKR
   okr_output_doc:   "{planning_root}/OKR-{quarter}.md"
+  # Roadmap по спринтам на квартал (матрица KR × спринт; rolling)
+  sprint_roadmap_doc: "{planning_root}/SPRINT-ROADMAP-{quarter}.md"
+  # Финальный план спринта (для обсуждения с командой)
+  sprint_output_doc: "{execution_root}/{sprint}/ПЛАН-{sprint}.md"
+  # Рабочая папка пайплайна спринта (промежуточные артефакты стадий)
+  sprint_workspace: "CORTEX/_context-packs/sprint/{sprint}"
   # Рабочая папка пайплайна OKR (промежуточные артефакты стадий)
   okr_workspace:    "CORTEX/_context-packs/okr/{quarter}"
   # Рабочая папка пайплайна BFT (папка конкретного БФТ: финальный <epic>.md + artefacts/)
@@ -139,8 +145,28 @@ cadence:
   quarter_format: "{ГГГГ}Q{N}"         # как именуется квартал
   sprint_format:  "{ГГГГ}Q{N}-S{P}"    # как именуется спринт
   sprint_weeks:   2
+  sprints_per_quarter: 6               # сколько спринтов в квартале (для /sprint-roadmap)
   current_quarter: "2026Q3"
 ```
+
+---
+
+## 7a. Ёмкость команды (capacity) — для пайплайна спринта
+
+Как считается «максимальная загрузка каждого» в `/sprint-load` и `/sprint-roadmap`. Состав команды — из `GROUND/NEXUS/team/*` (person-узлы); ёмкости — отсюда. Отпуска/недоступность PO подтверждает в `/sprint-sync`.
+
+```yaml
+capacity:
+  roster_source:      "GROUND/NEXUS/team"   # каталог person-узлов (источник ростера и ролей)
+  focus_factor:       0.7                    # доля времени на плановую работу (Scrum: 0.6–0.8)
+  sp_per_person_sprint: 8                    # дефолтная ёмкость, если нет истории velocity
+  underload_threshold:  0.7                  # < этого порога ёмкости → 🟡 недогруз (добрать)
+  # velocity по человеку (SP/спринт) — если ведётся история; иначе sp_per_person_sprint
+  velocity:
+    - { person: "team-lastname-firstname", sp: 8 }   # пример (node_id из NEXUS/team)
+```
+
+Поля пустые → команда работает на дефолтах (`focus_factor: 0.7`, `sp_per_person_sprint`) и помечает оценки `[УТОЧНИТЬ velocity]`.
 
 ---
 
