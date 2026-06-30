@@ -20,6 +20,7 @@
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
+| **Карта людей** | `/people-map` | Навигатор PO по People Graph: кто ближе/дальше, кто с чем приходит, у кого уточнить, кто согласовывает | [SKILL](.claude/skills/people-map/SKILL.md) |
 | **Онбординг** | `/paf-init`, `/paf-nexus-create` | GROUND Vault под продукт | [↓ Онбординг](#-онбординг-paf) |
 
 ---
@@ -80,6 +81,8 @@ flowchart LR
 |:---|:---|:---|
 | `/paf-init` | один раз после `git clone` | `config.yaml` + скелет GROUND + дефолтный каталог Нексусов |
 | `/paf-nexus-create` | по необходимости | кастомные Нексусы (`sellers`, `buyers`, `team`…) + запись в реестр |
+
+Нексус `team` — **People Graph**: люди в пяти слоях (org chart · social · group по командам · expertise · **PO navigation**). PO-слой (`proximity`/`inbound_topics`/`clarify_with`/`approves`) наполняется в онбординге и питает навигатор **`/people-map`** — «кто ближе/дальше, кто с чем приходит, у кого уточнить детали, кто согласовывает».
 
 Схемы и валидатор Vault — [sa_documentation/](sa_documentation/) (`ground_schema`, `nexus_schema`, `nexus_catalog`, `validate_ground.py`).
 

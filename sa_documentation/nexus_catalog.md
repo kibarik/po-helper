@@ -24,7 +24,7 @@ PAF (https://productframework.ru/ops/main, Тихомиров С., CC BY-SA 4.0)
 | `growth` | Нексус системы роста | каналы, модель монетизации, AI-COGS | Growth Engineer | 5, 6, 8 | ✅ | Каналы дистрибуции/роста? Модель монетизации? AI-COGS (составляющая затрат ИИ)? Рычаги (Lever) роста NPV? |
 | `ops-model` | Нексус операционной модели | операционная модель, кадренсы, эффект асинхронности | Product Ops / Product Architect | — | ❌ | — |
 | `company` | Нексус портфеля/компании | портфель продуктов, бизнес-юниты (Business Pod) | Portfolio Manager / Bizdev Architect | — | ❌ | — |
-| `team` | Нексус организационной структуры | персоны, роли, зоны влияния/ответственности, связи, экспертиза — People Graph для ИИ-навигации | Product Ops / Portfolio Manager | — | ❌ | ФИО и должности ключевых людей? Зоны ответственности каждого? Кто с кем взаимодействует по рабочим вопросам? По каким вопросам к кому обращаться? |
+| `team` | Нексус организационной структуры | персоны, роли, зоны влияния, связи, экспертиза, группировка по командам + **PO navigation** (proximity/inbound/clarify/approve) — People Graph для ИИ-навигации (`/people-map`) | Product Ops / Portfolio Manager | — | ❌ | ФИО и должности? Зоны ответственности? Группировка по командам и их миссии? Кто с кем взаимодействует? Как PO взаимодействует с каждым: кто ближе/дальше, кто с чем приходит, у кого уточнять, кто согласовывает? |
 
 > `minimal: true` — входит в дефолтный набор, инстанцируется `/paf-init`. `minimal: false` — опциональные PAF-типы, клиент подключается по необходимости (PAF определяет 6 типов: 4 минимальных + `ops-model` + `company`).
 
@@ -128,19 +128,32 @@ name: Нексус организационной структуры
 purpose: >
   People Graph организации. Каждый Узел = один человек (node_type: person).
   Даёт ИИ-агенту структурированное представление кто, на какой роли работает,
-  по каким вопросам полезен, с кем взаимодействует, каким контекстом обладает.
-  Граф формирует три слоя: org chart (reports_to/manages),
-  social graph (collaborates_with), expertise graph (expertise_topics/contact_for).
+  по каким вопросам полезен, с кем взаимодействует, каким контекстом обладает,
+  и — главное — как PO взаимодействует с этим человеком (карта навигации).
+  Граф формирует пять слоёв: org chart (reports_to/manages),
+  social graph (collaborates_with), expertise graph (expertise_topics/contact_for),
+  team grouping (team_unit/team_role), PO navigation (proximity/inbound_topics/
+  clarify_with/approves) — PO-центричные рёбра «я-как-PO ↔ человек».
 owner_role: "Product Ops / Portfolio Manager"
 paf_step_ref: null
 minimal: false
 seed_questions:
+  # Идентичность и org chart
   - Полное ФИО и должность каждого ключевого человека?
   - Какие зоны ответственности и принятия решений у каждого?
   - Кто кому подчиняется (прямая иерархия)?
+  # Группировка по командам
+  - В какие команды/группы (team_unit) сгруппированы люди и за что отвечает каждая команда?
+  - Кто лид команды, кто участник, кто представитель команды для PO?
+  # Social + expertise
   - Кто с кем взаимодействует по рабочим вопросам (не иерархически)?
-  - По каким вопросам к кому обращаться?
-  - Каким уникальным контекстом или экспертизой обладает каждый человек?
+  - По каким вопросам к кому обращаться? Каким уникальным контекстом обладает каждый?
+  # PO navigation (главное — карта взаимодействия PO)
+  - Насколько близок человек к PO в ежедневной работе (core/close/extended/peripheral) и с какой частотой PO с ним взаимодействует?
+  - С какими вопросами ЭТОТ человек сам приходит к PO (inbound)?
+  - Какие ДЕТАЛИ PO может уточнить у этого человека (источник контекста)?
+  - Какие вопросы/решения этот человек СОГЛАСОВЫВАЕТ (право решения, sign-off)?
+  - Через кого/к кому эскалировать, если этот человек не решает вопрос?
 schema_extensions:
   # --- Идентичность (обязательные для node_type: person) ---
   full_name:
@@ -176,6 +189,46 @@ schema_extensions:
     required: false
     description: "node_ids ключевых коллег по рабочим вопросам (не иерархия)"
 
+  # --- Team Grouping (как люди сгруппированы по командам) ---
+  team_unit:
+    type: string
+    required: false
+    description: "Команда/под/группа внутри department (напр. 'Squad Checkout'); null если вне команд"
+  team_role:
+    type: enum[lead, member, representative]
+    required: false
+    description: "Роль человека в team_unit: lead — ведёт команду; member — участник; representative — точка входа команды для PO. null если вне команд"
+  team_mission:
+    type: string
+    required: false
+    description: "За что отвечает команда (заполняется на узле lead/representative; свободный текст). Срез ответственности команды для навигации"
+
+  # --- PO Navigation Layer (PO-центричные рёбра: я-как-PO ↔ человек) ---
+  proximity:
+    type: enum[core, close, extended, peripheral]
+    required: false
+    description: "Кольцо близости к PO в ежедневной работе. core — ядро (постоянно); close — близкий круг; extended — расширенный; peripheral — периферия. Ось «кто ближе, кто дальше»"
+  interaction_cadence:
+    type: enum[daily, weekly, biweekly, monthly, ad-hoc, rare]
+    required: false
+    description: "Частота взаимодействия PO с человеком"
+  inbound_topics:
+    type: list[string]
+    required: false
+    description: "С какими вопросами ЧЕЛОВЕК сам приходит к PO (он инициатор обращения). Ось «кто по каким вопросам приходит»"
+  clarify_with:
+    type: list[string]
+    required: false
+    description: "Какие ДЕТАЛИ/контекст PO может уточнить у человека (человек — источник информации, не решатель). Ось «у кого какие детали уточняю»"
+  approves:
+    type: list[string]
+    required: false
+    description: "Какие вопросы/решения человек СОГЛАСОВЫВАЕТ — право решения, sign-off (не просто мнение). Ось «кто какие вопросы согласовывает»"
+  escalate_via:
+    type: string
+    required: false
+    description: "node_id, к кому эскалировать вопрос через/над этим человеком, если он не решает; null если эскалация не определена"
+
   # --- Expertise Graph (что знает, куда роутить) ---
   influence_zones:
     type: list[string]
@@ -205,6 +258,8 @@ schema_extensions:
 
 > **Источники для person-узлов:** `sources` должен указывать откуда взяты данные — `["onboarding:interview"]`, `["hr-system"]`, `["self-reported"]`, `["linkedin"]`, `["config.yaml:roster"]`. Узел без `sources` = workslop (как и для всех Нексусов).
 
+> **PO Navigation Layer — главный слой для навигации.** `proximity`/`inbound_topics`/`clarify_with`/`approves` описывают рёбра **«я-как-PO ↔ человек»**, а не свойства человека «вообще». Они отвечают на четыре навигационных вопроса PO: кто ближе/дальше (`proximity`), кто сам приходит с чем (`inbound_topics`), у кого уточнять детали (`clarify_with`), кто согласовывает (`approves`). Эти поля — основа инструмента `/people-map`. Отличие от expertise-слоя: `contact_for`/`expertise_topics` = «человек полезен по теме X вообще»; `clarify_with`/`approves` = «я-как-PO иду к нему за деталями / за согласованием по X». Поля PO-слоя заполняются в онбординге со слов PO (`sources: ["onboarding:interview"]`), не угадываются.
+
 > **Связь с `config.yaml team.roster`:** roster — **источник истины по ролям** (кто Product Engineer, Growth Engineer, …), team-нексус — **богатый профиль человека** (связи, экспертиза, контекст). При создании нексуса через `/paf-nexus-create` (каталожный режим, §3.1 скилла) каждый **именованный** человек из roster (не `"Cortex"`/null) засевает заготовку person-узла: `full_name`/`role_title` из roster, `sources: ["config.yaml:roster"]`, `confidence: 0.3`; иерархия (`reports_to`/`manages`/`collaborates_with`) и экспертиза остаются пустыми до явного наполнения (`/paf-onboard` или вручную). Так устраняется двойной ввод людей без выдумывания связей.
 
 > **Подключение нексуса `team`** — опциональный, инстанцируется не `/paf-init`, а **`/paf-nexus-create`** (каталожный режим): берёт это определение (§4.1), создаёт `GROUND/NEXUS/team/`, регистрирует в `_registry.yaml` (`source: custom`), засевает узлы из roster.
@@ -231,6 +286,18 @@ department: Продукт
 reports_to: team-sidorov-aleksei
 manages: [team-petrov-dmitry, team-kozlova-anna]
 collaborates_with: [team-kuznecov-sergei, team-morozova-elena]
+# team grouping
+team_unit: "Squad Checkout"
+team_role: lead
+team_mission: "Сквозной сценарий оплаты: корзина → платёж → подтверждение. Отвечает за конверсию чекаута и платёжные интеграции"
+# PO navigation (я-как-PO ↔ человек)
+proximity: core
+interaction_cadence: daily
+inbound_topics: ["просьбы переприоритизировать фичу", "конфликты ёмкости спринта"]
+clarify_with: ["детали customer feedback", "история решений по онбордингу", "статус релиза"]
+approves: ["приоритет фич в роадмапе сквада", "дата релиза чекаута"]
+escalate_via: team-sidorov-aleksei
+# expertise
 influence_zones: ["роадмап продукта", "приоритизация фич", "релизы"]
 expertise_topics: ["product discovery", "JTBD", "A/B тесты", "mobile UX"]
 contact_for: ["приоритет фичи", "статус релиза", "customer feedback"]
@@ -261,4 +328,4 @@ membership_since: 2024-03-01
 - `/paf-nexus-create` — skill создания кастомного Нексуса (§5).
 
 ---
-**Version:** 1.2 · **Last updated:** 2026-06-25 · **Связанные:** [[nexus_schema]] · [[naming_conventions]] · [[GROUND/NEXUS/_registry|_registry.yaml]] · `/paf-nexus-create`
+**Version:** 1.3 (v1.3: team-нексус расширен слоями Team Grouping + PO Navigation для инструмента `/people-map`) · **Last updated:** 2026-06-30 · **Связанные:** [[nexus_schema]] · [[naming_conventions]] · [[GROUND/NEXUS/_registry|_registry.yaml]] · `/paf-nexus-create` · `/people-map`

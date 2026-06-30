@@ -54,6 +54,8 @@ Skill коробки «PAF Team OS». Добавляет Нексус сверх
    - `full_name` = значение из roster (как есть; уточнить полное ФИО при онбординге).
    - `role_title` = человекочитаемое имя роли (`product_engineer` → "Product Engineer" по `naming_conventions.md`).
    - `reports_to` / `manages` / `collaborates_with` = `[]` или `null` (**не угадывать иерархию** — заполнит человек/онбординг).
+   - `team_unit` / `team_role` / `team_mission` = `null`/пусто (группировку по командам заполнит онбординг).
+   - **PO Navigation Layer** (`proximity` / `interaction_cadence` / `inbound_topics` / `clarify_with` / `approves` / `escalate_via`) = `null`/`[]` — **не угадывать**. Это рёбра «я-как-PO ↔ человек», их знает только PO; заполняются в онбординге для `/people-map`.
    - `influence_zones` / `expertise_topics` / `contact_for` = `[]` с пометкой в теле «заполнить в онбординге».
    - `confidence: 0.3` (допущение из roster, не валидировано); `sources: ["config.yaml:roster"]`; `ttl_days: 180`.
 3. Пометь тело: `> ⚠️ заготовка из roster. ФИО/связи/экспертиза требуют наполнения (/paf-onboard или вручную).`
@@ -134,7 +136,8 @@ python3 sa_documentation/validate_ground.py GROUND
 - _registry.yaml: +1 запись (onboarded: todo). config.yaml: custom_count → <N>.
 - Валидатор: OK.
 
-→ /paf-onboard — наполнить узлы (интервью + ингестия). Для team: уточнить ФИО, связи (reports_to/collaborates_with), зоны влияния и экспертизу.
+→ /paf-onboard — наполнить узлы (интервью + ингестия). Для team: уточнить ФИО, связи (reports_to/collaborates_with), группировку по командам (team_unit/team_mission), зоны влияния, экспертизу и PO Navigation (proximity/inbound_topics/clarify_with/approves) — последнее питает /people-map.
+→ /people-map — навигация по карте людей, как только PO-слой наполнен.
 ```
 
 ---
