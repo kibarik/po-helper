@@ -5,7 +5,7 @@ description: "Создаёт кастомный Нексус под решени
 
 # /paf-nexus-create — создание кастомного Нексуса
 
-Skill коробки «PAF Team OS». Добавляет Нексус сверх дефолтного минимума (`/paf-init` создал market/customer/product/growth). Два режима:
+Skill коробки «PAF Team OS». Добавляет Нексус сверх дефолтного минимума (`/paf-init` создал market/customer/product/growth + обязательный project-management). Два режима:
 
 1. **Каталожный опц. тип** (`team`, `ops-model`, `company`) — берёт готовое определение из `sa_documentation/nexus_catalog.md` §4/§4.1, не выдумывает.
 2. **Свежий кастом** (`sellers`, `buyers`, `supply-chain`, …) — интервью под решение клиента.
