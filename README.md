@@ -20,7 +20,7 @@
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
-| **Карта людей** | `/people-map` | Навигатор PO по People Graph: кто ближе/дальше, кто с чем приходит, у кого уточнить, кто согласовывает | [SKILL](.claude/skills/people-map/SKILL.md) |
+| **Карта людей** | `/people-links` · `/people-map` | Описание отношений PO с сотрудниками (контур) → навигатор: кто ближе/дальше, кто с чем приходит, у кого уточнить, кто согласовывает | [links](.claude/skills/people-links/SKILL.md) · [map](.claude/skills/people-map/SKILL.md) |
 | **Онбординг** | `/paf-init`, `/paf-nexus-create` | GROUND Vault под продукт | [↓ Онбординг](#-онбординг-paf) |
 
 ---
@@ -82,7 +82,18 @@ flowchart LR
 | `/paf-init` | один раз после `git clone` | `config.yaml` + скелет GROUND + дефолтный каталог Нексусов |
 | `/paf-nexus-create` | по необходимости | кастомные Нексусы (`sellers`, `buyers`, `team`…) + запись в реестр |
 
-Нексус `team` — **People Graph**: люди в пяти слоях (org chart · social · group по командам · expertise · **PO navigation**). PO-слой (`proximity`/`inbound_topics`/`clarify_with`/`approves`) наполняется в онбординге и питает навигатор **`/people-map`** — «кто ближе/дальше, кто с чем приходит, у кого уточнить детали, кто согласовывает».
+Нексус `team` — **People Graph**: люди в пяти слоях (org chart · social · group по командам · expertise · **PO navigation**). Поток по людям:
+
+```mermaid
+flowchart LR
+    N["/paf-nexus-create (team)"] -->|"засев из roster"| L["/people-links"]
+    L -->|"описать отношения PO → контур"| M["/people-map"]
+    M -->|"route · rings · teams · map"| Nav["навигация по контуру"]
+    style L fill:#ffd43b,color:#000
+    style M fill:#51cf66,color:#fff
+```
+
+**`/people-links`** (write) описывает отношения PO с каждым сотрудником (`proximity`/`inbound_topics`/`clarify_with`/`approves`) и собирает **контур** — кольца близости. **`/people-map`** (read-only) навигирует по контуру: «кто ближе/дальше, кто с чем приходит, у кого уточнить детали, кто согласовывает».
 
 Схемы и валидатор Vault — [sa_documentation/](sa_documentation/) (`ground_schema`, `nexus_schema`, `nexus_catalog`, `validate_ground.py`).
 

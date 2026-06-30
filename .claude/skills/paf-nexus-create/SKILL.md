@@ -136,8 +136,9 @@ python3 sa_documentation/validate_ground.py GROUND
 - _registry.yaml: +1 запись (onboarded: todo). config.yaml: custom_count → <N>.
 - Валидатор: OK.
 
-→ /paf-onboard — наполнить узлы (интервью + ингестия). Для team: уточнить ФИО, связи (reports_to/collaborates_with), группировку по командам (team_unit/team_mission), зоны влияния, экспертизу и PO Navigation (proximity/inbound_topics/clarify_with/approves) — последнее питает /people-map.
-→ /people-map — навигация по карте людей, как только PO-слой наполнен.
+→ /paf-onboard — наполнить узлы (интервью + ингестия). Для team: уточнить ФИО, связи (reports_to/collaborates_with), группировку по командам (team_unit/team_mission), зоны влияния, экспертизу.
+→ /people-links — описать отношения PO с каждым (PO Navigation Layer) и собрать контур.
+→ /people-map — навигация по контуру, как только PO-слой наполнен.
 ```
 
 ---
