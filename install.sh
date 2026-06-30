@@ -63,16 +63,23 @@ echo "→ Режим: $MODE"
 echo "→ Целевой корень: $DEST_ROOT"
 mkdir -p "$DEST_SKILLS" "$DEST_COMMANDS" "$DEST_WORKFLOWS"
 
-# Навыки фреймворка (каждый — каталог с SKILL.md + resources + examples)
-SKILLS=(bft-writer okr-planner sprint-planner po-research)
+# Навыки и команды фреймворка обнаруживаются автоматически из исходного дерева,
+# чтобы install ставил ВЕСЬ фреймворк, а не захардкоженное подмножество (иначе
+# при добавлении новых навыков/команд они «теряются» при установке).
 
-# Команды фреймворка
-COMMANDS=(
-  bft-context-gen bft-context-gen-deep bft-problem bft-concept bft-debate bft-draft bft-validate bft-deliver
-  okr-context-gen okr-objectives okr-key-results okr-debate okr-enrich okr-validate okr-deliver
-  sprint-roadmap sprint-sync sprint-goal sprint-decompose sprint-load sprint-deliver
-  po-research
-)
+# Навыки фреймворка (каждый — каталог с SKILL.md + resources + examples)
+SKILLS=()
+for d in "$SRC_SKILLS"/*/; do
+  [ -d "$d" ] || continue
+  SKILLS+=("$(basename "$d")")
+done
+
+# Команды фреймворка (каждая — отдельный .md)
+COMMANDS=()
+for f in "$SRC_COMMANDS"/*.md; do
+  [ -f "$f" ] || continue
+  COMMANDS+=("$(basename "$f" .md)")
+done
 
 # --- навыки ---
 # examples/ — доменный слой: в --update НЕ перезаписываем уже существующие
@@ -145,7 +152,7 @@ fi
 echo ""
 echo "✅ po-helper $MODE завершён в $DEST_ROOT"
 echo "   Навыки:  ${SKILLS[*]}"
-echo "   Пайплайны: /bft-* (БФТ)  ·  /okr-* (квартальный OKR)  ·  /sprint-* (планирование спринта)  ·  /po-research (контекст)"
+echo "   Пайплайны: /bft-* (БФТ)  ·  /okr-* (квартальный OKR)  ·  /sprint-* (планирование спринта)  ·  /req-* (приём запросов)  ·  /release-* (Release Guard)  ·  /po-research (контекст)"
 echo ""
 echo "Дальше:"
 echo "  1) cp $DEST_ROOT/domain-profile.template.md $DEST_ROOT/domain-profile.md  и заполните под проект"
