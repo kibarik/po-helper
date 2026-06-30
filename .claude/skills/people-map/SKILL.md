@@ -11,7 +11,7 @@ Read-only инструмент навигации по **People Graph** (`GROUND
 
 ## Принцип (наследуется из CLAUDE.md)
 
-- **Read-only.** Узлы не правит. Наполнение People Graph — это `/paf-nexus-create` (засев) и онбординг, не этот инструмент.
+- **Read-only.** Узлы не правит. Наполнение PO-слоя — это `/people-links` (описание отношений), засев людей — `/paf-nexus-create`. Навигатор только читает готовый контур.
 - **Нет факта без узла.** Каждый ответ ссылается на конкретный `node_id` (якорь). Поле пустое/отсутствует → `[УТОЧНИТЬ: дозаполни <поле> у <node_id> в онбординге]`, не выдумывать ребро.
 - **Различай оси.** Не сваливай «обратиться вообще» (`contact_for`/`expertise_topics`), «уточнить детали» (`clarify_with`) и «согласовать» (`approves`) в одно. Это разные права и разные ответы.
 - **Wilting.** Если у релевантного узла `ripeness: wilting` (см. `updated`+`ttl_days`) — пометь `⚠️ устарело, проверь`.
@@ -38,7 +38,7 @@ Read-only инструмент навигации по **People Graph** (`GROUND
 ## 1. Загрузка графа
 
 1. Прочитай все `GROUND/NEXUS/team/*.md`, кроме `_index.md`/`_template.md` (это `node_type: person`).
-2. Если папка пуста (только index/template) → СТОП: «People Graph не наполнен. Засей: `/paf-nexus-create` (team) → дозаполни в онбординге. Навигировать пока не по чему.»
+2. Если папка пуста (только index/template) → СТОП: «People Graph не наполнен. Засей: `/paf-nexus-create` (team) → опиши отношения: `/people-links`. Навигировать пока не по чему.»
 3. Для каждого узла собери: `node_id`, `full_name`, `role_title`, `team_unit`/`team_role`/`team_mission`, `proximity`/`interaction_cadence`, `inbound_topics`, `clarify_with`, `approves`, `escalate_via`, `contact_for`, `expertise_topics`, `influence_zones`, `communication_channels`, `confidence`, `ripeness`.
 
 ---
@@ -113,7 +113,8 @@ Read-only инструмент навигации по **People Graph** (`GROUND
 
 - [[GROUND/NEXUS/team/_index]] — People Graph, 5 слоёв, seed_questions.
 - [[sa_documentation/nexus_catalog]] §4.1 — спецификация person-узла (schema_extensions: PO Navigation Layer).
-- `/paf-nexus-create` — засев узлов из roster (предшествует). Наполнение PO-слоя — в онбординге.
+- `/people-links` — описание отношений PO и сборка контура (наполняет PO-слой; предшествует, write).
+- `/paf-nexus-create` — засев узлов из roster (предшествует).
 - `/diagram-view` — рендер карты (режим `map`).
 - `resources/recipes.md` — точные рецепты маршрутизации и ранжирования.
 - `resources/map-template.puml` — PlantUML-шаблоны карты.
