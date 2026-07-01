@@ -15,7 +15,7 @@
 |:---|:---|:---|:---|
 | **OKR** | `/okr-context-gen … /okr-deliver` (7 стадий) | Квартальный OKR (OBJ + KR + IMP) | [↓ OKR](#-okr--квартальное-планирование) |
 | **Спринт** | `/sprint-roadmap` · `/sprint-sync … /sprint-deliver` | Roadmap KR×спринт + детальный план спринта (Sprint Goal + capacity + N+1) | [SKILL](.claude/skills/sprint-planner/SKILL.md) |
-| **БФТ** | `/bft-context-gen … /bft-deliver` (7 стадий) | Бизнес-Функциональные Требования по эпику | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
+| **БФТ** | `/bft-context-gen … /bft-deliver` (8 стадий) | Бизнес-Функциональные Требования по эпику | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
 | **Внешние запросы** | `/req-context … /req-handoff` (7 стадий) | Скоринг внешнего запроса → SMART-задача + routing (front door перед БФТ) | [SKILL](.claude/skills/request-intake/SKILL.md) |
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
@@ -111,19 +111,21 @@ flowchart LR
 
 ## 📋 БФТ — Бизнес-Функциональные Требования
 
-Навык **`bft-writer`**: один эпик трекера → готовый документ БТ/ПТ/ИТ/ФТ/НФТ. Не «генерация за один промт», а конвейер из 7 команд со STOP-паузой после каждой.
+Навык **`bft-writer`**: один эпик трекера → готовый документ БТ/ПТ/ИТ/ФТ/НФТ. Не «генерация за один промт», а конвейер из 8 команд со STOP-паузой после каждой.
 
 ```mermaid
 flowchart TD
     A["/bft-context-gen"] --> B["/bft-problem"] --> C["/bft-concept"] --> D["/bft-debate"]
     D --> E{Вердикт?}
-    E -->|"Принят"| F["/bft-draft"]
+    E -->|"Принят"| K["/bft-constraints"]
     E -->|"Забраковано"| C
+    K --> F["/bft-draft"]
     F --> G["/bft-validate"]
     G -->|"🟢/🟡"| H(("/bft-deliver"))
     G -->|"🔴 gate"| F
     style A fill:#4a9eff,color:#fff
     style D fill:#ffd43b,color:#000
+    style K fill:#a29bfe,color:#fff
     style G fill:#ff6b6b,color:#fff
     style H fill:#51cf66,color:#fff
 ```
@@ -136,9 +138,10 @@ flowchart TD
 | 2. Проблема | `/bft-problem EPIC-10` | Проверь: это диагноз, не решение |
 | 3. Концепты | `/bft-concept EPIC-10` | Сравни 2-3 варианта |
 | 4. Дебаты | `/bft-debate EPIC-10` | Забраковано → шаг 3; Принят → дальше |
-| 5. Черновик | `/bft-draft EPIC-10` | Появляется `<epic>.md`; вычитай типы/НФТ/границы |
-| 6. Валидация | `/bft-validate EPIC-10` | 🔴 → шаг 5; 🟢/🟡 → готов к ревью |
-| 7. Отгрузка | `/bft-deliver EPIC-10` | Сухой прогон → ок PO → JIRA + 2×Confluence |
+| 5. Ограничения | `/bft-constraints EPIC-10` | Совместно с PO: подтверди факты (Ф), проверь гипотезы (Г) с владельцами |
+| 6. Черновик | `/bft-draft EPIC-10` | Появляется `<epic>.md`; вычитай типы/НФТ/границы/ограничения |
+| 7. Валидация | `/bft-validate EPIC-10` | 🔴 → шаг 6; 🟢/🟡 → готов к ревью |
+| 8. Отгрузка | `/bft-deliver EPIC-10` | Сухой прогон → ок PO → JIRA + 2×Confluence |
 
 **Раскладка:** финальный БФТ — `bft_documentation/<epic>/<epic>.md`; промежуточные артефакты — `bft_documentation/<epic>/artefacts/`. Везде передавай один и тот же `<epic_code>`. Детально — [bft-writer/SKILL.md](.claude/skills/bft-writer/SKILL.md).
 

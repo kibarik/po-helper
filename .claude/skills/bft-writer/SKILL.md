@@ -6,7 +6,7 @@
 
 > **Примеры в командах и ресурсах** (коды эпиков `EPIC-10`/`PROJ-101`, домены, golden-референсы золотых референсов) — иллюстративные, из предметной области автора шаблона. Для своего проекта реальные ключи/домены/стейкхолдеры берутся из `.claude/domain-profile.md`. Универсальна структура и методология, не домен.
 
-Это **multi-step pipeline из 7 команд** (по архитектуре sa-helper FNR). Каждая команда = **отдельный запуск, отдельная роль, свой артефакт, STOP-пауза для PO между ними**. Не выполняй весь pipeline за один промт — STOP после каждой стадии и жди решения человека.
+Это **multi-step pipeline из 8 команд** (по архитектуре sa-helper FNR). Каждая команда = **отдельный запуск, отдельная роль, свой артефакт, STOP-пауза для PO между ними**. Не выполняй весь pipeline за один промт — STOP после каждой стадии и жди решения человека.
 
 ---
 
@@ -16,7 +16,7 @@
 
 ---
 
-## Pipeline (6 стадий, зеркало sa-helper FNR)
+## Pipeline (7 стадий, зеркало sa-helper FNR)
 
 ```
 /bft-context-gen  → context-pack          [СТОП: PO ревьюит pack]
@@ -28,7 +28,9 @@
 /bft-debate       → вердикт в concept.md  (3 раунда, Адвокат Дьявола)
         ↓ Забраковано/Пивот → /bft-concept
         ↓ Принят
-/bft-draft        → черновик БФТ          (БТ/ПТ/ИТ/ФТ/НФТ из концепта)      [СТОП]
+/bft-constraints  → constraints.md        (ограничения релиза Ф/Г; repowise + People Graph)  [СТОП]
+        ↓
+/bft-draft        → черновик БФТ          (БТ/ПТ/ИТ/ФТ/НФТ + Ограничения релиза)             [СТОП]
         ↓
 /bft-validate     → validation.md         (hard gates + Светофор)
         ↓ 🔴 нарушен гейт → /bft-draft
@@ -46,11 +48,12 @@
 | 1 Проблема | `/bft-problem` | Problem Analyst (диагноз, не решение) | `artefacts/problem.md` |
 | 2 Концепты | `/bft-concept` | Solution Designer (2-3 варианта) | `artefacts/concept.md` |
 | 3 Дебаты | `/bft-debate` | Architect vs Devil's Advocate | вердикт в `artefacts/concept.md` |
-| 4 Требования | `/bft-draft` | Requirements Writer | `<epic>.md` (финальный БФТ) |
-| 5 Валидация | `/bft-validate` | Validator (свежий взгляд) | `artefacts/validation.md` |
-| 6 Отгрузка | `/bft-deliver` | Deliverer (публикация) | JIRA Эпик + 2×Confluence + связи; манифест `delivery.md` |
+| 4 Ограничения | `/bft-constraints` | Constraint Researcher (LLM + PO; repowise + People Graph) | `artefacts/constraints.md` |
+| 5 Требования | `/bft-draft` | Requirements Writer | `<epic>.md` (финальный БФТ) |
+| 6 Валидация | `/bft-validate` | Validator (свежий взгляд) | `artefacts/validation.md` |
+| 7 Отгрузка | `/bft-deliver` | Deliverer (публикация) | JIRA Эпик + 2×Confluence + связи; манифест `delivery.md` |
 
-**Почему разделение:** разные роли не «загрязняют» друг друга (диагноз ≠ решение ≠ требование); adversarial отдельным запуском ломает confirmation bias; артефакты-передачи проверяемы; STOP-паузы дают human-in-the-loop ревью.
+**Почему разделение:** разные роли не «загрязняют» друг друга (диагноз ≠ решение ≠ ограничение ≠ требование); adversarial отдельным запуском ломает confirmation bias; сбор ограничений релиза отдельной стадией (после выбора концепта, до черновика) ловит побочные требования смежников до выката, а не в момент релиза; артефакты-передачи проверяемы; STOP-паузы дают human-in-the-loop ревью.
 
 ### Рабочая папка эпика (staging в `bft_documentation/`)
 
@@ -63,6 +66,7 @@ bft_documentation/<epic>/
     ├── bft-context-pack.md   (/bft-context-gen)
     ├── problem.md            (/bft-problem)
     ├── concept.md            (/bft-concept → +вердикт от /bft-debate)
+    ├── constraints.md        (/bft-constraints)
     └── validation.md         (/bft-validate)
 ```
 
@@ -101,6 +105,9 @@ As-Is (с якорями: JIRA/Confluence/код/CORTEX-СА) → Gap → To-Be 
 ### 9. Adversarial (отдельная стадия)
 Перед фиксацией требований — red-teaming (`/bft-debate`): нагрузка, отказ поставщика, идемпотентность, изменение требований, ПДн/Compliance, скрытые зависимости (API-слой↔Шина↔Процессинг↔BI). См. `resources/debate_rules.md`.
 
+### 9а. Ограничения релиза (отдельная стадия)
+Перед черновиком — сбор рамок среды, которые релиз обязан соблюсти, иначе он не состоится или навредит смежникам (`/bft-constraints` → `constraints.md`). Совместное исследование LLM + PO: repowise (blast-radius затронутых компонентов) + People Graph (ответственный PO компонента/эффекта) + подтверждение человеком. **Разделение обязательно:** фактологически-ограничивающие (Ф — доказанный негативный бизнес-эффект, есть якорь) держатся отдельно от гипотетически-ограничивающих (Г — гипотеза «если не учесть, где-то может пойти так», не доказана). Гипотеза не выдаётся за факт. Ограничения измеримы (число/порог/дата/инвариант) и атрибутированы. Модель — `resources/constraint_rules.md`; проекция в БФТ — раздел «Ограничения релиза» + НФТ/Границы/Зависимости/Риски/Открытые вопросы.
+
 ### 10. Декомпозиция
 Каждый ФТ ≈ атомарная задача (1-2 дня), со ссылкой на задачу трекера (`tracker.projects`).
 
@@ -127,9 +134,10 @@ As-Is (с якорями: JIRA/Confluence/код/CORTEX-СА) → Gap → To-Be 
 ## Стандарты и ресурсы
 
 - `resources/bft_standards.md` — идентификаторы, различение типов (ПТ≠ФТ≠НФТ), НФТ-набор + приоритет корпоративного реестра НФТ, frontmatter, словарь, порядок разделов (ЗМ-005), формат таблиц.
-- `resources/hard_gates.md` — **15 бинарных 🔴-гейтов** (вкл. гейт 13 «Стиль/Голос», гейт 14 «Высота БФТ», гейт 15 «Known-Mistake») + чек-лист + Светофор.
+- `resources/hard_gates.md` — **16 бинарных 🔴-гейтов** (вкл. гейт 13 «Стиль/Голос», гейт 14 «Высота БФТ», гейт 15 «Known-Mistake», гейт 16 «Ограничения релиза») + чек-лист + Светофор.
 - `resources/anchor_rules.md` — ранги якорей R1 (код, As-Is) / R2 (JIRA/Confluence/BR/ADR) / R3 (PO-решение); код-якорь только для As-Is.
 - `resources/catwoe.md` — CATWOE-декомпозиция (W→БТ, O→Ревью, E→НФТ).
+- `resources/constraint_rules.md` — модель ограничений релиза (для `/bft-constraints`): классы Ф/Г, измеримость, атрибуция через People Graph, blast-radius через repowise, якоря, проекция в разделы БФТ.
 - `resources/writing_style.md` — стиль и голос (Humanizer): стоп-слова, тире, эмодзи, bold, `[УТОЧНИТЬ]`-дисциплина, калибровка под золотой референс.
 - `resources/debate_rules.md` — протокол adversarial (для `/bft-debate`).
 - `resources/review_feedback.md` — **реестр замечаний ревью (Lessons Learned)**: замечания PO → durable-правила, применяемые в `/bft-draft` и проверяемые в `/bft-validate` (гейт 15).
@@ -144,4 +152,4 @@ As-Is (с якорями: JIRA/Confluence/код/CORTEX-СА) → Gap → To-Be 
 
 ## Главное правило процесса
 
-**STOP после каждой стадии.** Не лети до финала. После `/bft-context-gen`, `/bft-problem`, `/bft-concept`, `/bft-draft` — выводи результат и ожидаешь решения PO/СА. Только так pipeline = sa-helper по качеству, а не «генерация за один промт».
+**STOP после каждой стадии.** Не лети до финала. После `/bft-context-gen`, `/bft-problem`, `/bft-concept`, `/bft-constraints`, `/bft-draft` — выводи результат и ожидаешь решения PO/СА. Только так pipeline = sa-helper по качеству, а не «генерация за один промт».
