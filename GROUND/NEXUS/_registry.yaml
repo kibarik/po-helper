@@ -9,3 +9,4 @@ nexus_types:
   - {slug: product,  source: default, onboarded: todo}
   - {slug: growth,   source: default, onboarded: todo}
   - {slug: team,     source: custom,  onboarded: todo, name: Нексус организационной структуры, purpose: "People Graph — персоны, роли, зоны влияния, связи, экспертиза"}
+  - {slug: channels, source: custom,  onboarded: todo, name: Нексус информационных каналов, owner: Product Ops, purpose: "Information Channels Graph — каналы поступления информации: назначение, темы, стейкхолдеры, участки системы, цели"}
