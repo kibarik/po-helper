@@ -20,6 +20,7 @@
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
+| **Калибровка нексуса людей** | `/radar-graph` · `/radar-calibrate` · `/radar-review` | Диаграмма связей команды + проверка качества People Graph: ситуационные вопросы → сверка с реальностью → correction-Prompt, цикл до 10/10 (short) или 50/50 (long) | [SKILL](.claude/skills/nexus-calibration/SKILL.md) |
 | **Онбординг** | `/paf-init`, `/paf-nexus-create` | GROUND Vault под продукт | [↓ Онбординг](#-онбординг-paf) |
 
 ---
