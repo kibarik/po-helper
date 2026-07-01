@@ -75,6 +75,7 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `step-overview` | overview шага | STEP-N-*/overview.md |
 | `sprint-phase` | Фаза цикла Sprint | STEP-N-*/{pulse,scout,bunch,pitch,execute,harvest}.md |
 | `person` | Нексус `team` — персона | GROUND/NEXUS/team/*.md |
+| `channel` | Нексус `channels` — канал поступления информации | GROUND/NEXUS/channels/*.md |
 
 ---
 
@@ -144,4 +145,4 @@ tags: [pmf, fit-point]
 ```
 
 ---
-**Version:** 1.2 (v4: добавлен node_type: person для team-нексуса) · **Last updated:** 2026-06-24 · **Связанные:** [[nexus_catalog]] · [[naming_conventions]] · [[ground_schema]] · [[docs/AI-PROCESSES/operating-model|operating-model]] · [[docs/AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup|1.nexus-setup]]
+**Version:** 1.3 (v5: добавлен node_type: channel для channels-нексуса) · **Last updated:** 2026-06-24 · **Связанные:** [[nexus_catalog]] · [[naming_conventions]] · [[ground_schema]] · [[docs/AI-PROCESSES/operating-model|operating-model]] · [[docs/AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup|1.nexus-setup]]
