@@ -20,6 +20,7 @@
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
+| **Карта людей** | `/people-links` · `/people-map` | Описание отношений PO с сотрудниками (контур) → навигатор: кто ближе/дальше, кто с чем приходит, у кого уточнить, кто согласовывает | [links](.claude/skills/people-links/SKILL.md) · [map](.claude/skills/people-map/SKILL.md) |
 | **Онбординг** | `/paf-init`, `/paf-nexus-create` | GROUND Vault под продукт | [↓ Онбординг](#-онбординг-paf) |
 
 ---
@@ -81,7 +82,41 @@ flowchart LR
 | `/paf-init` | один раз после `git clone` | `config.yaml` + скелет GROUND + дефолтный каталог Нексусов |
 | `/paf-nexus-create` | по необходимости | кастомные Нексусы (`sellers`, `buyers`, `team`…) + запись в реестр |
 
+Нексус `team` — **People Graph**: люди в пяти слоях. Отношения PO с людьми и навигация по ним — раздел [↓ Карта людей](#-карта-людей--контур-po-и-навигация).
+
 Схемы и валидатор Vault — [sa_documentation/](sa_documentation/) (`ground_schema`, `nexus_schema`, `nexus_catalog`, `validate_ground.py`).
+
+---
+
+## 🧭 Карта людей — контур PO и навигация
+
+Нексус `team` фиксирует не только людей, но и **как PO с ними взаимодействует**. People Graph строится в пяти слоях; главный для навигации — **PO Navigation** (рёбра «я-как-PO ↔ человек»).
+
+| Слой | Поля | Зачем |
+|:---|:---|:---|
+| Org Chart | `reports_to`, `manages` | иерархия |
+| Social | `collaborates_with` | связи вне иерархии |
+| Team Grouping | `team_unit`, `team_role`, `team_mission` | группировка по командам, зоны ответственности |
+| Expertise | `expertise_topics`, `contact_for`, `influence_zones` | роутинг по теме |
+| **PO Navigation** | `proximity`, `inbound_topics`, `clarify_with`, `approves`, `escalate_via` | **кто ближе/дальше · кто с чем приходит · у кого уточнить · кто согласовывает** |
+
+Две команды — захват и навигация:
+
+```mermaid
+flowchart LR
+    N["/paf-nexus-create (team)"] -->|"засев из roster"| L["/people-links"]
+    L -->|"описать отношения PO → контур"| M["/people-map"]
+    M -->|"route · rings · teams · inbound · map"| Nav["навигация по контуру"]
+    style L fill:#ffd43b,color:#000
+    style M fill:#51cf66,color:#fff
+```
+
+| Команда | Режим | Что делает |
+|:---|:---|:---|
+| `/people-links` | write | Интервью PO по каждому сотруднику → наполняет PO Navigation Layer → собирает **контур** (кольца близости `core/close/extended/peripheral`) |
+| `/people-map` | read-only | Навигация по контуру: `route` (кто по вопросу X, различая «согласовать / уточнить / обратиться») · `rings` (кто ближе/дальше) · `teams` (срез по командам) · `inbound` (что ко мне приходит) · `map` (рендер карты через `/diagram-view`) |
+
+Принцип коробки соблюдён: рёбра пишутся только со слов PO (`sources: onboarding:interview`), пустое поле → `[УТОЧНИТЬ]`, эксперт по теме ≠ право согласования. Детально — [links](.claude/skills/people-links/SKILL.md) · [map](.claude/skills/people-map/SKILL.md).
 
 ---
 
