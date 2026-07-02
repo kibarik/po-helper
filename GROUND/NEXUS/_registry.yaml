@@ -9,3 +9,4 @@ nexus_types:
   - {slug: product,  source: default, onboarded: todo}
   - {slug: growth,   source: default, onboarded: todo}
   - {slug: team,     source: custom,  onboarded: todo, name: Нексус организационной структуры, purpose: "People Graph — персоны, роли, зоны влияния, связи, экспертиза"}
+  - {slug: landscape, source: custom,  onboarded: todo, name: Нексус ландшафта, purpose: "Команды вокруг PO — миссия, PO, системы, тип связи, точки касания (что делают команды рядом)"}

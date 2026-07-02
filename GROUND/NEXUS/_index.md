@@ -12,5 +12,6 @@ MOC (map of content) всех Нексусов, инстанцированных
 ## Кастомные Нексусы
 
 - [team](team/) — организационная структура, People Graph.
+- [landscape](landscape/) — команды вокруг PO, что делают рядом (ext-team узлы).
 
 <!-- TODO /paf-init: перегенерировать из _registry.yaml -->

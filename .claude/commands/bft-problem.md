@@ -26,6 +26,7 @@ description: 'Диагноз проблемы для БФТ — rich picture + A
 1. Прочитай `skills/bft-writer/SKILL.md` (особенно As-Is→Gap→To-Be, эпистемическая честность).
 2. Прочитай `resources/anchor_rules.md` — ранги якорей (As-Is → R1/R2).
 3. Прочитай контекст-пак: `bft_documentation/<epic>/artefacts/bft-context-pack.md`.
+4. Прочитай карту внешних команд: `bft_documentation/<epic>/artefacts/external-teams-actions.md` (если есть) — акторы-команды вокруг, их worldviews, косвенные зависимости для blast radius. Нет файла → `[УТОЧНИТЬ: запусти /bft-ext-teams]`.
 
 ### Этап 2: Rich Picture (реконструкция проблемной ситуации)
 Собери «богатую картину»:
@@ -46,6 +47,7 @@ description: 'Диагноз проблемы для БФТ — rich picture + A
 
 ### Этап 5: Затронутые компоненты (blast radius)
 - Прямое (что менять), косвенное (что зависит), защищённые (backward compat).
+- Внешние команды из `external-teams-actions.md`: чьи системы/данные задеты прямо (`direct`) и косвенно (`indirect`) — с указанием команды и причины связи.
 
 ### Этап 6: Открытые вопросы (No Silent Skip)
 - Все неясности/блокеры/противоречия (включая конфликты worldviews из Этапа 2) — список с «у кого уточнить».
