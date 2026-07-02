@@ -25,7 +25,7 @@ MOC (map of content) всех Нексусов, инстанцированных
 
 ## Кастомные Нексусы
 
-- [team](team/) — организационная структура, People Graph.
+- [team](team/) — организационная структура, People Graph (+ PO navigation для `/people-map`).
 - [channels](channels/) — информационные каналы, Information Channels Graph.
 
 <!-- TODO /paf-init: перегенерировать из _registry.yaml -->
