@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.5.4",
+  "checkpoint_id": "497a3b04875f",
+  "session_id": "bf92e27b-a2b7-4366-8d37-a31f3a7e85c1",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-02T12:03:27.627566Z",
+  "branch": "claude/festive-lamarr-9d538f",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "57a8c268ace3",
+  "token_usage": {
+    "input_tokens": 17690,
+    "cache_creation_tokens": 132512,
+    "cache_read_tokens": 1603031,
+    "output_tokens": 21139,
+    "api_call_count": 30
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 156,
+      "agent_lines_removed": 0
+    }
+  ]
+}
