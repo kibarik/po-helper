@@ -14,6 +14,8 @@ PAF (https://productframework.ru/ops/main, Тихомиров С., CC BY-SA 4.0)
 
 Поверх PAF-минимума дистрибутив **po-helper** добавляет второй ярус дефолтного набора — **восемь Нексусов контекста внешнего запроса** (§3A: `problem`, `system-landscape`, `ownership`, `requester-domain`, `precedents`, `compliance`, `strategy`, `capacity`). Они снабжают пайплайн `request-intake → bft-writer` контекстом, без которого БФТ по запросу внешней команды технически корректен, но негоден к принятию решения.
 
+Поверх четырёх стратегических объектов PAF Team OS добавляет **обязательный операционный Нексус `project-management`** — delivery map PO: этапы, сроки и набор проектов, артефактов и планов в зоне ответственности конкретного PO. Он входит в базовый шаблон (`/paf-init`) наравне с четырьмя стратегическими, но описывает не объект управления, а **проработку** — кто что делает, к какому сроку и в каком статусе.
+
 ---
 
 ## 2. Таблица типов
@@ -24,6 +26,7 @@ PAF (https://productframework.ru/ops/main, Тихомиров С., CC BY-SA 4.0)
 | `customer` | Нексус потребителя | сегменты, JTBD, боли, mNSM-гипотеза | Product Engineer | 2 | ✅ | Кто основные сегменты? Какие работы (JTBD) они «нанимают»? Главные боли и их причины? Гипотеза монетизируемой ценности (mNSM)? |
 | `product` | Нексус продукта | идея, фичи, Vision, гэп | Product Engineer | 1, 4, 7 | ✅ | В чём идея продукта? Какие фичи закрывают гэп? Видение (Vision) — образ нужного рынку продукта? Гэп между текущим продуктом и Видением? |
 | `growth` | Нексус системы роста | каналы, модель монетизации, AI-COGS | Growth Engineer | 5, 6, 8 | ✅ | Каналы дистрибуции/роста? Модель монетизации? AI-COGS (составляющая затрат ИИ)? Рычаги (Lever) роста NPV? |
+| `project-management` | Нексус проектного управления PO | delivery map — этапы, сроки, набор проектов/артефактов/планов в зоне ответственности PO | Product Engineer / Product Ops | — | ✅ | Какие проекты/артефакты/планы в зоне ответственности PO? Какие этапы проходит каждый? Сроки и вехи по этапам? В каком статусе? |
 | `problem` | Нексус проблемы | проблема под запросом (не симптом): метрика под угрозой, выгодоприобретатель, цена бездействия | Product Engineer | — | ✅ | Какая бизнес-метрика под угрозой? Кто выгодоприобретатель? Что произойдёт при бездействии? Чем проблема отличается от предложенного решения? |
 | `system-landscape` | Нексус системного ландшафта | bounded contexts, API-контракты, что уже есть vs строить заново, скрытые зависимости | Product Ops / Product Architect | — | ✅ | Какие bounded contexts затрагивает запрос? Какие API-контракты задействованы? Что уже есть vs строить заново? Какие скрытые зависимости? |
 | `ownership` | Нексус владения (RACI) | владельцы затронутых доменов, согласующие, эскалационные пути, скрытые стейкхолдеры | Product Ops / Portfolio Manager | — | ✅ | Кто владелец каждого домена? Кого согласовывать? Каковы эскалационные пути? Есть ли скрытые стейкхолдеры? |
@@ -36,7 +39,9 @@ PAF (https://productframework.ru/ops/main, Тихомиров С., CC BY-SA 4.0)
 | `company` | Нексус портфеля/компании | портфель продуктов, бизнес-юниты (Business Pod) | Portfolio Manager / Bizdev Architect | — | ❌ | — |
 | `team` | Нексус организационной структуры | персоны, роли, зоны влияния/ответственности, связи, экспертиза — People Graph для ИИ-навигации | Product Ops / Portfolio Manager | — | ❌ | ФИО и должности ключевых людей? Зоны ответственности каждого? Кто с кем взаимодействует по рабочим вопросам? По каким вопросам к кому обращаться? |
 
-> `minimal: ✅` — входит в **дефолтный набор**, инстанцируется `/paf-init`. Два яруса: **PAF-минимум** (`market`/`customer`/`product`/`growth` — базовый продуктовый контекст PAF) + **набор po-helper для intake→БФТ** (`problem`/`system-landscape`/`ownership`/`requester-domain`/`precedents`/`compliance`/`strategy`/`capacity` — контекст, без которого БФТ по внешнему запросу технически корректен, но негоден к принятию решения). `minimal: ❌` — опциональные PAF-типы (`ops-model`, `company`) и каталожный `team`, клиент подключается по необходимости.
+> `minimal: ✅` — входит в **дефолтный набор**, инстанцируется `/paf-init`. `minimal: ❌` — опциональные PAF-типы (`ops-model`, `company`) и каталожный `team`, клиент подключается по необходимости.
+>
+> **Три яруса дефолтного набора (13 Нексусов).** (1) **PAF-минимум** — 4 стратегических объекта управления (`market`/`customer`/`product`/`growth`, базовый продуктовый контекст PAF). (2) **Обязательный операционный** Нексус PAF Team OS `project-management` — **delivery map PO**: не объект управления, а **проработка** (этапы, сроки, набор проектов/артефактов/планов) в зоне ответственности конкретного PO. (3) **Набор po-helper для intake→БФТ** — 8 Нексусов контекста внешнего запроса (`problem`/`system-landscape`/`ownership`/`requester-domain`/`precedents`/`compliance`/`strategy`/`capacity`), без которого БФТ по внешнему запросу технически корректен, но негоден к принятию решения. Все три яруса `/paf-init` инстанцирует одинаково (`source: default`).
 
 ---
 
@@ -119,6 +124,97 @@ seed_questions:
   - Какие рычаги (Lever) дают рост NPV?
 schema_extensions: {}
 ```
+
+### 3.5 project-management
+
+> **Обязательный операционный Нексус PO** (PAF Team OS extension). В отличие от четырёх стратегических Нексусов выше (объекты управления PAF), этот Нексус описывает **проработку зоны ответственности PO**: что должно быть сделано, какими этапами, к каким срокам. Каждый Узел = один deliverable (`node_type: deliverable`) — проект, артефакт или план. Источник истины по дедлайнам и статусам proработки.
+
+```yaml
+slug: project-management
+name: Нексус проектного управления PO
+purpose: >
+  Delivery map PO. Описывает этапы, сроки и набор проектов, артефактов и планов,
+  входящих в зону ответственности PO. Каждый Узел = один deliverable
+  (node_type: deliverable) типа project | artifact | plan, с этапами проработки
+  (stages), сроками (start_date/due_date/milestones) и образом приёмки.
+  Сшивается с OKR/БФТ/спринтами/релизами через linked_*-поля.
+owner_role: "Product Engineer / Product Ops"
+paf_step_ref: null
+minimal: true
+seed_questions:
+  - Какие проекты, артефакты и планы входят в зону ответственности PO?
+  - Какие этапы проходит каждый проект/артефакт — от идеи до приёмки?
+  - Каковы сроки: старт, дедлайны и ключевые вехи по каждому этапу?
+  - Какие артефакты (БФТ, OKR, роадмап, ПЛАН-спринта, релиз) PO обязан подготовить и к какому сроку?
+  - Кто отвечает за каждый проект/артефакт и от чего зависит срок?
+  - В каком статусе сейчас каждый проект/артефакт/план?
+schema_extensions:
+  # --- Идентичность (обязательные для node_type: deliverable) ---
+  title:
+    type: string
+    required: true
+    description: "Название проекта / артефакта / плана"
+  deliverable_type:
+    type: enum
+    required: true
+    description: "project | artifact | plan"
+  po_owner:
+    type: string
+    required: true
+    description: "node_id PO из нексуса team — кто отвечает за проработку"
+  status:
+    type: enum
+    required: true
+    description: "idea | in-progress | review | done | blocked"
+
+  # --- Сроки (обязательные) ---
+  start_date:
+    type: date
+    required: true
+    description: "Старт проработки (ISO YYYY-MM-DD)"
+  due_date:
+    type: date
+    required: true
+    description: "Дедлайн готовности / приёмки (ISO YYYY-MM-DD)"
+  milestones:
+    type: list[object]
+    required: false
+    description: "Ключевые вехи: [{name, date}]"
+
+  # --- Этапы (обязательно) ---
+  stages:
+    type: list[object]
+    required: true
+    description: "Этапы проработки: [{name, status, due}] — от идеи до приёмки"
+
+  # --- Связи с артефактами PO ---
+  linked_okr:
+    type: list[string]
+    required: false
+    description: "OBJ/KR, которые двигает этот deliverable"
+  linked_bft:
+    type: list[string]
+    required: false
+    description: "БФТ (JIRA-эпики), входящие в проработку"
+  linked_sprint:
+    type: list[string]
+    required: false
+    description: "Спринты, в которых ведётся работа"
+  depends_on:
+    type: list[string]
+    required: false
+    description: "node_ids deliverable'ов, от которых зависит срок"
+
+  # --- Критерий готовности ---
+  definition_of_done:
+    type: string
+    required: false
+    description: "Образ приёмки deliverable (свободный текст)"
+```
+
+> **Примечание по wilting:** `ttl_days` для deliverable-узлов рекомендуется **60 дней** — планы и сроки протухают быстрее контекста рынка/потребителя; короткий TTL раньше триггерит ресинк статусов и дедлайнов. При смене этапа/срока обновляйте `stages`/`status`/`due_date`.
+
+> **Источники для deliverable-узлов:** `sources` должен указывать откуда взят план — `["roadmap"]`, `["jira"]`, `["confluence"]`, `["onboarding:interview"]`. Узел без `sources` = workslop.
 
 ---
 
@@ -443,4 +539,4 @@ membership_since: 2024-03-01
 - `/paf-nexus-create` — skill создания кастомного Нексуса (§5).
 
 ---
-**Version:** 1.3 (добавлен ярус po-helper intake→БФТ: 8 default-Нексусов, §3A) · **Last updated:** 2026-07-01 · **Связанные:** [[nexus_schema]] · [[naming_conventions]] · [[GROUND/NEXUS/_registry|_registry.yaml]] · `/paf-nexus-create`
+**Version:** 1.4 (обязательный операционный Нексус `project-management` §3.5 + ярус po-helper intake→БФТ: 8 default-Нексусов §3A) · **Last updated:** 2026-07-02 · **Связанные:** [[nexus_schema]] · [[naming_conventions]] · [[GROUND/NEXUS/_registry|_registry.yaml]] · `/paf-nexus-create`
