@@ -6,7 +6,7 @@
 
 > **Примеры в командах и ресурсах** (коды эпиков `EPIC-10`/`PROJ-101`, домены, golden-референсы золотых референсов) — иллюстративные, из предметной области автора шаблона. Для своего проекта реальные ключи/домены/стейкхолдеры берутся из `.claude/domain-profile.md`. Универсальна структура и методология, не домен.
 
-Это **multi-step pipeline из 9 команд** (по архитектуре sa-helper FNR). Каждая команда = **отдельный запуск, отдельная роль, свой артефакт, STOP-пауза для PO между ними**. Первая — `/bft-value` (продуктовая ценность: зачем инвестировать). Не выполняй весь pipeline за один промт — STOP после каждой стадии и жди решения человека.
+Это **multi-step pipeline из 10 команд** (по архитектуре sa-helper FNR), включая стадию 0 «ценность» и стадию 1.5 «внешние команды». Каждая команда = **отдельный запуск, отдельная роль, свой артефакт, STOP-пауза для PO между ними**. Первая — `/bft-value` (продуктовая ценность: зачем инвестировать). Не выполняй весь pipeline за один промт — STOP после каждой стадии и жди решения человека.
 
 ---
 
@@ -16,13 +16,15 @@
 
 ---
 
-## Pipeline (9 стадий, зеркало sa-helper FNR)
+## Pipeline (10 стадий, зеркало sa-helper FNR)
 
 ```
 /bft-value        → value.md              (ЗАЧЕМ инвестировать: ценность ← KR/стратегия)  [СТОП]
         ↓ Ценность не доказана → вернуть продакту (разработку не начинать)
         ↓ Ценность доказана
 /bft-context-gen  → context-pack          [СТОП: PO ревьюит pack]
+        ↓
+/bft-ext-teams    → external-teams-actions.md  (карта связей с командами вокруг)  [СТОП]
         ↓
 /bft-problem      → problem.md            (диагноз As-Is/Gap, БЕЗ решения)   [СТОП]
         ↓
@@ -49,6 +51,7 @@
 |---|---|---|---|
 | 0 Ценность | `/bft-value` | Product Value Investigator (ЗАЧЕМ инвестировать ← KR/стратегия) | `artefacts/value.md` |
 | 1 Контекст | `/bft-context-gen` | Context Builder (Кортексы C1–C5 + Нексусы N1–N7) | `artefacts/bft-context-pack.md` |
+| 1.5 Внешние команды | `/bft-ext-teams` | Dependency Analyst (карта связей с командами вокруг) | `artefacts/external-teams-actions.md` |
 | 2 Проблема | `/bft-problem` | Problem Analyst (диагноз, не решение) | `artefacts/problem.md` |
 | 3 Концепты | `/bft-concept` | Solution Designer (2-3 варианта) | `artefacts/concept.md` |
 | 4 Дебаты | `/bft-debate` | Architect vs Devil's Advocate | вердикт в `artefacts/concept.md` |
@@ -69,6 +72,7 @@ bft_documentation/<epic>/
 └── artefacts/                промежуточные артефакты пайплайна
     ├── value.md              (/bft-value → ЗАЧЕМ инвестировать ← KR/стратегия)
     ├── bft-context-pack.md   (/bft-context-gen)
+    ├── external-teams-actions.md  (/bft-ext-teams)
     ├── problem.md            (/bft-problem)
     ├── concept.md            (/bft-concept → +вердикт от /bft-debate)
     ├── constraints.md        (/bft-constraints)

@@ -13,9 +13,9 @@
 
 | Сценарий | Команды | Результат | Детально |
 |:---|:---|:---|:---|
-| **OKR** | `/okr-context-gen … /okr-deliver` (7 стадий) | Квартальный OKR (OBJ + KR + IMP) | [↓ OKR](#-okr--квартальное-планирование) |
+| **OKR** | `/okr-context-gen … /okr-deliver` (8 стадий) | Квартальный OKR (OBJ + KR + IMP) + ландшафт внешних команд | [↓ OKR](#-okr--квартальное-планирование) |
 | **Спринт** | `/sprint-roadmap` · `/sprint-sync … /sprint-deliver` | Roadmap KR×спринт + детальный план спринта (Sprint Goal + capacity + N+1) | [SKILL](.claude/skills/sprint-planner/SKILL.md) |
-| **БФТ** | `/bft-value … /bft-deliver` (9 стадий) | Бизнес-Функциональные Требования по эпику | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
+| **БФТ** | `/bft-value … /bft-deliver` (10 стадий) | Бизнес-Функциональные Требования по эпику + карта внешних команд | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
 | **Внешние запросы** | `/req-context … /req-handoff` (7 стадий) | Скоринг внешнего запроса → SMART-задача + routing (front door перед БФТ) | [SKILL](.claude/skills/request-intake/SKILL.md) |
 | **Инфо-каналы** | `/channel-map` · `/channel-list` · `/channel-route` | Реестр каналов поступления информации + разметка входящего (источник → стейкхолдеры/тема/участок/цель → роутинг) | [SKILL](.claude/skills/info-channels/SKILL.md) |
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
@@ -82,7 +82,7 @@ flowchart LR
 | Команда | Когда | Результат |
 |:---|:---|:---|
 | `/paf-init` | один раз после `git clone` | `config.yaml` + скелет GROUND + дефолтный каталог Нексусов |
-| `/paf-nexus-create` | по необходимости | кастомные Нексусы (`sellers`, `buyers`, `team`…) + запись в реестр |
+| `/paf-nexus-create` | по необходимости | кастомные Нексусы (`sellers`, `buyers`, `team`, `landscape`…) + запись в реестр |
 
 Нексус `team` — **People Graph**: люди в пяти слоях. Отношения PO с людьми и навигация по ним — раздел [↓ Карта людей](#-карта-людей--контур-po-и-навигация).
 
@@ -124,13 +124,14 @@ flowchart LR
 
 ## 🎯 OKR — квартальное планирование
 
-7 стадий, каждая = отдельный запуск + STOP-пауза. Передавай результат стадии дальше после ревью.
+8 стадий, каждая = отдельный запуск + STOP-пауза. Передавай результат стадии дальше после ревью.
 
 ```mermaid
 flowchart LR
-    A["/okr-context-gen"] --> B["/okr-objectives"] --> C["/okr-key-results"]
+    A["/okr-context-gen"] --> A2["/okr-landscape"] --> B["/okr-objectives"] --> C["/okr-key-results"]
     C --> D["/okr-debate"] --> E["/okr-enrich"] --> F["/okr-validate"] --> G(("/okr-deliver"))
     style A fill:#4a9eff,color:#fff
+    style A2 fill:#4a9eff,color:#fff
     style D fill:#ff6b6b,color:#fff
     style F fill:#ff6b6b,color:#fff
     style G fill:#51cf66,color:#fff
@@ -138,9 +139,9 @@ flowchart LR
 
 | Стадия | Команда | Роль |
 |:---|:---|:---|
-| Контекст → Цели → KR | `/okr-context-gen` · `/okr-objectives` · `/okr-key-results` | Context Builder · Strategy Analyst · KR Designer |
+| Контекст → Ландшафт → Цели → KR | `/okr-context-gen` · `/okr-landscape` · `/okr-objectives` · `/okr-key-results` | Context Builder · Landscape Analyst · Strategy Analyst · KR Designer |
 | Дебаты → Обогащение | `/okr-debate` · `/okr-enrich` | Devil's Advocate (3 раунда) · PO + Architect |
-| Валидация → Отгрузка | `/okr-validate` (12 gates) · `/okr-deliver` | Validator · Deliverer (roadmap/INDEX) |
+| Валидация → Отгрузка | `/okr-validate` (13 gates) · `/okr-deliver` | Validator · Deliverer (roadmap/INDEX) |
 
 Итог — таблица `OBJ \| KR \| IMP \| Образ результата \| Образ действия \| Метрики&риски` с IMP-шкалой 1–9. Детально — [okr-planner/SKILL.md](.claude/skills/okr-planner/SKILL.md).
 
@@ -148,11 +149,11 @@ flowchart LR
 
 ## 📋 БФТ — Бизнес-Функциональные Требования
 
-Навык **`bft-writer`**: один эпик трекера → готовый документ БТ/ПТ/ИТ/ФТ/НФТ. Не «генерация за один промт», а конвейер из 9 команд со STOP-паузой после каждой. Первая стадия — `/bft-value`: зачем инвестировать ресурсы (ценность ← KR/стратегия), до контекста и требований.
+Навык **`bft-writer`**: один эпик трекера → готовый документ БТ/ПТ/ИТ/ФТ/НФТ. Не «генерация за один промт», а конвейер из 10 команд со STOP-паузой после каждой. Первая стадия — `/bft-value`: зачем инвестировать ресурсы (ценность ← KR/стратегия), до контекста и требований.
 
 ```mermaid
 flowchart TD
-    V["/bft-value"] --> A["/bft-context-gen"] --> B["/bft-problem"] --> C["/bft-concept"] --> D["/bft-debate"]
+    V["/bft-value"] --> A["/bft-context-gen"] --> A2["/bft-ext-teams"] --> B["/bft-problem"] --> C["/bft-concept"] --> D["/bft-debate"]
     V -->|"Ценность не доказана"| X(("вернуть продакту"))
     D --> E{Вердикт?}
     E -->|"Принят"| K["/bft-constraints"]
@@ -163,6 +164,7 @@ flowchart TD
     G -->|"🔴 gate"| F
     style V fill:#845ef7,color:#fff
     style A fill:#4a9eff,color:#fff
+    style A2 fill:#4a9eff,color:#fff
     style D fill:#ffd43b,color:#000
     style K fill:#a29bfe,color:#fff
     style G fill:#ff6b6b,color:#fff
@@ -175,17 +177,18 @@ flowchart TD
 |:--|:--|:--|
 | 0. Ценность | `/bft-value EPIC-10 PROJ-101` | Зачем инвестировать: ценность ← KR/стратегия. Не доказана → вернуть продакту |
 | 1. Контекст | `/bft-context-gen EPIC-10 PROJ-101` | Дозаполни `[УТОЧНИТЬ]`; незнакомый эпик → `/bft-context-gen-deep` |
-| 2. Проблема | `/bft-problem EPIC-10` | Проверь: это диагноз, не решение |
-| 3. Концепты | `/bft-concept EPIC-10` | Сравни 2-3 варианта |
-| 4. Дебаты | `/bft-debate EPIC-10` | Забраковано → шаг 3; Принят → дальше |
-| 5. Ограничения | `/bft-constraints EPIC-10` | Совместно с PO: подтверди факты (Ф), проверь гипотезы (Г) с владельцами |
-| 6. Черновик | `/bft-draft EPIC-10` | Появляется `<epic>.md`; вычитай типы/НФТ/границы/ограничения |
-| 7. Валидация | `/bft-validate EPIC-10` | 🔴 → шаг 6; 🟢/🟡 → готов к ревью |
-| 8. Отгрузка | `/bft-deliver EPIC-10` | Сухой прогон → ок PO → JIRA + 2×Confluence |
+| 2. Внешние команды | `/bft-ext-teams EPIC-10` | Карта связей с командами вокруг: причина + direct/indirect |
+| 3. Проблема | `/bft-problem EPIC-10` | Проверь: это диагноз, не решение |
+| 4. Концепты | `/bft-concept EPIC-10` | Сравни 2-3 варианта |
+| 5. Дебаты | `/bft-debate EPIC-10` | Забраковано → шаг 4; Принят → дальше |
+| 6. Ограничения | `/bft-constraints EPIC-10` | Совместно с PO: подтверди факты (Ф), проверь гипотезы (Г) с владельцами |
+| 7. Черновик | `/bft-draft EPIC-10` | Появляется `<epic>.md`; вычитай типы/НФТ/границы/ограничения |
+| 8. Валидация | `/bft-validate EPIC-10` | 🔴 → шаг 7; 🟢/🟡 → готов к ревью |
+| 9. Отгрузка | `/bft-deliver EPIC-10` | Сухой прогон → ок PO → JIRA + 2×Confluence |
 
 **Раскладка:** финальный БФТ — `bft_documentation/<epic>/<epic>.md`; промежуточные артефакты — `bft_documentation/<epic>/artefacts/`. Везде передавай один и тот же `<epic_code>`. Детально — [bft-writer/SKILL.md](.claude/skills/bft-writer/SKILL.md).
 
-### Стадия 5 — ограничения релиза (`/bft-constraints`)
+### Стадия 6 — ограничения релиза (`/bft-constraints`)
 
 Отдельная стадия перед черновиком собирает **рамки среды, которые релиз обязан соблюсти**, иначе он не состоится или навредит смежникам. Проблема, которую она закрывает: побочные требования внешних стейкхолдеров всплывают в момент выката, когда закладывать их в требования уже поздно. Совместное исследование LLM + PO: **repowise** (blast-radius затронутых компонентов) + **People Graph** / Нексус `team` (ответственный PO компонента и эффекта) + подтверждение человеком.
 
@@ -237,7 +240,7 @@ PO получает информацию из множества каналов 
 | **STOP-паузы human-in-the-loop** | PO ревьюит между стадиями, ловит ошибки рано |
 | **Adversarial отдельным запуском** | Ломает confirmation bias — другой агент критикует |
 | **Concept-стадия (2-3 варианта)** | Не фиксируем первый пришедший вариант |
-| **Hard Gates** (БФТ — 19, OKR — 12) | Валидация = pass/fail, не «постарайся» |
+| **Hard Gates** (БФТ — 19, OKR — 13) | Валидация = pass/fail, не «постарайся» |
 | **Светофор 🟢/🟡/🔴** | Многопроходная самопроверка свежим взглядом |
 | **Anchor Ranks** (R1 код / R2 трекер-wiki / R3 PO) | Нулевой допуск к галлюцинациям |
 | **Артефакты-передачи** | Каждый шаг проверяем, откатываем, переиспользуем |
