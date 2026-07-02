@@ -17,6 +17,7 @@
 | **Спринт** | `/sprint-roadmap` · `/sprint-sync … /sprint-deliver` | Roadmap KR×спринт + детальный план спринта (Sprint Goal + capacity + N+1) | [SKILL](.claude/skills/sprint-planner/SKILL.md) |
 | **БФТ** | `/bft-context-gen … /bft-deliver` (7 стадий) | Бизнес-Функциональные Требования по эпику | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
 | **Внешние запросы** | `/req-context … /req-handoff` (7 стадий) | Скоринг внешнего запроса → SMART-задача + routing (front door перед БФТ) | [SKILL](.claude/skills/request-intake/SKILL.md) |
+| **Инфо-каналы** | `/channel-map` · `/channel-list` · `/channel-route` | Реестр каналов поступления информации + разметка входящего (источник → стейкхолдеры/тема/участок/цель → роутинг) | [SKILL](.claude/skills/info-channels/SKILL.md) |
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
@@ -176,6 +177,20 @@ flowchart TD
 | 7. Отгрузка | `/bft-deliver EPIC-10` | Сухой прогон → ок PO → JIRA + 2×Confluence |
 
 **Раскладка:** финальный БФТ — `bft_documentation/<epic>/<epic>.md`; промежуточные артефакты — `bft_documentation/<epic>/artefacts/`. Везде передавай один и тот же `<epic_code>`. Детально — [bft-writer/SKILL.md](.claude/skills/bft-writer/SKILL.md).
+
+---
+
+## 📡 Инфо-каналы — разметка входящей информации
+
+PO получает информацию из множества каналов (рабочие чаты, Email, Telegram-каналы, созвоны). Навык **`info-channels`** ведёт реестр каналов как Нексус `channels` (Information Channels Graph, зеркало People Graph `team`) и размечает входящее.
+
+| Команда | Роль | Результат |
+|:---|:---|:---|
+| `/channel-map <slug>` | Channel Curator | channel-узел: для чего канал, темы, стейкхолдеры (→ `NEXUS/team`), участки системы (→ CORTEX), цели (→ OKR) |
+| `/channel-list` | Inventory Reporter | инвентарь + матрица покрытия (пробелы → `[УТОЧНИТЬ]`) |
+| `/channel-route [текст]` | Intake Dispatcher | запросить/определить источник → протегировать meta → рекомендовать роутинг (front door перед `request-intake`) |
+
+Ключевой образ: структурированное знание для ИИ, **как обрабатывать входящую информацию** и к каким стейкхолдерам / участкам системы / целям её привязать. Источник неизвестен → агент спрашивает PO, не выдумывает. Данные — `GROUND/NEXUS/channels/`, спецификация — [nexus_catalog §4.2](sa_documentation/nexus_catalog.md). Детально — [info-channels/SKILL.md](.claude/skills/info-channels/SKILL.md).
 
 ---
 
