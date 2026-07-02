@@ -48,6 +48,10 @@ paths:
   release_alerts_root: "CORTEX/release-alerts"
   # Рабочая папка пайплайна request-intake (обработка внешних запросов)
   intake_workspace: "CORTEX/_intake/{request_id}"
+  # Реестр информационных каналов (Нексус channels) — питает /channel-route разметкой входящей информации
+  channels_nexus: "GROUND/NEXUS/channels"
+  # Рабочая папка прогона калибровки People Graph (nexus-calibration). {run_id} — слаг прогона (short-01…)
+  calibration_workspace: "GROUND/NEXUS/team/_calibration/{run_id}"
 ```
 
 Если у проекта нет какого-то документа (например `KR-EPIC-MAP`) — оставьте путь, команда при отсутствии файла предложит его создать (bootstrap), не выдумывая содержимое.
@@ -66,6 +70,31 @@ role_tags: ["BA", "SA", "BE", "FE", "QA", "RELEASE", "ADR", "PO"]
 # модификатор [EXT] = шаг исполняет внешняя команда (напр. [BE][EXT], [FE][EXT])
 # Фаза 2 (груминг): префиксы вопросов исследования по ответственной роли — ADR# / SA# / BA# / DEL#
 ```
+
+`teams` — это команды-исполнители KR (наши). Команды **вокруг** PO (внешний ландшафт) —
+в секции `landscape` ниже.
+
+---
+
+## 2a. Ландшафт внешних команд (landscape)
+
+Команды вокруг PO — «что делают команды рядом». Используется стадией `/okr-landscape`
+(снимок квартала) и `/bft-ext-teams` (проекция на эпик), чтобы точно понимать блокаторы
+и связи: «с PO каких команд я связан при разработке задачи и почему».
+
+```yaml
+landscape:
+  nexus_root:   "GROUND/NEXUS/landscape"        # ext-team узлы (постоянное знание)
+  snapshot_doc: "{okr_workspace}/landscape-{quarter}.md"   # снимок квартала
+  bft_artifact: "external-teams-actions.md"      # имя проекции в artefacts/ эпика
+  # засев Нексуса (bootstrap через /paf-nexus-create landscape):
+  ext_teams:
+    - { code: "TEAM-PAY", name: "Платежи", po: "Имя", relationship: "upstream" }   # пример
+    # relationship: upstream (мы зависим) | downstream (зависят от нас) | peer | platform | regulator
+```
+
+Секция пустая → `/okr-landscape` работает от опроса PO и помечает пробелы `[УТОЧНИТЬ]`;
+`/bft-ext-teams` при отсутствии снимка честно помечает `[УТОЧНИТЬ: нет landscape-снимка]`.
 
 ---
 

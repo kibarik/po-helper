@@ -4,8 +4,23 @@
 # /paf-nexus-create → добавляет кастомные (source: custom)
 # /paf-onboard   → работает по всему реестру
 nexus_types:
+  # --- PAF-минимум (продуктовый контекст) ---
   - {slug: market,   source: default, onboarded: todo}
   - {slug: customer, source: default, onboarded: todo}
   - {slug: product,  source: default, onboarded: todo}
   - {slug: growth,   source: default, onboarded: todo}
+  # --- Обязательный операционный Нексус PO (PAF Team OS) ---
+  - {slug: project-management, source: default, onboarded: todo, name: Нексус проектного управления PO, purpose: "Delivery map PO — этапы, сроки, набор проектов/артефактов/планов в зоне ответственности"}
+  # --- Дефолтный набор po-helper (intake → БФТ) ---
+  - {slug: problem,          source: default, onboarded: todo, name: Нексус проблемы,             purpose: "бизнес-проблема под запросом (не симптом): метрика под угрозой, выгодоприобретатель, цена бездействия"}
+  - {slug: system-landscape, source: default, onboarded: todo, name: Нексус системного ландшафта, purpose: "bounded contexts, существующие API-контракты, что уже есть vs что строить заново, скрытые зависимости"}
+  - {slug: ownership,        source: default, onboarded: todo, name: Нексус владения,             purpose: "владельцы затронутых доменов, кого согласовывать, эскалационные пути, скрытые стейкхолдеры (RACI)"}
+  - {slug: requester-domain, source: default, onboarded: todo, name: Нексус домена заказчика,     purpose: "бизнес-логика и KPI внешней команды-заказчика; специфическая боль vs платформенная потребность"}
+  - {slug: precedents,       source: default, onboarded: todo, name: Нексус прецедентов,          purpose: "что уже обсуждалось, почему отклоняли похожие запросы, связанный техдолг"}
+  - {slug: compliance,       source: default, onboarded: todo, name: Нексус стандартов/комплаенса, purpose: "корпоративный шаблон БФТ, security/legal-ограничения, NFR-бейзлайн"}
+  - {slug: strategy,         source: default, onboarded: todo, name: Нексус стратегии/roadmap,     purpose: "связь запроса с текущими OKR и приоритетами квартала, защита на приоритизации"}
+  - {slug: capacity,         source: default, onboarded: todo, name: Нексус мощности,             purpose: "velocity команды, capacity, cost of delay — какой ценой"}
+  # --- Кастомные (добавлены /paf-nexus-create) ---
   - {slug: team,     source: custom,  onboarded: todo, name: Нексус организационной структуры, purpose: "People Graph — персоны, роли, зоны влияния, связи, экспертиза"}
+  - {slug: channels, source: custom,  onboarded: todo, name: Нексус информационных каналов, owner: Product Ops, purpose: "Information Channels Graph — каналы поступления информации: назначение, темы, стейкхолдеры, участки системы, цели"}
+  - {slug: landscape, source: custom,  onboarded: todo, name: Нексус ландшафта, purpose: "Команды вокруг PO — миссия, PO, системы, тип связи, точки касания (что делают команды рядом)"}
