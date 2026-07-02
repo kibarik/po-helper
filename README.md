@@ -21,6 +21,7 @@
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
 | **Онбординг** | `/paf-init`, `/paf-nexus-create` | GROUND Vault под продукт | [↓ Онбординг](#-онбординг-paf) |
+| **Контекст-recall** | `entire search` · чат-агент `entire-search` | «Чем занимались / на чём остановились» — сессии индексируются рядом с коммитами | [↓ Установка](#-установка) |
 
 ---
 
