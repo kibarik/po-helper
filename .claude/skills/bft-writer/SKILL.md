@@ -6,7 +6,7 @@
 
 > **Примеры в командах и ресурсах** (коды эпиков `EPIC-10`/`PROJ-101`, домены, golden-референсы золотых референсов) — иллюстративные, из предметной области автора шаблона. Для своего проекта реальные ключи/домены/стейкхолдеры берутся из `.claude/domain-profile.md`. Универсальна структура и методология, не домен.
 
-Это **multi-step pipeline из 7 команд** (по архитектуре sa-helper FNR). Каждая команда = **отдельный запуск, отдельная роль, свой артефакт, STOP-пауза для PO между ними**. Не выполняй весь pipeline за один промт — STOP после каждой стадии и жди решения человека.
+Это **multi-step pipeline из 8 команд** (по архитектуре sa-helper FNR), включая стадию 0.5 «внешние команды». Каждая команда = **отдельный запуск, отдельная роль, свой артефакт, STOP-пауза для PO между ними**. Не выполняй весь pipeline за один промт — STOP после каждой стадии и жди решения человека.
 
 ---
 
@@ -16,10 +16,12 @@
 
 ---
 
-## Pipeline (6 стадий, зеркало sa-helper FNR)
+## Pipeline (7 стадий, зеркало sa-helper FNR)
 
 ```
 /bft-context-gen  → context-pack          [СТОП: PO ревьюит pack]
+        ↓
+/bft-ext-teams    → external-teams-actions.md  (карта связей с командами вокруг)  [СТОП]
         ↓
 /bft-problem      → problem.md            (диагноз As-Is/Gap, БЕЗ решения)   [СТОП]
         ↓
@@ -43,6 +45,7 @@
 | Стадия | Команда | Роль | Артефакт |
 |---|---|---|---|
 | 0 Контекст | `/bft-context-gen` | Context Builder (Кортексы C1–C5 + Нексусы N1–N7) | `artefacts/bft-context-pack.md` |
+| 0.5 Внешние команды | `/bft-ext-teams` | Dependency Analyst | `artefacts/external-teams-actions.md` |
 | 1 Проблема | `/bft-problem` | Problem Analyst (диагноз, не решение) | `artefacts/problem.md` |
 | 2 Концепты | `/bft-concept` | Solution Designer (2-3 варианта) | `artefacts/concept.md` |
 | 3 Дебаты | `/bft-debate` | Architect vs Devil's Advocate | вердикт в `artefacts/concept.md` |
@@ -61,6 +64,7 @@ bft_documentation/<epic>/
 ├── <epic>.md                 (/bft-draft) → ФИНАЛЬНЫЙ БФТ (главный документ)
 └── artefacts/                промежуточные артефакты пайплайна
     ├── bft-context-pack.md   (/bft-context-gen)
+    ├── external-teams-actions.md  (/bft-ext-teams)
     ├── problem.md            (/bft-problem)
     ├── concept.md            (/bft-concept → +вердикт от /bft-debate)
     └── validation.md         (/bft-validate)
