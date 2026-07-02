@@ -68,7 +68,7 @@ SKILLS=(bft-writer okr-planner sprint-planner po-research info-channels)
 
 # Команды фреймворка
 COMMANDS=(
-  bft-context-gen bft-context-gen-deep bft-problem bft-concept bft-debate bft-draft bft-validate bft-deliver
+  bft-value bft-context-gen bft-context-gen-deep bft-problem bft-concept bft-debate bft-draft bft-validate bft-deliver
   okr-context-gen okr-objectives okr-key-results okr-debate okr-enrich okr-validate okr-deliver
   sprint-roadmap sprint-sync sprint-goal sprint-decompose sprint-load sprint-deliver
   po-research
