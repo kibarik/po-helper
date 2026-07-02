@@ -2,15 +2,31 @@
 
 MOC (map of content) всех Нексусов, инстанцированных для этого клиента. Источник истины — `_registry.yaml`.
 
-## Дефолтные Нексусы
+## Дефолтные Нексусы — PAF-минимум (продуктовый контекст)
 
 - [market](market/) — рынок, конкурентная среда, динамика.
 - [customer](customer/) — целевой клиент, сегменты, JTBD.
 - [product](product/) — продукт, фичи, архитектура решений.
 - [growth](growth/) — рост, каналы, эксперименты.
+- [project-management](project-management/) — **обязательный** Нексус PO: этапы, сроки, набор проектов/артефактов/планов в зоне ответственности (delivery map).
+
+## Дефолтные Нексусы — набор po-helper (intake → БФТ)
+
+Контекст, необходимый для качественного БФТ по внешнему запросу. Каждый Нексус закрывает риск, из-за которого БФТ технически корректен, но негоден к принятию решения.
+
+- [problem](problem/) — проблема (не запрос): метрика под угрозой, выгодоприобретатель, цена бездействия.
+- [system-landscape](system-landscape/) — системный ландшафт: bounded contexts, API-контракты, что уже есть vs строить заново.
+- [ownership](ownership/) — владение (RACI): владельцы доменов, согласующие, эскалации, скрытые стейкхолдеры.
+- [requester-domain](requester-domain/) — домен заказчика: бизнес-логика и KPI внешней команды.
+- [precedents](precedents/) — прецеденты: прошлые обсуждения, причины отказов, связанный техдолг.
+- [compliance](compliance/) — стандарты/комплаенс: шаблон БФТ, security/legal, NFR-бейзлайн.
+- [strategy](strategy/) — стратегия/roadmap: связь с OKR и приоритетами квартала.
+- [capacity](capacity/) — мощность: velocity, capacity, cost of delay.
 
 ## Кастомные Нексусы
 
-- [team](team/) — организационная структура, People Graph.
+- [team](team/) — организационная структура, People Graph (+ PO navigation для `/people-map`).
+- [channels](channels/) — информационные каналы, Information Channels Graph.
+- [landscape](landscape/) — команды вокруг PO, что делают рядом (ext-team узлы).
 
 <!-- TODO /paf-init: перегенерировать из _registry.yaml -->
