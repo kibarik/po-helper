@@ -1,6 +1,7 @@
-# Валидный registry (fixture ground_ok) — 4 default, onboarded: todo
+# Валидный registry (fixture ground_ok) — 5 default базового шаблона, onboarded: todo
 nexus_types:
   - {slug: market,   source: default, onboarded: todo}
   - {slug: customer, source: default, onboarded: todo}
   - {slug: product,  source: default, onboarded: todo}
   - {slug: growth,   source: default, onboarded: todo}
+  - {slug: project-management, source: default, onboarded: todo}
