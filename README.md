@@ -15,7 +15,7 @@
 |:---|:---|:---|:---|
 | **OKR** | `/okr-context-gen … /okr-deliver` (7 стадий) | Квартальный OKR (OBJ + KR + IMP) | [↓ OKR](#-okr--квартальное-планирование) |
 | **Спринт** | `/sprint-roadmap` · `/sprint-sync … /sprint-deliver` | Roadmap KR×спринт + детальный план спринта (Sprint Goal + capacity + N+1) | [SKILL](.claude/skills/sprint-planner/SKILL.md) |
-| **БФТ** | `/bft-context-gen … /bft-deliver` (7 стадий) | Бизнес-Функциональные Требования по эпику | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
+| **БФТ** | `/bft-value … /bft-deliver` (8 стадий) | Бизнес-Функциональные Требования по эпику | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
 | **Внешние запросы** | `/req-context … /req-handoff` (7 стадий) | Скоринг внешнего запроса → SMART-задача + routing (front door перед БФТ) | [SKILL](.claude/skills/request-intake/SKILL.md) |
 | **Инфо-каналы** | `/channel-map` · `/channel-list` · `/channel-route` | Реестр каналов поступления информации + разметка входящего (источник → стейкхолдеры/тема/участок/цель → роутинг) | [SKILL](.claude/skills/info-channels/SKILL.md) |
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
@@ -148,17 +148,19 @@ flowchart LR
 
 ## 📋 БФТ — Бизнес-Функциональные Требования
 
-Навык **`bft-writer`**: один эпик трекера → готовый документ БТ/ПТ/ИТ/ФТ/НФТ. Не «генерация за один промт», а конвейер из 7 команд со STOP-паузой после каждой.
+Навык **`bft-writer`**: один эпик трекера → готовый документ БТ/ПТ/ИТ/ФТ/НФТ. Не «генерация за один промт», а конвейер из 8 команд со STOP-паузой после каждой. Первая стадия — `/bft-value`: зачем инвестировать ресурсы (ценность ← KR/стратегия), до контекста и требований.
 
 ```mermaid
 flowchart TD
-    A["/bft-context-gen"] --> B["/bft-problem"] --> C["/bft-concept"] --> D["/bft-debate"]
+    V["/bft-value"] --> A["/bft-context-gen"] --> B["/bft-problem"] --> C["/bft-concept"] --> D["/bft-debate"]
+    V -->|"Ценность не доказана"| X(("вернуть продакту"))
     D --> E{Вердикт?}
     E -->|"Принят"| F["/bft-draft"]
     E -->|"Забраковано"| C
     F --> G["/bft-validate"]
     G -->|"🟢/🟡"| H(("/bft-deliver"))
     G -->|"🔴 gate"| F
+    style V fill:#845ef7,color:#fff
     style A fill:#4a9eff,color:#fff
     style D fill:#ffd43b,color:#000
     style G fill:#ff6b6b,color:#fff
@@ -169,6 +171,7 @@ flowchart TD
 
 | Шаг | Команда | Что на STOP-паузе |
 |:--|:--|:--|
+| 0. Ценность | `/bft-value EPIC-10 PROJ-101` | Зачем инвестировать: ценность ← KR/стратегия. Не доказана → вернуть продакту |
 | 1. Контекст | `/bft-context-gen EPIC-10 PROJ-101` | Дозаполни `[УТОЧНИТЬ]`; незнакомый эпик → `/bft-context-gen-deep` |
 | 2. Проблема | `/bft-problem EPIC-10` | Проверь: это диагноз, не решение |
 | 3. Концепты | `/bft-concept EPIC-10` | Сравни 2-3 варианта |
