@@ -38,8 +38,9 @@ PAF (https://productframework.ru/ops/main, Тихомиров С., CC BY-SA 4.0)
 | `ops-model` | Нексус операционной модели | операционная модель, кадренсы, эффект асинхронности | Product Ops / Product Architect | — | ❌ | — |
 | `company` | Нексус портфеля/компании | портфель продуктов, бизнес-юниты (Business Pod) | Portfolio Manager / Bizdev Architect | — | ❌ | — |
 | `team` | Нексус организационной структуры | персоны, роли, зоны влияния/ответственности, связи, экспертиза — People Graph для ИИ-навигации | Product Ops / Portfolio Manager | — | ❌ | ФИО и должности ключевых людей? Зоны ответственности каждого? Кто с кем взаимодействует по рабочим вопросам? По каким вопросам к кому обращаться? |
+| `channels` | Нексус информационных каналов | каналы поступления информации: назначение, темы, стейкхолдеры, участки системы, цели — Information Channels Graph для разметки входящей информации | Product Ops | — | ❌ | Какие каналы поступления информации использует команда? Для чего каждый канал, по каким вопросам пишут? Кто в каждом канале? Какие участки системы и цели затрагивает информация? Что делать с входящей информацией из канала? |
 
-> `minimal: ✅` — входит в **дефолтный набор**, инстанцируется `/paf-init`. `minimal: ❌` — опциональные PAF-типы (`ops-model`, `company`) и каталожный `team`, клиент подключается по необходимости.
+> `minimal: ✅` — входит в **дефолтный набор**, инстанцируется `/paf-init`. `minimal: ❌` — опциональные PAF-типы (`ops-model`, `company`) и каталожные расширения коробки для ИИ-навигации `team` (People Graph, §4.1) и `channels` (Information Channels Graph, §4.2), клиент подключается по необходимости.
 >
 > **Три яруса дефолтного набора (13 Нексусов).** (1) **PAF-минимум** — 4 стратегических объекта управления (`market`/`customer`/`product`/`growth`, базовый продуктовый контекст PAF). (2) **Обязательный операционный** Нексус PAF Team OS `project-management` — **delivery map PO**: не объект управления, а **проработка** (этапы, сроки, набор проектов/артефактов/планов) в зоне ответственности конкретного PO. (3) **Набор po-helper для intake→БФТ** — 8 Нексусов контекста внешнего запроса (`problem`/`system-landscape`/`ownership`/`requester-domain`/`precedents`/`compliance`/`strategy`/`capacity`), без которого БФТ по внешнему запросу технически корректен, но негоден к принятию решения. Все три яруса `/paf-init` инстанцирует одинаково (`source: default`).
 
@@ -394,8 +395,9 @@ schema_extensions: {}
 - **`ops-model`** — Нексус операционной модели. Purpose: операционная модель, кадренсы спринтов, эффект асинхронности (нарушение кадренсов при росте локальных скоростей → event-based). Owner role: **Product Ops / Product Architect**.
 - **`company`** — Нексус портфеля/компании. Purpose: портфель продуктов, бизнес-юниты (Business Pod), скаутинг возможностей/угроз на уровне компании. Owner role: **Portfolio Manager / Bizdev Architect**.
 - **`team`** — Нексус организационной структуры. Purpose: People Graph — каждый узел = один человек (node_type: person), с ролью, зонами влияния, связями и экспертизой для ИИ-навигации. Owner role: **Product Ops / Portfolio Manager**.
+- **`channels`** — Нексус информационных каналов. Purpose: Information Channels Graph — каждый узел = один канал поступления информации (node_type: channel), с назначением, темами, стейкхолдерами, участками системы и целями. Даёт ИИ-агенту разметку входящей информации: откуда пришло, для чего канал, кого касается, куда роутить. Owner role: **Product Ops**.
 
-> Эти типы PAF определяет как часть методологии (всего 7 типов: 4 минимальных + 3 опциональных). `ops-model` и `company` не получают `seed_questions` по умолчанию — клиент формирует вопросы через `/paf-nexus-create`-интервью. `team` имеет полную YAML-спецификацию (§4.1) ниже.
+> `ops-model` и `company` — методологические PAF-типы (не получают `seed_questions` по умолчанию — клиент формирует вопросы через `/paf-nexus-create`-интервью). `team` (§4.1) и `channels` (§4.2) — расширения коробки для ИИ-навигации с полной YAML-спецификацией ниже.
 
 ### 4.1 `team` — полная спецификация
 
@@ -517,6 +519,124 @@ membership_since: 2024-03-01
 ---
 ```
 
+### 4.2 `channels` — полная спецификация
+
+```yaml
+slug: channels
+name: Нексус информационных каналов
+purpose: >
+  Information Channels Graph команды. Каждый Узел = один канал поступления
+  информации (node_type: channel): рабочий чат, Email, Telegram-канал,
+  регулярный созвон. Даёт ИИ-агенту разметку входящей информации — откуда
+  пришло сообщение, для чего канал, по каким темам здесь пишут, кто в канале
+  (стейкхолдеры), к каким участкам системы и целям привязать, куда роутить.
+owner_role: "Product Ops"
+paf_step_ref: null
+minimal: false
+seed_questions:
+  - Какие каналы поступления информации использует команда (чаты, Email, Telegram, созвоны)?
+  - Для чего каждый канал — по каким вопросам здесь пишут?
+  - Кто находится в каждом канале (стейкхолдеры)?
+  - Какие участки системы и цели затрагивает информация из канала?
+  - Что делать с входящей информацией из канала (в intake, в решения, в трекер, FYI)?
+schema_extensions:
+  # --- Идентификация (обязательные для node_type: channel) ---
+  channel_type:
+    type: enum
+    required: true
+    description: "chat | email | telegram | call | tracker | wiki | other"
+  platform:
+    type: string
+    required: true
+    description: "Платформа канала (напр. 'Telegram', 'Slack', 'Zoom', 'Email')"
+  handle:
+    type: string
+    required: false
+    description: "Идентификатор канала: @канал / id группы / email / ссылка на созвон"
+  direction:
+    type: enum
+    required: false
+    description: "inbound | outbound | bidirectional — направление потока"
+  cadence:
+    type: string
+    required: false
+    description: "Ритм канала (напр. 'поток', 'ежедневно', 'еженедельно', 'по событию')"
+
+  # --- Назначение (для чего канал, по каким вопросам) ---
+  purpose:
+    type: string
+    required: true
+    description: "Зачем канал существует, 1-2 фразы"
+  topics:
+    type: list[string]
+    required: true
+    description: "По каким вопросам здесь пишут — для роутинга входящей информации"
+  signal_types:
+    type: list[string]
+    required: true
+    description: "Типы сигналов канала: requirement | bug | decision | feedback | status | risk"
+
+  # --- Связи (роутинг) ---
+  stakeholders:
+    type: list[string]
+    required: true
+    description: "Кто в канале — node_ids из NEXUS/team (ascii)"
+  system_areas:
+    type: list[string]
+    required: false
+    description: "Затрагиваемые участки системы — ссылки на CORTEX/product"
+  goals:
+    type: list[string]
+    required: false
+    description: "Цели/OKR, которые питает канал — OBJ/KR-коды"
+
+  # --- Обработка входящей информации ---
+  ingest_action:
+    type: string
+    required: false
+    description: "Что делать с инфой отсюда: → /req-context | → CORTEX/decisions | → OKR-сигнал | → трекер | FYI"
+```
+
+> **Примечание по wilting:** `ttl_days` для channel-узлов рекомендуется **180 дней** — каналы и их состав меняются реже рынка, но быстрее нормативных документов. При реорганизации/смене инструментов обновляйте `stakeholders`/`platform`/`handle` — связи устаревают быстрее, чем назначение канала.
+
+> **Источники для channel-узлов:** `sources` указывает откуда взяты данные — `["onboarding:interview"]`, `["po:observation"]` (наблюдение PO), ссылка на сам канал. Узел без `sources` = workslop (как и для всех Нексусов).
+
+> **Связь с `team`:** `stakeholders` в channel-узле ссылается на person-узлы `NEXUS/team` (обратная сторона поля `communication_channels` в person-узле). Так граф людей и граф каналов сшиваются: «кто в канале» ↔ «через какие каналы связаться с человеком».
+
+> **Подключение нексуса `channels`** — опциональный, инстанцируется не `/paf-init`, а навыком **`info-channels`** (`/channel-map`) либо **`/paf-nexus-create channels`** (каталожный режим): берёт это определение (§4.2), создаёт `GROUND/NEXUS/channels/`, регистрирует в `_registry.yaml` (`source: custom`).
+
+**Пример frontmatter channel-узла:**
+
+```yaml
+---
+nexus: channels
+node_id: chan-billing-tg
+node_type: channel
+paf_step: null
+kind: empirical
+owner: Product Ops
+confidence: 0.6
+sources: ["onboarding:interview"]
+updated: 2026-06-25
+ttl_days: 180
+ripeness: fresh
+tags: [channel]
+# schema_extensions:
+channel_type: telegram
+platform: "Telegram"
+handle: "@billing_team"
+direction: inbound
+cadence: "поток"
+purpose: "Оперативные вопросы и баги по биллингу от смежных команд"
+topics: ["ошибки списаний", "статусы платежей", "запросы на новые тарифы"]
+signal_types: [bug, requirement, feedback]
+stakeholders: [team-ivanov-ivan, team-petrov-dmitry]
+system_areas: ["[[cortex-billing]]", "[[cortex-payments]]"]
+goals: ["KR-3.2"]
+ingest_action: "Баг → трекер; запрос на тариф → /req-context; статус/фидбек → FYI"
+---
+```
+
 ---
 
 ## 5. Кастомные Nexus-типы клиента
@@ -539,4 +659,4 @@ membership_since: 2024-03-01
 - `/paf-nexus-create` — skill создания кастомного Нексуса (§5).
 
 ---
-**Version:** 1.4 (обязательный операционный Нексус `project-management` §3.5 + ярус po-helper intake→БФТ: 8 default-Нексусов §3A) · **Last updated:** 2026-07-02 · **Связанные:** [[nexus_schema]] · [[naming_conventions]] · [[GROUND/NEXUS/_registry|_registry.yaml]] · `/paf-nexus-create`
+**Version:** 1.5 (обязательный операционный Нексус `project-management` §3.5 + ярус po-helper intake→БФТ: 8 default-Нексусов §3A + каталожный `channels` §4.2) · **Last updated:** 2026-07-02 · **Связанные:** [[nexus_schema]] · [[naming_conventions]] · [[GROUND/NEXUS/_registry|_registry.yaml]] · `/paf-nexus-create`

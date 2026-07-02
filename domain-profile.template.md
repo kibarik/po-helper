@@ -48,6 +48,8 @@ paths:
   release_alerts_root: "CORTEX/release-alerts"
   # Рабочая папка пайплайна request-intake (обработка внешних запросов)
   intake_workspace: "CORTEX/_intake/{request_id}"
+  # Реестр информационных каналов (Нексус channels) — питает /channel-route разметкой входящей информации
+  channels_nexus: "GROUND/NEXUS/channels"
 ```
 
 Если у проекта нет какого-то документа (например `KR-EPIC-MAP`) — оставьте путь, команда при отсутствии файла предложит его создать (bootstrap), не выдумывая содержимое.
