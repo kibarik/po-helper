@@ -20,6 +20,7 @@
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
+| **Операционный штаб** | `backlog board` (+ MCP `backlog`) | Доска: какие артефакты в работе и на какой стадии оборвались | [↓ Штаб](#-операционный-штаб-backlogmd) |
 | **Онбординг** | `/paf-init`, `/paf-nexus-create` | GROUND Vault под продукт | [↓ Онбординг](#-онбординг-paf) |
 
 ---
@@ -56,6 +57,8 @@ cp .claude/domain-profile.template.md .claude/domain-profile.md
 ```
 
 > **MCP `ruflo`** (опционально, память для онбординга) — глобальный CLI: `npm i -g ruflo@latest` (нужна ≥ 3.14.4). Коробка работает и без него.
+>
+> **Backlog.md** (операционный штаб) ставится и инициализируется установщиком автоматически: если `backlog` не найден — `bun add -g backlog.md` → fallback `npm i -g backlog.md`, при неудаче печатается инструкция (штаб опционален). В корне проекта появляется `backlog/` + MCP-сервер `backlog`. Не источник истины — см. [↓ Штаб](#-операционный-штаб-backlogmd).
 
 Подробнее — [install.sh](install.sh) · [domain-profile.template.md](domain-profile.template.md).
 
@@ -82,6 +85,28 @@ flowchart LR
 | `/paf-nexus-create` | по необходимости | кастомные Нексусы (`sellers`, `buyers`, `team`…) + запись в реестр |
 
 Схемы и валидатор Vault — [sa_documentation/](sa_documentation/) (`ground_schema`, `nexus_schema`, `nexus_catalog`, `validate_ground.py`).
+
+---
+
+## 🗂 Операционный штаб (Backlog.md)
+
+> **Не источник истины, а штаб.** Истина живёт в артефактах (`bft_documentation/`, пути планирования, `GROUND/`, трекер, wiki). [Backlog.md](https://github.com/MrLesk/Backlog.md) отвечает на один вопрос: *над какими артефактами мы начали работу и на какой стадии она оборвалась.* Хранит указатель и статус, не содержимое.
+
+Модель — **1 задача = 1 артефакт**:
+
+| Сущность Backlog | Значение |
+|:---|:---|
+| Задача | Один артефакт (эпик БФТ, квартал OKR, спринт, запрос, релиз) |
+| `label` | Тип: `bft` · `okr` · `sprint` · `request` · `release` |
+| Acceptance Criteria | Стадии пайплайна — отмеченный AC = пройденная стадия (видно, где встали) |
+| `status` | `To Do` / `In Progress` / `Done` |
+
+```bash
+backlog board                       # канбан: что в работе
+backlog task list --plain -l bft    # артефакты одного типа
+```
+
+На STOP-паузах пайплайна агент создаёт задачу (`/*-context-gen`), чекает AC по мере прохождения стадий и ставит `Done` на `/*-deliver`. Полная конвенция — [backlog-ops.template.md](backlog-ops.template.md) (устанавливается в проект как `backlog/docs/operational-hq.md`). MCP-сервер `backlog` даёт те же операции инструментами `mcp__backlog__*`.
 
 ---
 
