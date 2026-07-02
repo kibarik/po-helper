@@ -438,6 +438,7 @@ membership_since: 2024-03-01
 ## 6. Связи
 
 - [[nexus_schema]] — базовая Node schema, формат определения кастомного типа (`schema_extensions`), empirical узлы клиента (GROUND Vault).
+- [[nexus_process_map]] — матрица «Нексус × Процесс»: какой Нексус грунтует какой движок (`request-intake`, `bft-writer`, `okr-planner`, `sprint-planner`, `release-guard`, `po-research`).
 - [[GROUND/NEXUS/_registry|_registry.yaml]] — реестр Нексусов, инстанцированных для данного клиента (дефолтные `source: default` + кастомные `source: custom`). Источник истины для поля `nexus` в frontmatter.
 - `/paf-nexus-create` — skill создания кастомного Нексуса (§5).
 
