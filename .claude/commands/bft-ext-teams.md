@@ -27,7 +27,7 @@ description: 'БФТ стадия 0.5 — проекция ландшафта в
 2. Прочитай `resources/bft_standards.md` (секция «Внешние команды — таксономия связи»).
 3. Прочитай контекст-пак: `bft_documentation/<epic>/artefacts/bft-context-pack.md` — scope эпика, затрагиваемые системы.
 4. Резолвь секцию `landscape` из `.claude/domain-profile.md`.
-5. Прочитай снимок ландшафта `{landscape.snapshot_doc}` (`landscape-{quarter}.md`). Нет файла → `[УТОЧНИТЬ: нет landscape-снимка, запусти /okr-landscape]`, работай от Нексуса.
+5. Прочитай снимок ландшафта `{landscape.snapshot_doc}` — `{quarter}` резолвится как `cadence.current_quarter` из профиля (текущий квартал). Нет файла → `[УТОЧНИТЬ: нет landscape-снимка, запусти /okr-landscape]`, работай от Нексуса.
 6. Прочитай ext-team узлы `GROUND/NEXUS/landscape/` — стабильные факты о командах (системы, PO, тип связи).
 
 ### Этап 2: Пересечение scope эпика с ландшафтом
