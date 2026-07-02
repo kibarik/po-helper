@@ -30,6 +30,23 @@ membership_since: YYYY-MM-DD                   # дата начала в рол
 collaborates_with:                              # ключевые рабочие связи вне иерархии (ascii node_ids)
   - team-colleague-slug
 
+# Team Grouping (как сгруппированы по командам)
+team_unit: "Squad <name>"                       # команда/под/группа внутри отдела; null если вне команд
+team_role: member                               # lead | member | representative; null если вне команд
+team_mission: >                                 # за что отвечает команда (заполнять у lead/representative)
+  Зона ответственности команды одним абзацем.
+
+# PO Navigation Layer (я-как-PO ↔ человек — ГЛАВНОЕ для /people-map)
+proximity: close                                # core | close | extended | peripheral — кто ближе/дальше
+interaction_cadence: weekly                     # daily | weekly | biweekly | monthly | ad-hoc | rare
+inbound_topics:                                 # с чем ЧЕЛОВЕК сам приходит к PO (он инициатор)
+  - "вопрос 1"
+clarify_with:                                   # какие ДЕТАЛИ PO уточняет у человека (источник контекста)
+  - "деталь 1"
+approves:                                       # какие решения человек СОГЛАСОВЫВАЕТ (право решения/sign-off)
+  - "решение 1"
+escalate_via: team-manager-slug                 # node_id для эскалации через/над этим человеком; null
+
 # Expertise Graph (критично для ИИ-роутинга)
 influence_zones:                               # зоны ответственности/влияния — ОБЯЗАТЕЛЬНО
   - "зона 1"
@@ -57,7 +74,20 @@ communication_channels:
 
 **Роль:** {{role_title}}  
 **Отдел:** {{department}}  
+**Команда:** {{team_unit}} ({{team_role}})  
 **В роли с:** {{membership_since}}
+
+## Навигация PO (я-как-PO ↔ человек)
+
+- **Близость:** {{proximity}} · взаимодействие {{interaction_cadence}}
+- **Приходит ко мне с:** {{inbound_topics}}
+- **Уточняю детали:** {{clarify_with}}
+- **Согласовывает:** {{approves}}
+- **Эскалация через:** [[{{escalate_via}}]]
+
+## Команда
+
+**{{team_unit}}** — {{team_mission}}
 
 ## Зоны влияния
 
