@@ -21,6 +21,7 @@
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
 | **Онбординг** | `/paf-init`, `/paf-nexus-create` | GROUND Vault под продукт | [↓ Онбординг](#-онбординг-paf) |
+| **Контекст-recall** | `entire search` · чат-агент `entire-search` | «Чем занимались / на чём остановились» — сессии индексируются рядом с коммитами | [↓ Установка](#-установка) |
 
 ---
 
@@ -56,6 +57,8 @@ cp .claude/domain-profile.template.md .claude/domain-profile.md
 ```
 
 > **MCP `ruflo`** (опционально, память для онбординга) — глобальный CLI: `npm i -g ruflo@latest` (нужна ≥ 3.14.4). Коробка работает и без него.
+
+> **`entire`** (session-tracking) — `install.sh` ставит его сам ([entire.io](https://entire.io/), в `$HOME/.local/bin`, без sudo) и сразу включает через `entire enable --agent claude-code`. Дальше он молча индексирует сессии агента рядом с коммитами (локально, без аккаунта). Чтобы искать по истории — один раз `entire login`, затем `entire search "<тема>"` (или спросите в чате: сабагент `entire-search` поднимет историю). Вспомогательный слой поверх `*-sync`-команд: быстрый recall «на чём остановились» до груминга. Отключить — `entire disable`.
 
 Подробнее — [install.sh](install.sh) · [domain-profile.template.md](domain-profile.template.md).
 
@@ -183,6 +186,9 @@ flowchart TD
 
 **Нужен ли `ruflo`?**
 Нет, опционально (память при онбординге). Коробка работает и без MCP.
+
+**Как быстро вспомнить, чем занимались и на чём остановились?**
+`entire` (ставится и включается автоматически в `install.sh`) индексирует сессии агента рядом с коммитами — локально, сразу после установки. Для поиска по истории один раз выполните `entire login`, дальше `entire search "<тема>"` или просто спросите в чате «на чём мы остановились?» — сабагент `entire-search` поднимет прошлые промпты и чекпоинты. Это восстанавливает контекст до груминга, когда артефакт (`*-context-gen`, `*-sync`) ещё не сформирован. Отключить — `entire disable`.
 
 ---
 
