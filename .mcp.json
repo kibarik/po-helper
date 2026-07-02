@@ -3,6 +3,10 @@
     "ruflo": {
       "command": "/opt/homebrew/bin/ruflo",
       "args": ["mcp", "start"]
+    },
+    "backlog": {
+      "command": "backlog",
+      "args": ["mcp", "start"]
     }
   }
 }
