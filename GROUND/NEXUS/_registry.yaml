@@ -9,6 +9,8 @@ nexus_types:
   - {slug: customer, source: default, onboarded: todo}
   - {slug: product,  source: default, onboarded: todo}
   - {slug: growth,   source: default, onboarded: todo}
+  # --- Обязательный операционный Нексус PO (PAF Team OS) ---
+  - {slug: project-management, source: default, onboarded: todo, name: Нексус проектного управления PO, purpose: "Delivery map PO — этапы, сроки, набор проектов/артефактов/планов в зоне ответственности"}
   # --- Дефолтный набор po-helper (intake → БФТ) ---
   - {slug: problem,          source: default, onboarded: todo, name: Нексус проблемы,             purpose: "бизнес-проблема под запросом (не симптом): метрика под угрозой, выгодоприобретатель, цена бездействия"}
   - {slug: system-landscape, source: default, onboarded: todo, name: Нексус системного ландшафта, purpose: "bounded contexts, существующие API-контракты, что уже есть vs что строить заново, скрытые зависимости"}
