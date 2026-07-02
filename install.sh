@@ -54,6 +54,26 @@ check_ruflo() {
 }
 check_ruflo
 
+# --- backlog.md (операционный штаб) ---
+# CLI ставится через bun/npm глобально; если недоступно — не падаем, печатаем инструкцию.
+ensure_backlog() {
+  if command -v backlog >/dev/null 2>&1; then
+    echo "  ✓ backlog $(backlog --version 2>/dev/null | head -1)"
+    return
+  fi
+  echo "  · backlog.md не найден — пробую установить (операционный штаб)…"
+  if command -v bun >/dev/null 2>&1 && bun add -g backlog.md >/dev/null 2>&1; then
+    echo "  ✓ backlog.md установлен через bun"
+  elif command -v npm >/dev/null 2>&1 && npm i -g backlog.md >/dev/null 2>&1; then
+    echo "  ✓ backlog.md установлен через npm"
+  else
+    echo "  ⚠ не удалось поставить backlog.md автоматически. Установите вручную:"
+    echo "      bun add -g backlog.md   # или:  npm i -g backlog.md"
+    echo "    Штаб опционален — остальной po-helper работает без него."
+  fi
+}
+ensure_backlog
+
 DEST_ROOT="${DEST_ROOT:-$PWD/.claude}"
 DEST_SKILLS="$DEST_ROOT/skills"
 DEST_COMMANDS="$DEST_ROOT/commands"
@@ -143,6 +163,39 @@ if [ -f "$SRC_PROFILE_TPL" ]; then
   fi
 fi
 
+# --- backlog.md: инициализация операционного штаба в корне проекта ---
+# Идемпотентно: если backlog/ уже есть — не трогаем. Истина в артефактах, штаб опционален.
+PROJECT_ROOT="$(cd "$(dirname "$DEST_ROOT")" && pwd)"
+SRC_BACKLOG_TPL="$SCRIPT_DIR/backlog-ops.template.md"
+if command -v backlog >/dev/null 2>&1; then
+  if [ -d "$PROJECT_ROOT/backlog" ]; then
+    echo "  · backlog/ уже инициализирован в $PROJECT_ROOT — пропускаю"
+  elif [ ! -d "$PROJECT_ROOT/.git" ]; then
+    echo "  ⚠ $PROJECT_ROOT не git-репозиторий — пропускаю backlog init (сначала: git init)"
+  else
+    echo "→ Инициализирую операционный штаб backlog.md в $PROJECT_ROOT"
+    if ( cd "$PROJECT_ROOT" && backlog init "$(basename "$PROJECT_ROOT")" --defaults --integration-mode mcp --check-branches false >/dev/null 2>&1 ); then
+      # локальный штаб — гасим скан удалённых веток (не критично, если ключ не принят)
+      ( cd "$PROJECT_ROOT" && backlog config set remoteOperations false >/dev/null 2>&1 ) || true
+      echo "  ✓ backlog/ инициализирован"
+    else
+      echo "  ⚠ backlog init не удался — инициализируйте вручную: backlog init"
+    fi
+  fi
+  # конвенция «операционного штаба» — рядом с доской
+  if [ -f "$SRC_BACKLOG_TPL" ] && [ -d "$PROJECT_ROOT/backlog" ]; then
+    mkdir -p "$PROJECT_ROOT/backlog/docs"
+    if [ -f "$PROJECT_ROOT/backlog/docs/operational-hq.md" ] && [ "$MODE" = "install" ]; then
+      echo "  · backlog/docs/operational-hq.md уже есть — пропускаю"
+    else
+      cp "$SRC_BACKLOG_TPL" "$PROJECT_ROOT/backlog/docs/operational-hq.md"
+      echo "  ✓ backlog/docs/operational-hq.md (конвенция операционного штаба)"
+    fi
+  fi
+else
+  echo "  · backlog CLI недоступен — штаб не инициализирован (см. инструкцию выше)"
+fi
+
 echo ""
 echo "✅ po-helper $MODE завершён в $DEST_ROOT"
 echo "   Навыки:  ${SKILLS[*]}"
@@ -152,3 +205,4 @@ echo "Дальше:"
 echo "  1) cp $DEST_ROOT/domain-profile.template.md $DEST_ROOT/domain-profile.md  и заполните под проект"
 echo "  2) Reload Window в IDE — команды появятся в чате"
 echo "  3) OKR: /okr-context-gen <quarter>   ·   БФТ: /bft-context-gen <epic>   ·   Спринт: /sprint-roadmap <quarter> → /sprint-sync <sprint>"
+echo "  4) Операционный штаб: backlog board (что в работе) · конвенция — backlog/docs/operational-hq.md"
