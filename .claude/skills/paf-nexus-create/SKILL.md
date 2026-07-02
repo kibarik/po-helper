@@ -7,14 +7,16 @@ description: "Создаёт кастомный Нексус под решени
 
 Skill коробки «PAF Team OS». Добавляет Нексус сверх дефолтного минимума (`/paf-init` создал market/customer/product/growth). Два режима:
 
-1. **Каталожный опц. тип** (`team`, `ops-model`, `company`) — берёт готовое определение из `sa_documentation/nexus_catalog.md` §4/§4.1, не выдумывает.
+1. **Каталожный опц. тип** — берёт готовое определение из `sa_documentation/nexus_catalog.md`, не выдумывает:
+   - PAF-канон: `team`, `ops-model`, `company` (§4/§4.1).
+   - BFT-ярус (коробочное расширение po-helper, не канон PAF): `system`, `decisions`, `rules`, `compliance`, `quality`, `risk`, `lexicon`, `metrics` (§4.2).
 2. **Свежий кастом** (`sellers`, `buyers`, `supply-chain`, …) — интервью под решение клиента.
 
 > Пошаговый план для LLM. Выполняй по порядку. Читай файлы перед записью. Ноль выдуманной PAF-терминологии вне `sa_documentation/naming_conventions.md`.
 
 ## 0. Контекст (прочитать перед стартом)
 
-- `sa_documentation/nexus_catalog.md` — мастер-каталог. §2 таблица типов; §4 опц. PAF-типы; **§4.1 — полная спецификация `team`** (schema_extensions, seed_questions, пример person-узла).
+- `sa_documentation/nexus_catalog.md` — мастер-каталог. §2 таблица типов; §4 опц. PAF-типы; **§4.1 — полная спецификация `team`** (schema_extensions, seed_questions, пример person-узла); **§4.2 — BFT-ярус** (`system`/`decisions`/`rules`/`compliance`/`quality`/`risk`/`lexicon`/`metrics` — коробочное расширение, полные YAML-определения).
 - `sa_documentation/nexus_schema.md` — Node schema (§2 ключи, §3 `node_type` включая `person`, §4 wilting).
 - `sa_documentation/ground_schema.md` — schema `_registry.yaml` (§«_registry.yaml»: slug `[a-z][a-z0-9-]*`, source, owner, purpose, onboarded).
 - `GROUND/config.yaml` — `team.roster` (источник людей для засева `team`), `nexus.custom_count`.
@@ -33,16 +35,17 @@ Skill коробки «PAF Team OS». Добавляет Нексус сверх
 
 1. **Какой Нексус создаём?** — slug (ascii, паттерн `[a-z][a-z0-9-]*`). Помоги транслитерировать кириллицу.
 2. **Определи режим:**
-   - slug ∈ {`team`, `ops-model`, `company`} → **каталожный режим** (§3). Подтверди клиенту: «Беру определение из мастер-каталога».
+   - slug ∈ {`team`, `ops-model`, `company`, `system`, `decisions`, `rules`, `compliance`, `quality`, `risk`, `lexicon`, `metrics`} → **каталожный режим** (§3). Подтверди клиенту: «Беру определение из мастер-каталога». Для типов BFT-яруса (`system`/`decisions`/`rules`/`compliance`/`quality`/`risk`/`lexicon`/`metrics`) уточни: «Это BFT-ярус — коробочное расширение po-helper, не канон PAF».
    - иначе → **кастомный режим** (§4).
 
 ---
 
-## 3. Каталожный режим (team / ops-model / company)
+## 3. Каталожный режим (PAF-канон + BFT-ярус)
 
-Прочитай определение типа из `nexus_catalog.md`:
+Прочитай определение типа из `nexus_catalog.md` (PAF-канон `team`/`ops-model`/`company` — §4/§4.1; BFT-ярус `system`/`decisions`/`rules`/`compliance`/`quality`/`risk`/`lexicon`/`metrics` — §4.2):
 - `name`, `purpose`, `owner_role`, `seed_questions`, `schema_extensions` — **из каталога, не выдумывай**.
 - `owner` — резолвь `owner_role` → конкретное имя из `config.yaml team.roster`; если роль не назначена (null) → `"Cortex"`.
+- Типы BFT-яруса засева узлов не имеют (в отличие от `team`) — создаётся только `_index.md`; узлы наполнит `/paf-onboard`. Источник онбординга: `system`←`cortex.architecture`, `decisions`←`cortex.decisions`, `rules`←`cortex.business_rules`, `compliance`←`cortex.regulatory`; `quality`/`risk`/`lexicon`/`metrics` — с нуля (CORTEX-предка нет).
 
 ### 3.1 Спец-обработка `team` — засев person-узлов из roster
 
