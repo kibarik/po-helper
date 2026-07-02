@@ -54,6 +54,30 @@ check_ruflo() {
 }
 check_ruflo
 
+# --- entire (session-tracking: «на чём остановились / чем занимались») ---
+# Не часть репозитория; ставится curl-скриптом в $HOME/.local/bin (без sudo).
+# Вспомогательный слой: индексирует сессии агента рядом с коммитами, чтобы в
+# любой момент восстановить контекст, а не грумить с нуля. Коробка работает и без него.
+check_entire() {
+  if command -v entire >/dev/null 2>&1; then
+    local cur
+    cur="$(entire version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
+    echo "  ✓ entire ${cur:-найден}"
+    return
+  fi
+  echo "  … entire не найден — ставлю (session-tracking)…"
+  curl -fsSL https://entire.io/install.sh | bash >/dev/null 2>&1 || true
+  if command -v entire >/dev/null 2>&1; then
+    echo "  ✓ entire установлен"
+  elif [ -x "$HOME/.local/bin/entire" ]; then
+    export PATH="$HOME/.local/bin:$PATH"
+    echo "  ✓ entire установлен ($HOME/.local/bin — добавьте в PATH)"
+  else
+    echo "  ⚠ entire не установился. Вручную: curl -fsSL https://entire.io/install.sh | bash"
+  fi
+}
+check_entire
+
 DEST_ROOT="${DEST_ROOT:-$PWD/.claude}"
 DEST_SKILLS="$DEST_ROOT/skills"
 DEST_COMMANDS="$DEST_ROOT/commands"
@@ -141,6 +165,29 @@ if [ -f "$SRC_PROFILE_TPL" ]; then
     echo "  ✓ domain-profile.template.md (скопируйте в domain-profile.md и заполните под проект)"
   fi
 fi
+
+# --- entire: авто-инициализация session-tracking в целевом репозитории ---
+# Сразу после установки фреймворка entire включается и начинает работать —
+# ловит сессии агента через хуки Claude Code. Идемпотентно, не роняет install.
+enable_entire() {
+  command -v entire >/dev/null 2>&1 || { echo "  ⚠ entire недоступен — инициализацию пропускаю"; return; }
+  local repo_root
+  repo_root="$(cd "$DEST_ROOT/.." && pwd)"
+  if ! git -C "$repo_root" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "  ⚠ $repo_root — не git-репозиторий, entire enable пропущен"
+    return
+  fi
+  if ( cd "$repo_root" && entire status 2>/dev/null | grep -qi 'enabled' ); then
+    echo "  ✓ entire уже включён в репозитории"
+    return
+  fi
+  if ( cd "$repo_root" && entire enable --agent claude-code --telemetry=false >/dev/null 2>&1 ); then
+    echo "  ✓ entire включён — session-tracking активен (recall: entire search)"
+  else
+    echo "  ⚠ entire enable не удался. Вручную: entire enable --agent claude-code"
+  fi
+}
+enable_entire
 
 echo ""
 echo "✅ po-helper $MODE завершён в $DEST_ROOT"
