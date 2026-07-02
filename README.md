@@ -22,6 +22,7 @@
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
 | **Карта людей** | `/people-links` · `/people-map` | Описание отношений PO с сотрудниками (контур) → навигатор: кто ближе/дальше, кто с чем приходит, у кого уточнить, кто согласовывает | [links](.claude/skills/people-links/SKILL.md) · [map](.claude/skills/people-map/SKILL.md) |
+| **Калибровка нексуса людей** | `/radar-graph` · `/radar-calibrate` · `/radar-review` | Диаграмма связей команды + проверка качества People Graph: ситуационные вопросы → сверка с реальностью → correction-Prompt, цикл до 10/10 (short) или 50/50 (long) | [SKILL](.claude/skills/nexus-calibration/SKILL.md) |
 | **Онбординг** | `/paf-init`, `/paf-nexus-create` | GROUND Vault под продукт | [↓ Онбординг](#-онбординг-paf) |
 
 ---
