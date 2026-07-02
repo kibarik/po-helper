@@ -1,6 +1,6 @@
 ---
 name: paf-nexus-create
-description: "Создаёт кастомный Нексус под решение клиента (sellers, buyers, team, …): интервью → GROUND/NEXUS/<slug>/ + запись в _registry.yaml. Знает каталожные опц. типы (team/ops-model/company/channels) и засевает team из roster."
+description: "Создаёт кастомный Нексус под решение клиента (sellers, buyers, team, …): интервью → GROUND/NEXUS/<slug>/ + запись в _registry.yaml. Знает каталожные опц. типы (team/ops-model/company/channels) и засевает team из roster, landscape — из domain-profile.landscape.ext_teams."
 ---
 
 # /paf-nexus-create — создание кастомного Нексуса
@@ -35,6 +35,7 @@ Skill коробки «PAF Team OS». Добавляет Нексус сверх
 2. **Определи режим:**
    - slug ∈ {`team`, `ops-model`, `company`, `channels`} → **каталожный режим** (§3). Подтверди клиенту: «Беру определение из мастер-каталога».
      - Для `channels` есть отдельный навык `info-channels` (`/channel-map`) с интервью и разметкой входящей информации — если клиент хочет вести каналы, направь туда; каталожный режим здесь создаёт только каркас (`_index.md` + `_template.md`).
+   - slug = `landscape` → **кастомный режим (§4) с засевом из domain-profile** (§4.1). Тип определён в po-helper, не в мастер-каталоге.
    - иначе → **кастомный режим** (§4).
 
 ---
@@ -76,6 +77,26 @@ Skill коробки «PAF Team OS». Добавляет Нексус сверх
 4. **seed_questions** — 3–5 вопросов для будущего онбординга (как в каталоге §3).
 5. **(опц.) paf_step** — привязка к шагу 0–8 или null.
 6. **(опц.) schema_extensions** — тип-специфичные поля поверх базовой Node schema (напр. `quota_attainment` для sellers). Формат — как в `nexus_schema.md` §2.1.
+
+---
+
+### 4.1 Спец-обработка `landscape` — засев из domain-profile
+
+`landscape` — Нексус команд вокруг PO (`node_type: ext-team`; шаблон и `_index.md` уже есть в дистрибутиве `GROUND/NEXUS/landscape/`). Определение (не из мастер-каталога):
+- `name`: «Нексус ландшафта»; `purpose`: «Команды вокруг PO — миссия, PO, системы, тип связи, точки касания»; `owner`: из `config.yaml team.roster` (роль Product Ops) или `"Cortex"`.
+- `seed_questions` — из существующего `GROUND/NEXUS/landscape/_index.md` (не выдумывай).
+
+**Засев ext-team узлов** из `.claude/domain-profile.md` секции `landscape.ext_teams` (аналог team-from-roster, источник другой):
+
+Для каждой записи `landscape.ext_teams[]` (`{code, name, po, relationship}`):
+1. `node_id` = `landscape-team-<translit(name)>` (ascii, `[a-z][a-z0-9-]*`).
+2. Создай заготовку по шаблону `GROUND/NEXUS/landscape/_template.md`, заполнив из профиля:
+   - `team_name` = `name`; `po_name` = `po`; `relationship` = `relationship` (или `peer`, если пусто).
+   - `owned_systems` / `touchpoints` / `influence` / `mission` — `[]`/пусто с пометкой «заполнить в /okr-landscape» (**не угадывать** системы/стыки).
+   - `confidence: 0.3`; `sources: ["domain-profile:landscape.ext_teams"]`; `ttl_days: 180`; `updated` = сегодня.
+3. Пометь тело: `> ⚠️ заготовка из domain-profile. Системы/стыки/влияние наполняет /okr-landscape.`
+
+> **domain-profile = источник ролей команд; landscape-нексус = богатый профиль.** Засев устраняет двойной ввод, но НЕ выдумывает данные сверх профиля. Секция `landscape.ext_teams` пуста → создай только `_index.md` (уже есть), узлы добавит `/okr-landscape`. Узел без `sources[]` не создавать.
 
 ---
 

@@ -173,6 +173,7 @@ bft_documentation/<epic>/artefacts/
 ── СТОП ── PO/СА: проверьте pack, особенно блоки ⚠️ (вывод LLM).
 Дальше:
 • /bft-context-gen-deep <epic_code> <jira_key>  ← полный разбор источников
+• /bft-ext-teams <epic_code>                      ← карта связей с внешними командами
 • /bft-problem <epic_code>                       ← диагноз As-Is/Gap (если контекста достаточно)
 ```
 
