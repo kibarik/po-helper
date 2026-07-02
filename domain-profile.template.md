@@ -129,6 +129,8 @@ wiki:
 
 Реестры доменных знаний, которые `/bft-context-gen` подключает как статичный фон. Пути опциональны: нет файла → раздел контекста помечается `[УТОЧНИТЬ]`.
 
+> **Приоритет графа Нексусов.** Если инстанцированы Нексусы BFT-яруса (`system`/`decisions`/`rules`/`compliance` — см. `sa_documentation/nexus_catalog.md` §4.2), пайплайн читает их узлы **вместо** плоских `cortex.*`-реестров (узел несёт `sources`/`confidence`/`ripeness`). Плоский CORTEX ниже — **fallback** и источник первичного онбординга (`/paf-onboard` наполняет из него узлы). Маппинг: `system`←`architecture` (C1), `decisions`←`decisions` (C5), `rules`←`business_rules` (C2), `compliance`←`regulatory` (C3).
+
 ```yaml
 cortex:
   architecture:    "CORTEX/Архитектура/00-архитектура.md"      # C1: границы, потоки, сервисы
