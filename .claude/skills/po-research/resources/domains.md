@@ -14,11 +14,14 @@
 
 Зависимости — **hard-gate** во всех доменах: незакрытая → обязательно `[УТОЧНИТЬ]`, не «не covered».
 
+**Слой фактов = GROUND Нексусы.** Помимо `jira`/`conf`/`code`/`vault`, каждый пресет грунтуется релевантными Узлами из `GROUND/NEXUS/` (реестр — `GROUND/NEXUS/_registry.yaml`, источник истины по составу). В пресете строка **NEXUS** перечисляет ключевые Нексусы домена (якорь `R2` = путь `GROUND/NEXUS/<slug>/…`). Полная матрица «Нексус × Процесс» — `sa_documentation/nexus_process_map.md`. Нексус пуст → `[УТОЧНИТЬ: нет в <slug>]`, не выдумывать.
+
 ---
 
 ## `sprint`
 
 - **Источники:** `jira`(epics/tasks/sprint), `vault`(INDEX/KR-MAP/факт пред.), `conf`.
+- **NEXUS:** `capacity`(velocity/ёмкость/cost of delay) · `ownership`(зависимые команды/согласования) · `strategy`(KR квартала) · `precedents`(перенос/техдолг).
 - **Разделы pack (оси coverage):** Цели/KR · Кандидаты беклога · Capacity · Зависимости · Риски · Перенос с пред. спринта.
 - **Seed sub-Q:**
   - Какие KR приоритета Critical/High в фокусе квартала? → `vault(INDEX/KR-MAP)`
@@ -31,6 +34,7 @@
 ## `epic`
 
 - **Источники:** `jira`(epic+children+links), `conf`(TZ), `code`(blast/decisions), `vault`(BR/ADR из базы знаний).
+- **NEXUS:** `system-landscape`(границы/API/что есть vs строить) · `ownership`(владельцы доменов/согласования) · `precedents`(похожие/техдолг) · `compliance`(NFR/security/legal).
 - **Разделы pack:** Границы системы · Образ результата (БТ) · ПТ/ФТ · НФТ · Зависимости/блокеры · Регуляторика · Принятые решения.
 - **Seed sub-Q:**
   - Какие границы системы затрагивает эпик? → `code(get_risk)` + `conf(TZ)` + `vault(C1)`
@@ -42,6 +46,7 @@
 ## `bft`
 
 - **Источники:** как `epic` + `vault`({bft_store} / смежные СА).
+- **NEXUS:** полный набор intake→БФТ — `problem`(проблема, не симптом) · `system-landscape` · `ownership` · `requester-domain`(KPI заказчика) · `precedents` · `compliance`. Это те же Нексусы, что грунтуют `/bft-context-gen` (см. `nexus_process_map.md`).
 - **Разделы pack:** наследует матрицу `bft-context-gen` — Границы · БТ · ПТ · ФТ · НФТ · Negative flows · Риски/Compliance · Зависимости (см. `README базы знаний`).
 - **Seed sub-Q:** как `epic` + «Какие смежные БФТ/СА уже описывают аспект?» → `vault({bft_store}, {cortex.sa_store})`.
 - **Примечание:** это текущая матрица `bft-context-gen`, обобщённая. Артефакт совместим.
@@ -49,6 +54,7 @@
 ## `risk`
 
 - **Источники:** `jira`(blockers/links), `conf`(incidents), `vault`(реестр рисков), `code`(get_risk/hotspots).
+- **NEXUS:** `system-landscape`(blast radius/зависимости) · `ownership`(владелец риска) · `compliance`(регуляторный impact) · `precedents`(прошлые инциденты/решения).
 - **Разделы pack:** Вероятность · Impact · Триггеры · Mitigation · Владелец · Связанные инциденты.
 - **Порог 95%** — риск требует максимального покрытия.
 - **Seed sub-Q:**
@@ -61,6 +67,7 @@
 ## `decision`
 
 - **Источники:** `vault`(ADR-реестр), `conf`(meeting/decisions), `jira`(related), `code`(get_why).
+- **NEXUS:** `precedents`(прошлые решения/отказы) · `strategy`(связь с OKR) · `ownership`(кто решает) · `system-landscape`(последствия для систем).
 - **Разделы pack:** Контекст/проблема · Варианты · Trade-off · Принятое решение · Последствия · Открытые вопросы.
 - **Seed sub-Q:**
   - В чём проблема/контекст решения? → `conf(meeting)` + `vault(ADR)`

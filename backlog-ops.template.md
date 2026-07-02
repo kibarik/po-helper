@@ -27,8 +27,8 @@
 
 ## Стадии пайплайнов (готовые чек-листы AC)
 
-- **bft** — `context-gen` · `problem` · `concept` · `debate` · `draft` · `validate` · `deliver`
-- **okr** — `context-gen` · `objectives` · `key-results` · `debate` · `enrich` · `validate` · `deliver`
+- **bft** — `value` · `context-gen` · `ext-teams` · `problem` · `concept` · `debate` · `constraints` · `draft` · `validate` · `deliver`
+- **okr** — `context-gen` · `landscape` · `objectives` · `key-results` · `debate` · `enrich` · `validate` · `deliver`
 - **sprint** — `sync` · `goal` · `decompose` · `load` · `deliver`
 - **request** — `context` · `interview` · `impact-map` · `gap` · `smart` · `score` · `handoff`
 - **release** — `frame` · `baseline` · `sync` (цикл) · `gate` · `status`
@@ -41,11 +41,11 @@
    ```bash
    backlog task create "БФТ EPIC-10 — <название>" -l bft -s "In Progress" \
      -d "Артефакт: bft_documentation/EPIC-10/ · трекер: PROJ-101" \
-     --ac context-gen --ac problem --ac concept --ac debate --ac draft --ac validate --ac deliver
+     --ac value --ac context-gen --ac ext-teams --ac problem --ac concept --ac debate --ac constraints --ac draft --ac validate --ac deliver
    ```
 2. **Прошли стадию** — отметить соответствующий AC:
    ```bash
-   backlog task edit task-1 --check-ac 1        # пройден context-gen
+   backlog task edit task-1 --check-ac 1        # пройден value (AC 2 = context-gen и т.д.)
    ```
    Вернулись на шаг назад (дебаты забраковали / валидация 🔴) — снять галочку: `--uncheck-ac <n>`.
 3. **Отгрузка** (`/*-deliver`, `/req-handoff`) — отметить последний AC и `-s "Done"`.
