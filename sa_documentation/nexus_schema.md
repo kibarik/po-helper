@@ -75,6 +75,14 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `step-overview` | overview шага | STEP-N-*/overview.md |
 | `sprint-phase` | Фаза цикла Sprint | STEP-N-*/{pulse,scout,bunch,pitch,execute,harvest}.md |
 | `person` | Нексус `team` — персона | GROUND/NEXUS/team/*.md |
+| `component` | Нексус `system` — компонент ландшафта (сервис/БД/интеграция/поток/граница) | GROUND/NEXUS/system/*.md |
+| `decision` | Нексус `decisions` — одно решение (ADR/PO) | GROUND/NEXUS/decisions/*.md |
+| `rule` | Нексус `rules` — одно бизнес-правило (BR-*) | GROUND/NEXUS/rules/*.md |
+| `regulation` | Нексус `compliance` — требование (закон/стандарт/политика) | GROUND/NEXUS/compliance/*.md |
+| `nfr` | Нексус `quality` — НФТ-стандарт (SLA/security/RED/…) | GROUND/NEXUS/quality/*.md |
+| `risk` | Нексус `risk` — один риск | GROUND/NEXUS/risk/*.md |
+| `term` | Нексус `lexicon` — термин Ubiquitous Language | GROUND/NEXUS/lexicon/*.md |
+| `metric` | Нексус `metrics` — одна метрика | GROUND/NEXUS/metrics/*.md |
 
 ---
 
@@ -144,4 +152,4 @@ tags: [pmf, fit-point]
 ```
 
 ---
-**Version:** 1.2 (v4: добавлен node_type: person для team-нексуса) · **Last updated:** 2026-06-24 · **Связанные:** [[nexus_catalog]] · [[naming_conventions]] · [[ground_schema]] · [[docs/AI-PROCESSES/operating-model|operating-model]] · [[docs/AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup|1.nexus-setup]]
+**Version:** 1.4 (v6: node_type regulation/nfr/risk/term/metric для BFT-яруса compliance/quality/risk/lexicon/metrics) · v5: component/decision/rule для system/decisions/rules · v4: node_type: person для team-нексуса · **Last updated:** 2026-06-24 · **Связанные:** [[nexus_catalog]] · [[naming_conventions]] · [[ground_schema]] · [[docs/AI-PROCESSES/operating-model|operating-model]] · [[docs/AI-PROCESSES/STEP-0-FOUNDATION/1.nexus-setup|1.nexus-setup]]
