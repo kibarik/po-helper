@@ -1,21 +1,21 @@
 ---
 name: paf-nexus-create
-description: "Создаёт кастомный Нексус под решение клиента (sellers, buyers, team, …): интервью → GROUND/NEXUS/<slug>/ + запись в _registry.yaml. Знает каталожные опц. типы (team/ops-model/company) и засевает team из roster."
+description: "Создаёт кастомный Нексус под решение клиента (sellers, buyers, team, …): интервью → GROUND/NEXUS/<slug>/ + запись в _registry.yaml. Знает каталожные опц. типы (team/ops-model/company/channels) и засевает team из roster."
 ---
 
 # /paf-nexus-create — создание кастомного Нексуса
 
-Skill коробки «PAF Team OS». Добавляет Нексус сверх дефолтного минимума (`/paf-init` создал market/customer/product/growth). Два режима:
+Skill коробки «PAF Team OS». Добавляет Нексус сверх дефолтного минимума (`/paf-init` создал market/customer/product/growth + обязательный project-management). Два режима:
 
-1. **Каталожный опц. тип** (`team`, `ops-model`, `company`) — берёт готовое определение из `sa_documentation/nexus_catalog.md` §4/§4.1, не выдумывает.
+1. **Каталожный опц. тип** (`team`, `ops-model`, `company`, `channels`) — берёт готовое определение из `sa_documentation/nexus_catalog.md` §4/§4.1/§4.2, не выдумывает.
 2. **Свежий кастом** (`sellers`, `buyers`, `supply-chain`, …) — интервью под решение клиента.
 
 > Пошаговый план для LLM. Выполняй по порядку. Читай файлы перед записью. Ноль выдуманной PAF-терминологии вне `sa_documentation/naming_conventions.md`.
 
 ## 0. Контекст (прочитать перед стартом)
 
-- `sa_documentation/nexus_catalog.md` — мастер-каталог. §2 таблица типов; §4 опц. PAF-типы; **§4.1 — полная спецификация `team`** (schema_extensions, seed_questions, пример person-узла).
-- `sa_documentation/nexus_schema.md` — Node schema (§2 ключи, §3 `node_type` включая `person`, §4 wilting).
+- `sa_documentation/nexus_catalog.md` — мастер-каталог. §2 таблица типов; §4 опц. PAF-типы; **§4.1 — полная спецификация `team`**; **§4.2 — полная спецификация `channels`** (schema_extensions, seed_questions, пример узла).
+- `sa_documentation/nexus_schema.md` — Node schema (§2 ключи, §3 `node_type` включая `person` и `channel`, §4 wilting).
 - `sa_documentation/ground_schema.md` — schema `_registry.yaml` (§«_registry.yaml»: slug `[a-z][a-z0-9-]*`, source, owner, purpose, onboarded).
 - `GROUND/config.yaml` — `team.roster` (источник людей для засева `team`), `nexus.custom_count`.
 - `GROUND/NEXUS/_registry.yaml` — текущий реестр (проверка уникальности slug).
@@ -33,12 +33,13 @@ Skill коробки «PAF Team OS». Добавляет Нексус сверх
 
 1. **Какой Нексус создаём?** — slug (ascii, паттерн `[a-z][a-z0-9-]*`). Помоги транслитерировать кириллицу.
 2. **Определи режим:**
-   - slug ∈ {`team`, `ops-model`, `company`} → **каталожный режим** (§3). Подтверди клиенту: «Беру определение из мастер-каталога».
+   - slug ∈ {`team`, `ops-model`, `company`, `channels`} → **каталожный режим** (§3). Подтверди клиенту: «Беру определение из мастер-каталога».
+     - Для `channels` есть отдельный навык `info-channels` (`/channel-map`) с интервью и разметкой входящей информации — если клиент хочет вести каналы, направь туда; каталожный режим здесь создаёт только каркас (`_index.md` + `_template.md`).
    - иначе → **кастомный режим** (§4).
 
 ---
 
-## 3. Каталожный режим (team / ops-model / company)
+## 3. Каталожный режим (team / ops-model / company / channels)
 
 Прочитай определение типа из `nexus_catalog.md`:
 - `name`, `purpose`, `owner_role`, `seed_questions`, `schema_extensions` — **из каталога, не выдумывай**.
