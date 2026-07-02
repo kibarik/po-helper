@@ -54,6 +54,50 @@ check_ruflo() {
 }
 check_ruflo
 
+# --- entire (session-tracking: «на чём остановились / чем занимались») ---
+# Не часть репозитория; ставится curl-скриптом в $HOME/.local/bin (без sudo).
+# Вспомогательный слой: индексирует сессии агента рядом с коммитами, чтобы в
+# любой момент восстановить контекст, а не грумить с нуля. Коробка работает и без него.
+check_entire() {
+  if command -v entire >/dev/null 2>&1; then
+    local cur
+    cur="$(entire version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"
+    echo "  ✓ entire ${cur:-найден}"
+    return
+  fi
+  echo "  … entire не найден — ставлю (session-tracking)…"
+  curl -fsSL https://entire.io/install.sh | bash >/dev/null 2>&1 || true
+  if command -v entire >/dev/null 2>&1; then
+    echo "  ✓ entire установлен"
+  elif [ -x "$HOME/.local/bin/entire" ]; then
+    export PATH="$HOME/.local/bin:$PATH"
+    echo "  ✓ entire установлен ($HOME/.local/bin — добавьте в PATH)"
+  else
+    echo "  ⚠ entire не установился. Вручную: curl -fsSL https://entire.io/install.sh | bash"
+  fi
+}
+check_entire
+
+# --- backlog.md (операционный штаб) ---
+# CLI ставится через bun/npm глобально; если недоступно — не падаем, печатаем инструкцию.
+ensure_backlog() {
+  if command -v backlog >/dev/null 2>&1; then
+    echo "  ✓ backlog $(backlog --version 2>/dev/null | head -1)"
+    return
+  fi
+  echo "  · backlog.md не найден — пробую установить (операционный штаб)…"
+  if command -v bun >/dev/null 2>&1 && bun add -g backlog.md >/dev/null 2>&1; then
+    echo "  ✓ backlog.md установлен через bun"
+  elif command -v npm >/dev/null 2>&1 && npm i -g backlog.md >/dev/null 2>&1; then
+    echo "  ✓ backlog.md установлен через npm"
+  else
+    echo "  ⚠ не удалось поставить backlog.md автоматически. Установите вручную:"
+    echo "      bun add -g backlog.md   # или:  npm i -g backlog.md"
+    echo "    Штаб опционален — остальной po-helper работает без него."
+  fi
+}
+ensure_backlog
+
 DEST_ROOT="${DEST_ROOT:-$PWD/.claude}"
 DEST_SKILLS="$DEST_ROOT/skills"
 DEST_COMMANDS="$DEST_ROOT/commands"
@@ -64,14 +108,15 @@ echo "→ Целевой корень: $DEST_ROOT"
 mkdir -p "$DEST_SKILLS" "$DEST_COMMANDS" "$DEST_WORKFLOWS"
 
 # Навыки фреймворка (каждый — каталог с SKILL.md + resources + examples)
-SKILLS=(bft-writer okr-planner sprint-planner po-research)
+SKILLS=(bft-writer okr-planner sprint-planner po-research info-channels)
 
 # Команды фреймворка
 COMMANDS=(
-  bft-context-gen bft-context-gen-deep bft-problem bft-concept bft-debate bft-draft bft-validate bft-deliver
+  bft-value bft-context-gen bft-context-gen-deep bft-problem bft-concept bft-debate bft-draft bft-validate bft-deliver
   okr-context-gen okr-objectives okr-key-results okr-debate okr-enrich okr-validate okr-deliver
   sprint-roadmap sprint-sync sprint-goal sprint-decompose sprint-load sprint-deliver
   po-research
+  channel-map channel-list channel-route
 )
 
 # --- навыки ---
@@ -142,6 +187,62 @@ if [ -f "$SRC_PROFILE_TPL" ]; then
   fi
 fi
 
+# --- entire: авто-инициализация session-tracking в целевом репозитории ---
+# Сразу после установки фреймворка entire включается и начинает работать —
+# ловит сессии агента через хуки Claude Code. Идемпотентно, не роняет install.
+enable_entire() {
+  command -v entire >/dev/null 2>&1 || { echo "  ⚠ entire недоступен — инициализацию пропускаю"; return; }
+  local repo_root
+  repo_root="$(cd "$DEST_ROOT/.." && pwd)"
+  if ! git -C "$repo_root" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "  ⚠ $repo_root — не git-репозиторий, entire enable пропущен"
+    return
+  fi
+  if ( cd "$repo_root" && entire status 2>/dev/null | grep -qi 'enabled' ); then
+    echo "  ✓ entire уже включён в репозитории"
+    return
+  fi
+  if ( cd "$repo_root" && entire enable --agent claude-code --telemetry=false >/dev/null 2>&1 ); then
+    echo "  ✓ entire включён — session-tracking активен (recall: entire search)"
+  else
+    echo "  ⚠ entire enable не удался. Вручную: entire enable --agent claude-code"
+  fi
+}
+enable_entire
+
+# --- backlog.md: инициализация операционного штаба в корне проекта ---
+# Идемпотентно: если backlog/ уже есть — не трогаем. Истина в артефактах, штаб опционален.
+PROJECT_ROOT="$(cd "$(dirname "$DEST_ROOT")" && pwd)"
+SRC_BACKLOG_TPL="$SCRIPT_DIR/backlog-ops.template.md"
+if command -v backlog >/dev/null 2>&1; then
+  if [ -d "$PROJECT_ROOT/backlog" ]; then
+    echo "  · backlog/ уже инициализирован в $PROJECT_ROOT — пропускаю"
+  elif [ ! -d "$PROJECT_ROOT/.git" ]; then
+    echo "  ⚠ $PROJECT_ROOT не git-репозиторий — пропускаю backlog init (сначала: git init)"
+  else
+    echo "→ Инициализирую операционный штаб backlog.md в $PROJECT_ROOT"
+    if ( cd "$PROJECT_ROOT" && backlog init "$(basename "$PROJECT_ROOT")" --defaults --integration-mode mcp --check-branches false >/dev/null 2>&1 ); then
+      # локальный штаб — гасим скан удалённых веток (не критично, если ключ не принят)
+      ( cd "$PROJECT_ROOT" && backlog config set remoteOperations false >/dev/null 2>&1 ) || true
+      echo "  ✓ backlog/ инициализирован"
+    else
+      echo "  ⚠ backlog init не удался — инициализируйте вручную: backlog init"
+    fi
+  fi
+  # конвенция «операционного штаба» — рядом с доской
+  if [ -f "$SRC_BACKLOG_TPL" ] && [ -d "$PROJECT_ROOT/backlog" ]; then
+    mkdir -p "$PROJECT_ROOT/backlog/docs"
+    if [ -f "$PROJECT_ROOT/backlog/docs/operational-hq.md" ] && [ "$MODE" = "install" ]; then
+      echo "  · backlog/docs/operational-hq.md уже есть — пропускаю"
+    else
+      cp "$SRC_BACKLOG_TPL" "$PROJECT_ROOT/backlog/docs/operational-hq.md"
+      echo "  ✓ backlog/docs/operational-hq.md (конвенция операционного штаба)"
+    fi
+  fi
+else
+  echo "  · backlog CLI недоступен — штаб не инициализирован (см. инструкцию выше)"
+fi
+
 echo ""
 echo "✅ po-helper $MODE завершён в $DEST_ROOT"
 echo "   Навыки:  ${SKILLS[*]}"
@@ -151,3 +252,4 @@ echo "Дальше:"
 echo "  1) cp $DEST_ROOT/domain-profile.template.md $DEST_ROOT/domain-profile.md  и заполните под проект"
 echo "  2) Reload Window в IDE — команды появятся в чате"
 echo "  3) OKR: /okr-context-gen <quarter>   ·   БФТ: /bft-context-gen <epic>   ·   Спринт: /sprint-roadmap <quarter> → /sprint-sync <sprint>"
+echo "  4) Операционный штаб: backlog board (что в работе) · конвенция — backlog/docs/operational-hq.md"
