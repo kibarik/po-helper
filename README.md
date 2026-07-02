@@ -13,9 +13,9 @@
 
 | Сценарий | Команды | Результат | Детально |
 |:---|:---|:---|:---|
-| **OKR** | `/okr-context-gen … /okr-deliver` (7 стадий) | Квартальный OKR (OBJ + KR + IMP) | [↓ OKR](#-okr--квартальное-планирование) |
+| **OKR** | `/okr-context-gen … /okr-deliver` (8 стадий) | Квартальный OKR (OBJ + KR + IMP) + ландшафт внешних команд | [↓ OKR](#-okr--квартальное-планирование) |
 | **Спринт** | `/sprint-roadmap` · `/sprint-sync … /sprint-deliver` | Roadmap KR×спринт + детальный план спринта (Sprint Goal + capacity + N+1) | [SKILL](.claude/skills/sprint-planner/SKILL.md) |
-| **БФТ** | `/bft-context-gen … /bft-deliver` (7 стадий) | Бизнес-Функциональные Требования по эпику | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
+| **БФТ** | `/bft-context-gen … /bft-deliver` (8 стадий) | Бизнес-Функциональные Требования по эпику + карта внешних команд | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
 | **Внешние запросы** | `/req-context … /req-handoff` (7 стадий) | Скоринг внешнего запроса → SMART-задача + routing (front door перед БФТ) | [SKILL](.claude/skills/request-intake/SKILL.md) |
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
@@ -79,7 +79,7 @@ flowchart LR
 | Команда | Когда | Результат |
 |:---|:---|:---|
 | `/paf-init` | один раз после `git clone` | `config.yaml` + скелет GROUND + дефолтный каталог Нексусов |
-| `/paf-nexus-create` | по необходимости | кастомные Нексусы (`sellers`, `buyers`, `team`…) + запись в реестр |
+| `/paf-nexus-create` | по необходимости | кастомные Нексусы (`sellers`, `buyers`, `team`, `landscape`…) + запись в реестр |
 
 Схемы и валидатор Vault — [sa_documentation/](sa_documentation/) (`ground_schema`, `nexus_schema`, `nexus_catalog`, `validate_ground.py`).
 
@@ -87,13 +87,14 @@ flowchart LR
 
 ## 🎯 OKR — квартальное планирование
 
-7 стадий, каждая = отдельный запуск + STOP-пауза. Передавай результат стадии дальше после ревью.
+8 стадий, каждая = отдельный запуск + STOP-пауза. Передавай результат стадии дальше после ревью.
 
 ```mermaid
 flowchart LR
-    A["/okr-context-gen"] --> B["/okr-objectives"] --> C["/okr-key-results"]
+    A["/okr-context-gen"] --> A2["/okr-landscape"] --> B["/okr-objectives"] --> C["/okr-key-results"]
     C --> D["/okr-debate"] --> E["/okr-enrich"] --> F["/okr-validate"] --> G(("/okr-deliver"))
     style A fill:#4a9eff,color:#fff
+    style A2 fill:#4a9eff,color:#fff
     style D fill:#ff6b6b,color:#fff
     style F fill:#ff6b6b,color:#fff
     style G fill:#51cf66,color:#fff
@@ -101,9 +102,9 @@ flowchart LR
 
 | Стадия | Команда | Роль |
 |:---|:---|:---|
-| Контекст → Цели → KR | `/okr-context-gen` · `/okr-objectives` · `/okr-key-results` | Context Builder · Strategy Analyst · KR Designer |
+| Контекст → Ландшафт → Цели → KR | `/okr-context-gen` · `/okr-landscape` · `/okr-objectives` · `/okr-key-results` | Context Builder · Landscape Analyst · Strategy Analyst · KR Designer |
 | Дебаты → Обогащение | `/okr-debate` · `/okr-enrich` | Devil's Advocate (3 раунда) · PO + Architect |
-| Валидация → Отгрузка | `/okr-validate` (12 gates) · `/okr-deliver` | Validator · Deliverer (roadmap/INDEX) |
+| Валидация → Отгрузка | `/okr-validate` (13 gates) · `/okr-deliver` | Validator · Deliverer (roadmap/INDEX) |
 
 Итог — таблица `OBJ \| KR \| IMP \| Образ результата \| Образ действия \| Метрики&риски` с IMP-шкалой 1–9. Детально — [okr-planner/SKILL.md](.claude/skills/okr-planner/SKILL.md).
 
@@ -111,11 +112,11 @@ flowchart LR
 
 ## 📋 БФТ — Бизнес-Функциональные Требования
 
-Навык **`bft-writer`**: один эпик трекера → готовый документ БТ/ПТ/ИТ/ФТ/НФТ. Не «генерация за один промт», а конвейер из 7 команд со STOP-паузой после каждой.
+Навык **`bft-writer`**: один эпик трекера → готовый документ БТ/ПТ/ИТ/ФТ/НФТ. Не «генерация за один промт», а конвейер из 8 команд со STOP-паузой после каждой.
 
 ```mermaid
 flowchart TD
-    A["/bft-context-gen"] --> B["/bft-problem"] --> C["/bft-concept"] --> D["/bft-debate"]
+    A["/bft-context-gen"] --> A2["/bft-ext-teams"] --> B["/bft-problem"] --> C["/bft-concept"] --> D["/bft-debate"]
     D --> E{Вердикт?}
     E -->|"Принят"| F["/bft-draft"]
     E -->|"Забраковано"| C
@@ -123,6 +124,7 @@ flowchart TD
     G -->|"🟢/🟡"| H(("/bft-deliver"))
     G -->|"🔴 gate"| F
     style A fill:#4a9eff,color:#fff
+    style A2 fill:#4a9eff,color:#fff
     style D fill:#ffd43b,color:#000
     style G fill:#ff6b6b,color:#fff
     style H fill:#51cf66,color:#fff
@@ -133,12 +135,13 @@ flowchart TD
 | Шаг | Команда | Что на STOP-паузе |
 |:--|:--|:--|
 | 1. Контекст | `/bft-context-gen EPIC-10 PROJ-101` | Дозаполни `[УТОЧНИТЬ]`; незнакомый эпик → `/bft-context-gen-deep` |
-| 2. Проблема | `/bft-problem EPIC-10` | Проверь: это диагноз, не решение |
-| 3. Концепты | `/bft-concept EPIC-10` | Сравни 2-3 варианта |
-| 4. Дебаты | `/bft-debate EPIC-10` | Забраковано → шаг 3; Принят → дальше |
-| 5. Черновик | `/bft-draft EPIC-10` | Появляется `<epic>.md`; вычитай типы/НФТ/границы |
-| 6. Валидация | `/bft-validate EPIC-10` | 🔴 → шаг 5; 🟢/🟡 → готов к ревью |
-| 7. Отгрузка | `/bft-deliver EPIC-10` | Сухой прогон → ок PO → JIRA + 2×Confluence |
+| 2. Внешние команды | `/bft-ext-teams EPIC-10` | Карта связей с командами вокруг: причина + direct/indirect |
+| 3. Проблема | `/bft-problem EPIC-10` | Проверь: это диагноз, не решение |
+| 4. Концепты | `/bft-concept EPIC-10` | Сравни 2-3 варианта |
+| 5. Дебаты | `/bft-debate EPIC-10` | Забраковано → шаг 4; Принят → дальше |
+| 6. Черновик | `/bft-draft EPIC-10` | Появляется `<epic>.md`; вычитай типы/НФТ/границы |
+| 7. Валидация | `/bft-validate EPIC-10` | 🔴 → шаг 6; 🟢/🟡 → готов к ревью |
+| 8. Отгрузка | `/bft-deliver EPIC-10` | Сухой прогон → ок PO → JIRA + 2×Confluence |
 
 **Раскладка:** финальный БФТ — `bft_documentation/<epic>/<epic>.md`; промежуточные артефакты — `bft_documentation/<epic>/artefacts/`. Везде передавай один и тот же `<epic_code>`. Детально — [bft-writer/SKILL.md](.claude/skills/bft-writer/SKILL.md).
 
