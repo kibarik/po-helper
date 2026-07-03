@@ -12,12 +12,12 @@
 
 ```yaml
 paths:
-  # Корень квартального планирования (OBJ/KR, стандарты, индексы)
-  planning_root:    "ROADMAP/{quarter}/Планирование"        # пример
+  # Корень квартального планирования (OBJ/KR, стандарты, индексы) — deliverable-артефакты Нексуса project-management (delivery map PO)
+  planning_root:    "GROUND/NEXUS/project-management/{quarter}/Планирование"
   # Корень исполнения (планы/факты спринтов — для переноса незавершённого)
-  execution_root:   "ROADMAP/{quarter}/Исполнение"
+  execution_root:   "GROUND/NEXUS/project-management/{quarter}/Исполнение"
   # Годовой roadmap (стратегический вход)
-  roadmap_year_doc: "ROADMAP/Roadmap {year}.md"
+  roadmap_year_doc: "GROUND/NEXUS/project-management/Roadmap {year}.md"
   # Стандарты формулировок OBJ/KR (формулы, чеклисты)
   standards_doc:    "{planning_root}/BEST-PRACTICES-OBJ-KR.md"
   # Индекс OKR квартала (таблица KR по OBJ)
@@ -54,6 +54,8 @@ paths:
   channels_nexus: "GROUND/NEXUS/channels"
   # Рабочая папка прогона калибровки People Graph (nexus-calibration). {run_id} — слаг прогона (short-01…)
   calibration_workspace: "GROUND/NEXUS/team/_calibration/{run_id}"
+  # Папка оперативных сведений — #summary-заметки встреч (/summary). Файл = встреча: {дата}-{slug}.md
+  summary_notes: "GROUND/PULSE/summaries"
 ```
 
 Если у проекта нет какого-то документа (например `KR-EPIC-MAP`) — оставьте путь, команда при отсутствии файла предложит его создать (bootstrap), не выдумывая содержимое.
