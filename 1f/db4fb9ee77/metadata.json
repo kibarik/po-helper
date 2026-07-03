@@ -1,0 +1,31 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "1fdb4fb9ee77",
+  "strategy": "manual-commit",
+  "branch": "patch/okr-sprint-planner-structure",
+  "checkpoints_count": 2,
+  "files_touched": [
+    ".claude/commands/okr-deliver.md",
+    ".claude/skills/okr-planner/SKILL.md",
+    ".claude/skills/sprint-planner/examples/ideal_sprint_plan.md",
+    ".claude/skills/sprint-planner/examples/ideal_sprint_roadmap.md",
+    "domain-profile.template.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/1f/db4fb9ee77/0/metadata.json",
+      "transcript": "/1f/db4fb9ee77/0/full.jsonl",
+      "compact_transcript": "/1f/db4fb9ee77/0/transcript.jsonl",
+      "content_hash": "/1f/db4fb9ee77/0/content_hash.txt",
+      "prompt": "/1f/db4fb9ee77/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 17442,
+    "cache_creation_tokens": 178114,
+    "cache_read_tokens": 1729818,
+    "output_tokens": 19971,
+    "api_call_count": 38
+  }
+}
