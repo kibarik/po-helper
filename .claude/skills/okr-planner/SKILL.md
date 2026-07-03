@@ -37,7 +37,7 @@
 /okr-validate <quarter>      → validation.md            (13 hard gates + Светофор)
         ↓ 🔴 нарушен гейт → /okr-enrich
         ↓ 🟢/🟡
-/okr-deliver <quarter>       → публикация               (ROADMAP + INDEX + KR-EPIC-MAP)    [СТОП: сухой прогон → ок PO]
+/okr-deliver <quarter>       → публикация               (planning_root + INDEX + KR-EPIC-MAP)    [СТОП: сухой прогон → ок PO]
         ↓
    Первичный OKR утверждён
         ↓
@@ -62,7 +62,7 @@
 | 3 Дебаты | `/okr-debate` | Devil's Advocate | вердикт + правки в `key-results.md` |
 | 4 Обогащение | `/okr-enrich` | PO + Architect | `{okr_workspace}/enriched-okr.md` |
 | 5 Валидация | `/okr-validate` | Validator | `{okr_workspace}/validation.md` |
-| 6 Отгрузка | `/okr-deliver` | Deliverer | `ROADMAP/<quarter>/Планирование/OKR-<quarter>.md` + INDEX + KR-EPIC-MAP |
+| 6 Отгрузка | `/okr-deliver` | Deliverer | `GROUND/NEXUS/project-management/<quarter>/Планирование/OKR-<quarter>.md` + INDEX + KR-EPIC-MAP |
 | **Ф2** A Якорь | `/okr-smart` | SMART-Anchor Builder | `{okr_grooming_root}/step_{n}/artifacts/smart-agreement.md` |
 | **Ф2** B Груминг | `/okr-grooming` | Lead Grooming Facilitator | `{okr_grooming_root}/step_{n}/okr_step_{n}.md` + `research-questions.md` |
 
