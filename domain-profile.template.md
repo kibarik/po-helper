@@ -52,6 +52,8 @@ paths:
   channels_nexus: "GROUND/NEXUS/channels"
   # Рабочая папка прогона калибровки People Graph (nexus-calibration). {run_id} — слаг прогона (short-01…)
   calibration_workspace: "GROUND/NEXUS/team/_calibration/{run_id}"
+  # Папка оперативных сведений — #summary-заметки встреч (/summary). Файл = встреча: {дата}-{slug}.md
+  summary_notes: "GROUND/PULSE/summaries"
 ```
 
 Если у проекта нет какого-то документа (например `KR-EPIC-MAP`) — оставьте путь, команда при отсутствии файла предложит его создать (bootstrap), не выдумывая содержимое.
