@@ -1,5 +1,5 @@
 ---
-description: 'OKR Pipeline стадия 6 — публикация OKR в ROADMAP + INDEX + KR-EPIC-MAP (роль: Deliverer)'
+description: 'OKR Pipeline стадия 6 — публикация OKR в planning_root (Нексус project-management) + INDEX + KR-EPIC-MAP (роль: Deliverer)'
 ---
 
 ## Использование

@@ -44,4 +44,4 @@
 
 ---
 
-*Источник KR: `ROADMAP/2026-Q3/Планирование/OKR-2026Q3.md` + INDEX. Привязки эпиков: KR-EPIC-MAP. Вход для `/sprint-sync <sprint>`.*
+*Источник KR: `GROUND/NEXUS/project-management/2026-Q3/Планирование/OKR-2026Q3.md` + INDEX. Привязки эпиков: KR-EPIC-MAP. Вход для `/sprint-sync <sprint>`.*
