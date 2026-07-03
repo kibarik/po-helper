@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "18f31b328b02",
+  "strategy": "manual-commit",
+  "branch": "feat/confluence-indexator",
+  "checkpoints_count": 5,
+  "files_touched": [
+    "docs/superpowers/specs/2026-07-04-confluence-indexator-design.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/18/f31b328b02/0/metadata.json",
+      "transcript": "/18/f31b328b02/0/full.jsonl",
+      "compact_transcript": "/18/f31b328b02/0/transcript.jsonl",
+      "content_hash": "/18/f31b328b02/0/content_hash.txt",
+      "prompt": "/18/f31b328b02/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 18063,
+    "cache_creation_tokens": 191372,
+    "cache_read_tokens": 2868555,
+    "output_tokens": 48845,
+    "api_call_count": 47
+  }
+}
