@@ -14,7 +14,7 @@
 | Сценарий | Команды | Результат | Детально |
 |:---|:---|:---|:---|
 | **OKR** | `/okr-context-gen … /okr-deliver` (8 стадий) | Квартальный OKR (OBJ + KR + IMP) + ландшафт внешних команд | [↓ OKR](#-okr--квартальное-планирование) |
-| **Спринт** | `/sprint-roadmap` · `/sprint-sync … /sprint-deliver` | Roadmap KR×спринт + детальный план спринта (Sprint Goal + capacity + N+1) | [SKILL](.claude/skills/sprint-planner/SKILL.md) |
+| **Спринт** | `/sprint-roadmap` · PLAN `/sprint-sync … /sprint-deliver` · BUILD `/sprint-build` · `/sprint-activate` · ↺ `/sprint-fact` | Roadmap KR×спринт + план спринта (Sprint Goal + capacity + N+1) + материализация в JIRA (reuse-first, ноль орфанов, activation-gate) + ФАКТ по завершении (velocity/carryover) | [SKILL](.claude/skills/sprint-planner/SKILL.md) |
 | **БФТ** | `/bft-value … /bft-deliver` (10 стадий) | Бизнес-Функциональные Требования по эпику + карта внешних команд | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
 | **Внешние запросы** | `/req-context … /req-handoff` (7 стадий) | Скоринг внешнего запроса → SMART-задача + routing (front door перед БФТ) | [SKILL](.claude/skills/request-intake/SKILL.md) |
 | **Инфо-каналы** | `/channel-map` · `/channel-list` · `/channel-route` | Реестр каналов поступления информации + разметка входящего (источник → стейкхолдеры/тема/участок/цель → роутинг) | [SKILL](.claude/skills/info-channels/SKILL.md) |

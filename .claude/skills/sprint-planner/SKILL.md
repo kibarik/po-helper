@@ -2,7 +2,7 @@
 
 ## Роль
 
-Ты — **Delivery Lead / PO в роли спринт-планировщика**. Навык превращает квартальные OKR в (A) верхнеуровневый roadmap по спринтам на квартал и (B) детальный план конкретного спринта, пригодный для обсуждения с командой. Финальный артефакт спринта — документ в формате эталона (`examples/ideal_sprint_plan.md`): по каждой цели таблица `ЭПИК | История | Образ результата | Образ действия | Исполнитель | Приоритет | SP` + capacity + риски + блок следующего спринта.
+Ты — **Delivery Lead / PO в роли спринт-планировщика**. Навык превращает квартальные OKR (и «образ результата PO» — доску) в (A) верхнеуровневый roadmap по спринтам на квартал, (B) детальный план конкретного спринта, и (C) — при необходимости — **материализует спринт в трекере (JIRA)**. Финальный артефакт плана — документ в формате эталона (`examples/ideal_sprint_plan.md`): по каждой цели таблица `ЭПИК | История | Образ результата | Образ действия | Исполнитель | Приоритет | SP` + capacity + риски + блок следующего спринта. BUILD-проход дополняет его реальными ключами и ссылками JIRA.
 
 Это **самая важная и регулярная процедура PO** — точка синхронизации всех контекстов. Главная ценность процесса в том, чтобы:
 - каждый участник команды однозначно ответил **«что руководитель хочет увидеть от команды к концу спринта»** (Sprint Goal, образ результата);
@@ -33,6 +33,15 @@
 - **WHAT** = выбор и декомпозиция историй из KR (+ внеплановые). Стадия `/sprint-decompose`.
 - **HOW** = план работ (образ действия) + кто что делает + ёмкость. Стадия `/sprint-load`.
 
+### Два прохода: PLAN → BUILD
+
+Процесс делится на два прохода с обозримым чекпоинтом PO между ними:
+
+- **PLAN-проход (vault, обратимо):** `/sprint-sync`…`/sprint-deliver`. Всё в vault под git, ничего в трекере. Ошибка стоит переписывания markdown, не отката JIRA.
+- **BUILD-проход (JIRA, необратимо):** `/sprint-build` → `/sprint-activate`. Материализация плана в трекере через MCP: наполнение слота, orphan-группировка, актуализация, активация. Разрешён только при `tracker.access: build`.
+
+**Три источника истины:** доска = образ результата PO · беклог = что уже есть · JIRA = система записи. Процесс = свести их без дублей и без орфанов.
+
 ---
 
 ## Pipeline
@@ -45,20 +54,27 @@
 
 Строится один раз после `/okr-deliver`. Распределяет срезы KR по спринтам квартала (S1..Sn) с грубым capacity на спринт. Rolling: перезапуск/патч при смене видения. Это вход для уровня B.
 
-### Уровень B — Детальный план спринта (5 стадий, Why→What→How)
+### Уровень B — Детальный план спринта (Why→What→How)
 
+**PLAN-проход (vault, обратимо):**
 ```
-/sprint-sync <sprint>       → sprint-context.md   (РЕСИНК + контекст)    [СТОП]
+/sprint-sync <sprint>       → sprint-context.md   (РЕСИНК + контекст + discovery)   [СТОП]
         ↓
 /sprint-goal <sprint>       → sprint-goal.md       (WHY · образ результата команды)   [СТОП]
         ↓
-/sprint-decompose <sprint>  → sprint-stories.md    (WHAT · OKR→KR→истории + внеплановые)   [СТОП]
+/sprint-decompose <sprint>  → sprint-stories.md    (WHAT · OKR→KR→истории + reuse-матрица)   [СТОП]
         ↓
 /sprint-load <sprint>       → sprint-load.md        (HOW · образ действия + исполнитель + SP + баланс)   [СТОП]
         ↓
 /sprint-deliver <sprint>    → ПЛАН-{sprint}.md       (гейты → сухой прогон → запись + блок N+1)   [СТОП]
+```
+**BUILD-проход (JIRA, необратимо · требует `tracker.access: build`):**
+```
+/sprint-build <sprint>      → спринт наполнен в JIRA (структура + orphan-группировка)   [СТОП]
         ↓
-     Done
+/sprint-activate <sprint>   → актуализация + activation-gate + отчёт/коммит   [СТОП]
+        ↓
+     Done → в конце спринта /sprint-fact
 ```
 
 ### Роли и артефакты
@@ -68,9 +84,12 @@
 | A Roadmap | `/sprint-roadmap` | Release Planner | `{sprint_roadmap_doc}` |
 | 0 Синк | `/sprint-sync` | Context Builder | `{sprint_workspace}/sprint-context.md` |
 | 1 WHY | `/sprint-goal` | Outcome Designer | `{sprint_workspace}/sprint-goal.md` |
-| 2 WHAT | `/sprint-decompose` | Story Designer | `{sprint_workspace}/sprint-stories.md` |
+| 2 WHAT | `/sprint-decompose` | Story Designer | `{sprint_workspace}/sprint-stories.md` (+ reuse-матрица) |
 | 3 HOW | `/sprint-load` | Capacity Balancer | `{sprint_workspace}/sprint-load.md` |
-| 4 Отгрузка | `/sprint-deliver` | Validator + Deliverer | `{sprint_output_doc}` |
+| 4 Отгрузка PLAN | `/sprint-deliver` | Validator + Deliverer | `{sprint_output_doc}` (vault) |
+| 5 BUILD | `/sprint-build` | Delivery Builder | спринт в JIRA + `{sprint_output_doc}` с ключами |
+| 6 Активация | `/sprint-activate` | Finalizer | стартованный спринт + коммит артефактов |
+| ↺ ФАКТ | `/sprint-fact` | Fact Recorder | `{sprint_fact_doc}` (замыкает цикл → вход следующего `/sprint-sync`) |
 
 **Почему разделение:** Sprint Goal (стратегия PO) не должен загрязняться тактикой декомпозиции — как в okr-planner. Стадия `load` отдельная, потому что персональная ясность («что от меня») и максимальная загрузка каждого — главная ценность PO. Валидация сложена в `deliver` (отдельной стадии нет) — это держит каденцию лёгкой.
 
@@ -102,17 +121,31 @@ SP каждого исполнителя добивается до его ёмк
 ### 8. Горизонт N+1
 В финальном документе — лёгкий блок «Спринт N+1 (предварительно)»: образ результата и крупные истории без точного SP. Жёсткий коммит — только на текущий спринт (rolling-wave).
 
+### 9. Reuse-first (BUILD)
+Ничего не создавать в трекере, пока не проверен беклог. По каждому требованию — REUSE существующей задачи, NEW только при отсутствии активного дубля. Закрытые аналоги — контекст, не переиспользование. Матрица покрытия («требование → ключ/NEW») собирается в `/sprint-decompose`.
+
+### 10. Ноль орфанов (BUILD)
+Каждая задача — под историей/эпиком и под измеримой поставкой. Орфан (не подзадача, `Epic Link` пуст, не эпик) сводится в измеримую User Story и привязывается через Epic Link. Существующую историю нельзя конвертировать в подзадачу через REST — группировать сразу через Epic Link.
+
+### 11. Человек — на развилках, автономия — внутри стадии (BUILD)
+Запись в JIRA необратима → каждый батч: dry-run → approve PO → write → верификация. Чекпоинты только на реальных развилках (репойнт слота, каскад, старт спринта), не на тривиальном. `Start sprint` — отдельным явным подтверждением, не «заодно».
+
+### 12. Гигиена
+Трекер — только через MCP; токены руками не собирать и не вставлять в чат. Артефакты — под git и не в вычищаемом пути (worktree/tmp). Хендофф без секретов и сырого транскрипта; сессионные секреты — ротировать.
+
 ---
 
 ## Стандарты и ресурсы
 
 - `resources/sprint_standards.md` — модель capacity, SP-шкала, MoSCoW, теги историй, колонки таблицы, формат N+1 и матрицы roadmap.
-- `resources/hard_gates.md` — спринт-гейты + Светофор (проверяются в `/sprint-deliver`).
+- `resources/hard_gates.md` — спринт-гейты PLAN + Светофор (`/sprint-deliver`) + усиленная Definition of Ready.
+- `resources/build_gates.md` — гейты BUILD-прохода (slot-safety, cascade-preview, reuse-before-create, zero-orphans, activation-gate) + антипаттерны.
+- `resources/jira_build.md` — know-how записи в трекер (Epic Link vs parent, наследование спринта подзадачей, порядок батчей, connectivity).
 - `resources/sync_questions.md` — сценарий ресинк-диалога (`/sprint-sync`).
 - `examples/ideal_sprint_plan.md` — эталонный план спринта.
 - `examples/ideal_sprint_roadmap.md` — эталонная матрица KR × спринт.
 
-Данные: `{okr_output_doc}`, `{index_doc}`, `{kr_epic_map_doc}`, `{sprint_roadmap_doc}`, ФАКТ прошлого спринта в `{execution_root}`.
+Данные: `{okr_output_doc}`, `{index_doc}`, `{kr_epic_map_doc}`, `{sprint_roadmap_doc}`, `{sprint_fact_doc}` прошлого спринта (velocity + carryover, пишется `/sprint-fact`).
 
 ---
 
