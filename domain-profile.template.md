@@ -30,6 +30,8 @@ paths:
   sprint_roadmap_doc: "{planning_root}/SPRINT-ROADMAP-{quarter}.md"
   # Финальный план спринта (для обсуждения с командой)
   sprint_output_doc: "{execution_root}/{sprint}/ПЛАН-{sprint}.md"
+  # ФАКТ спринта (итог по завершении: velocity, carryover, достижение Sprint Goal) — вход для /sprint-sync следующего
+  sprint_fact_doc:  "{execution_root}/{sprint}/ФАКТ-{sprint}.md"
   # Рабочая папка пайплайна спринта (промежуточные артефакты стадий)
   sprint_workspace: "CORTEX/_context-packs/sprint/{sprint}"
   # Рабочая папка пайплайна OKR (промежуточные артефакты стадий)
@@ -106,12 +108,35 @@ landscape:
 tracker:
   type:      "jira"                    # jira | github | gitlab | none
   mcp:       "atlassian"               # имя MCP-сервера (если есть)
-  projects:  ["PROJ1", "PROJ2"]        # ключи проектов / префиксы эпиков
+  projects:  ["PROJ1", "PROJ2"]        # ключи проектов / префиксы эпиков (для кросс-проектного reuse)
   base_url:  "https://jira.example.com"
-  access:    "read-only"               # по умолчанию только чтение
+  access:    "read-only"               # read-only | build   (см. ниже — «build» только для BUILD-прохода)
+
+  # --- Метаданные проекта для BUILD-прохода (/sprint-build, /sprint-activate) ---
+  # Резолвятся один раз через discovery в /sprint-sync. Пусто → навык помечает [УТОЧНИТЬ]
+  # и запрашивает через MCP (не гадать id!). Значения ниже — ИЛЛЮСТРАТИВНЫЕ (кейс GDSLV).
+  epic_link_field: "customfield_10101"  # поле связи история→эпик (Jira Server/DC — Epic Link, НЕ parent)
+  sprint_field:    "customfield_10007"  # поле спринта (или board_id ниже)
+  board_id:        ""                   # id доски для операций со слотами спринтов
+  issuetype:
+    story:   "10203"                    # id типа Story
+    subtask:                            # карта типов подзадач (роль → issuetype id)
+      analysis: "12007"                 # аналитика
+      dev:      "10107"                 # разработка
+      devops:   "12702"                 # девопс
+      test:     "10109"                 # тестирование
+  # Источник назначаемых пользователей (валидные учётки + роли). Пусто → брать из NEXUS/team
+  # и валидировать через MCP (assignable users проекта) на discovery.
+  assignable_users_source: "mcp"        # mcp | roster | none
 ```
 
 Трекер недоступен (нет VPN/доступа) → команды честно помечают `[НЕДОСТУПНО]`, не выдумывают состав беклога.
+
+**Режим `access`:**
+- `read-only` (дефолт) — PLAN-проход (`/sprint-sync`…`/sprint-deliver`) и все read-стадии. Запись в трекер запрещена.
+- `build` — разблокирует BUILD-проход (`/sprint-build`, `/sprint-activate`): необратимая запись в JIRA через MCP, только после dry-run→approve. Переключается осознанно PO, не «по умолчанию».
+
+**Гигиена доступа:** трекер — **только через MCP** (`tracker.mcp`). Токены/PAT руками не собирать и не вставлять в чат. Нет MCP → остановиться и попросить поднять MCP/VPN, а не искать обходной путь.
 
 ---
 
