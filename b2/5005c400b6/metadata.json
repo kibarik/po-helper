@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "b25005c400b6",
+  "strategy": "manual-commit",
+  "branch": "patch/scrum-planner-workflow",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "README.md",
+    "domain-profile.template.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b2/5005c400b6/0/metadata.json",
+      "transcript": "/b2/5005c400b6/0/full.jsonl",
+      "compact_transcript": "/b2/5005c400b6/0/transcript.jsonl",
+      "content_hash": "/b2/5005c400b6/0/content_hash.txt",
+      "prompt": "/b2/5005c400b6/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 19376,
+    "cache_creation_tokens": 418204,
+    "cache_read_tokens": 4135632,
+    "output_tokens": 51306,
+    "api_call_count": 51
+  }
+}
