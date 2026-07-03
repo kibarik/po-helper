@@ -1,0 +1,57 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_id": "a5c518456646",
+  "session_id": "d1ca2a2c-5211-41b9-bb34-b9996634ea50",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-03T15:04:55.421009Z",
+  "branch": "feat/summary-transcript",
+  "checkpoints_count": 1,
+  "save_step_count": 1,
+  "files_touched": [
+    "GROUND/PULSE/summaries/.gitkeep",
+    "README.md",
+    "domain-profile.template.md",
+    "install.sh"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "f7cd03006d72",
+  "token_usage": {
+    "input_tokens": 17341,
+    "cache_creation_tokens": 126819,
+    "cache_read_tokens": 1351407,
+    "output_tokens": 21732,
+    "api_call_count": 25
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-03T15:04:55.301541Z",
+    "agent_lines": 5,
+    "agent_removed": 1,
+    "human_added": 289,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 294,
+    "total_lines_changed": 295,
+    "agent_percentage": 2.0338983050847457,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 294,
+      "agent_lines_removed": 1
+    }
+  ]
+}

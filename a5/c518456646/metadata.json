@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "a5c518456646",
+  "strategy": "manual-commit",
+  "branch": "feat/summary-transcript",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "GROUND/PULSE/summaries/.gitkeep",
+    "README.md",
+    "domain-profile.template.md",
+    "install.sh"
+  ],
+  "sessions": [
+    {
+      "metadata": "/a5/c518456646/0/metadata.json",
+      "transcript": "/a5/c518456646/0/full.jsonl",
+      "compact_transcript": "/a5/c518456646/0/transcript.jsonl",
+      "content_hash": "/a5/c518456646/0/content_hash.txt",
+      "prompt": "/a5/c518456646/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 17341,
+    "cache_creation_tokens": 126819,
+    "cache_read_tokens": 1351407,
+    "output_tokens": 21732,
+    "api_call_count": 25
+  }
+}
