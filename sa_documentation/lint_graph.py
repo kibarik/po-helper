@@ -66,3 +66,11 @@ def lint_graph(nexus_root) -> list:
         if len(nodes) > 1 and not out_links[nid] and in_links.get(nid, 0) == 0:
             errs.append(f"{nid}: orphan (no wiki-links in or out)")
     return errs
+
+
+if __name__ == "__main__":
+    import sys
+    errs = lint_graph(sys.argv[1] if len(sys.argv) > 1 else "GROUND/NEXUS")
+    for e in errs:
+        print(e)
+    sys.exit(1 if errs else 0)
