@@ -1,9 +1,8 @@
 # Node schema — указатель, не дубликат
 
 Источник истины по схеме узла — **`sa_documentation/nexus_schema.md`**:
-- §2 — поля frontmatter (обязательные ключи: `nexus`, `node_id`, `node_type`,
-  `paf_step`, `kind`, `owner`, `confidence`, `sources`, `updated`, `ttl_days`,
-  `ripeness`, `tags`).
+- §2 — поля frontmatter и колонка «Обязательный» (полный список ключей и
+  признак обязательности — в `sa_documentation/nexus_schema.md`).
 - §3 — валидные значения `node_type` (полный список по нексусам).
 - §4 — вычисление `ripeness`/wilting из `updated` + `ttl_days`.
 
