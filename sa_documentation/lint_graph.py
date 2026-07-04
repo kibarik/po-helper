@@ -40,10 +40,13 @@ def lint_graph(nexus_root) -> list:
     in_links = {}   # target node_id -> count
 
     for md in sorted(nexus_root.rglob("*.md")):
-        if md.name.startswith("_"):
+        rel_parts = md.relative_to(nexus_root).parts
+        if any(p.startswith("_") for p in rel_parts):
             continue
         text = md.read_text()
         fm = _parse_frontmatter(text)
+        if not fm:  # no frontmatter block => not a node
+            continue
         nid = fm.get("node_id", md.stem)
         nodes[nid] = fm
         targets = set(re.findall(r"\[\[([a-z0-9-]+)\]\]", text))
