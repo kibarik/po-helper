@@ -49,13 +49,16 @@ description: 'Оцифровка осмысления в атомарные уз
 
 Для каждого файла `comprehension/<id>.md`:
 
-1. Пройди по разделу «Сущности» — сопоставь каждую с строкой
-   `routing_table.md` по сигналу (ADR/решение → `decision`, BR-* → `rule`,
-   термин → `term`, метрика/KPI → `metric`, сервис/API → `component`,
-   закон/стандарт/security → `regulation`, SLA/НФТ → `nfr`, риск → `risk`,
-   персона/роль/RACI → `person`, внешняя команда → ext-team, сегмент/JTBD →
-   customer-empirical, конкурент → market-empirical, roadmap/OKR →
-   strategy-empirical).
+1. Пройди по разделу «Сущности» — сопоставь каждую с таблицей
+   `routing_table.md` по сигналу (колонка «Сигнал на странице» и `node_type`).
+   **Валидные `node_type`** — исключительно те, что указаны в
+   `sa_documentation/nexus_schema.md` §3: spine, operating-model, gates,
+   bootstrap, step-overview, sprint-phase, person, deliverable, channel,
+   component, decision, rule, regulation, nfr, risk, term, metric. Для строк
+   таблицы с parenthesized плейсхолдерами (`(ext-team)`, `(empirical)`)
+   выбери наиболее подходящий canonical тип по природе сущности; если
+   однозначный выбор невозможен, понизь confidence и отправь узел в очередь
+   (`_intake/unrouted.md`; см. `routing_table.md` §Правило множественности).
 2. **Одна страница может дать несколько узлов** разных строк — это
    ожидаемо (семантический разбор, не «страница = узел»). Не схлопывай
    разные сущности в один узел ради простоты.
