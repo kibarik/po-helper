@@ -108,7 +108,7 @@ echo "→ Целевой корень: $DEST_ROOT"
 mkdir -p "$DEST_SKILLS" "$DEST_COMMANDS" "$DEST_WORKFLOWS"
 
 # Навыки фреймворка (каждый — каталог с SKILL.md + resources + examples)
-SKILLS=(bft-writer okr-planner sprint-planner po-research info-channels summary)
+SKILLS=(bft-writer okr-planner sprint-planner po-research info-channels summary prd-research)
 
 # Команды фреймворка
 COMMANDS=(
@@ -118,6 +118,7 @@ COMMANDS=(
   po-research
   channel-map channel-list channel-route
   summary
+  prd-research prd-idea prd-assemble
 )
 
 # --- навыки ---
