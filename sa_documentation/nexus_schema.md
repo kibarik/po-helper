@@ -134,6 +134,24 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `tam-sam-som` | Market (Step 3) | STEP-3-MARKET/overview.md |
 | `competitor` | Market (Step 3) | STEP-3-MARKET/overview.md |
 | `gap` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `opportunity` | niche-opportunities, OST | market/customer |
+| `segment` | segmentation | customer |
+| `jtbd` | segmentation, ODI | customer |
+| `outcome` | ODI (desired outcome) | customer/product |
+| `persona-context` | consumer-context | customer |
+| `nsm-metric` | NSM | product/growth |
+| `input-metric` | NSM, AARRR | growth |
+| `value-prop` | consumer-context, ODI | product |
+| `unit-econ` | unit-economics | growth |
+| `cohort` | unit-economics, AARRR | growth |
+| `funnel-stage` | AARRR | growth |
+| `positioning` | 4P, Rory | product/growth |
+| `four-p` | 4P | growth |
+| `channel` | distribution-channels | growth |
+| `risk-card` | RAT | product |
+| `solution` | OST | product |
+| `experiment` | OST | product |
+| `ab-test` | A/B design | product/growth |
 
 Типы для Steps 2, 4–8 добавляются при реализации соответствующей стадии — каждый ← `overview.md` своего шага.
 
