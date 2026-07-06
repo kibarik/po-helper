@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "9a647f1140ce",
+  "strategy": "manual-commit",
+  "branch": "fix/install-bugs",
+  "checkpoints_count": 9,
+  "files_touched": [
+    "docs/superpowers/specs/2026-07-06-paf-install-full-ecosystem-design.md",
+    "install.sh"
+  ],
+  "sessions": [
+    {
+      "metadata": "/9a/647f1140ce/0/metadata.json",
+      "transcript": "/9a/647f1140ce/0/full.jsonl",
+      "compact_transcript": "/9a/647f1140ce/0/transcript.jsonl",
+      "content_hash": "/9a/647f1140ce/0/content_hash.txt",
+      "prompt": "/9a/647f1140ce/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 20533,
+    "cache_creation_tokens": 718368,
+    "cache_read_tokens": 3838941,
+    "output_tokens": 84230,
+    "api_call_count": 47
+  }
+}

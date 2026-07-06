@@ -1,0 +1,144 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_id": "9a647f1140ce",
+  "session_id": "8901983a-d539-4ea5-983f-2fcd37358a28",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-06T12:13:58.631027Z",
+  "branch": "fix/install-bugs",
+  "checkpoints_count": 9,
+  "save_step_count": 8,
+  "files_touched": [
+    "docs/superpowers/specs/2026-07-06-paf-install-full-ecosystem-design.md",
+    "install.sh"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "747d19b125f3",
+  "token_usage": {
+    "input_tokens": 20533,
+    "cache_creation_tokens": 718368,
+    "cache_read_tokens": 3838941,
+    "output_tokens": 84230,
+    "api_call_count": 47
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_019VyN98ijdT21DnZ7jhW8Uz",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:brainstorming"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "747d19b125f3",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 62,
+        "end": 63,
+        "entry_ids": [
+          "0413edad-3781-4804-bc10-ef2422b27625"
+        ],
+        "tool_use_id": "toolu_019VyN98ijdT21DnZ7jhW8Uz"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_019VyN98ijdT21DnZ7jhW8Uz"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:brainstorming",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 9
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-06T12:13:58.550009Z",
+    "agent_lines": 451,
+    "agent_removed": 199,
+    "human_added": 234,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 685,
+    "total_lines_changed": 884,
+    "agent_percentage": 73.52941176470588,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 14,
+      "agent_lines_removed": 11
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 14,
+      "agent_lines_removed": 11
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 14,
+      "agent_lines_removed": 11
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 14,
+      "agent_lines_removed": 11
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 14,
+      "agent_lines_removed": 11
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 14,
+      "agent_lines_removed": 11
+    },
+    {
+      "checkpoint_number": 8,
+      "user_lines_added": 117,
+      "user_lines_removed": 0,
+      "agent_lines_added": 451,
+      "agent_lines_removed": 199,
+      "user_added_per_file": {
+        ".claude/skills/paf-install/SKILL.md": 117
+      }
+    },
+    {
+      "checkpoint_number": 9,
+      "user_lines_added": 117,
+      "user_lines_removed": 0,
+      "agent_lines_added": 451,
+      "agent_lines_removed": 199,
+      "user_added_per_file": {
+        ".claude/skills/paf-install/SKILL.md": 117
+      }
+    }
+  ]
+}
