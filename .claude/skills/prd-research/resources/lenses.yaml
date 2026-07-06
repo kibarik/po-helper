@@ -1,0 +1,136 @@
+# Реестр Research-линз. Промт-тело — в resources/lenses/<id>.md (дословно, read-only).
+# harvest добавляется, когда host-шаг реализован (сейчас — для 3 customer-линз).
+lenses:
+  - id: niche-opportunities
+    title: "Анализ нишевых возможностей"
+    prompt_file: "resources/lenses/niche-opportunities.md"
+    role: "Senior digital market analyst — ранжирование ниш/ROI"
+    host_steps: [idea]
+    cross_cutting: false
+    lang: ru
+  - id: segmentation
+    title: "Сегментация ЦА"
+    prompt_file: "resources/lenses/segmentation.md"
+    role: "Expert PM — сегментация B2B/SaaS (6-step)"
+    host_steps: [customer]
+    cross_cutting: false
+    lang: ru
+    harvest:
+      - output: "HIGH-сегменты (STEP 6 summary)"
+        nexus: customer
+        node_type: segment
+        cp_policy: estimate
+      - output: "JTBD каждого HIGH-сегмента"
+        nexus: customer
+        node_type: jtbd
+        cp_policy: judgment
+      - output: "5 тестируемых гипотез сегмента (STEP 5)"
+        nexus: customer
+        node_type: opportunity
+        cp_policy: judgment
+  - id: consumer-context
+    title: "Единый контекст потребителя"
+    prompt_file: "resources/lenses/consumer-context.md"
+    role: "Consumer Context Analysis Expert (Тихомиров)"
+    host_steps: [customer]
+    cross_cutting: false
+    lang: ru
+    harvest:
+      - output: "context_structure (Stage 3)"
+        nexus: customer
+        node_type: persona-context
+        cp_policy: judgment
+      - output: "value_propositions (Stage 5)"
+        nexus: product
+        node_type: value-prop
+        cp_policy: judgment
+  - id: odi
+    title: "Outcome-Driven Innovation"
+    prompt_file: "resources/lenses/odi.md"
+    role: "Lead ODI Consultant (Ulwick)"
+    host_steps: [customer, value]
+    cross_cutting: false
+    lang: ru
+    harvest:
+      - output: "Core Functional Job"
+        nexus: customer
+        node_type: jtbd
+        cp_policy: judgment
+      - output: "Desired Outcome Statements"
+        nexus: customer
+        node_type: outcome
+        cp_policy: judgment
+      - output: "Opportunity Scores (Mode CALCULATION)"
+        nexus: customer
+        node_type: opportunity
+        cp_policy: estimate
+  - id: tam-sam-som
+    title: "TAM / SAM / SOM"
+    prompt_file: "resources/lenses/tam-sam-som.md"
+    role: "Senior TAM/SAM/SOM consultant"
+    host_steps: [market]
+    cross_cutting: false
+    lang: ru
+  - id: nsm
+    title: "North Star Metric"
+    prompt_file: "resources/lenses/nsm.md"
+    role: "North Star Framework consultant"
+    host_steps: []
+    cross_cutting: true
+    lang: ru
+  - id: rory-interrogation
+    title: "Маркетинговый допрос (Rory Sutherland)"
+    prompt_file: "resources/lenses/rory-interrogation.md"
+    role: "Behavioral marketing strategist (Rory Sutherland)"
+    host_steps: [value, gtm]
+    cross_cutting: false
+    lang: ru
+  - id: unit-economics
+    title: "Проектирование UNIT-экономики"
+    prompt_file: "resources/lenses/unit-economics.md"
+    role: "Unit economics consultant"
+    host_steps: [bizmodel]
+    cross_cutting: false
+    lang: ru
+  - id: aarrr
+    title: "Проектирование AARRR воронки"
+    prompt_file: "resources/lenses/aarrr.md"
+    role: "Product analytics & growth consultant (AARRR)"
+    host_steps: [bizmodel, acquisition]
+    cross_cutting: false
+    lang: ru
+  - id: positioning-4p
+    title: "4P распаковка позиционирования"
+    prompt_file: "resources/lenses/positioning-4p.md"
+    role: "4P positioning consultant"
+    host_steps: [gtm]
+    cross_cutting: false
+    lang: ru
+  - id: distribution-channels
+    title: "Выбор каналов дистрибуции"
+    prompt_file: "resources/lenses/distribution-channels.md"
+    role: "Geography & distribution channel consultant"
+    host_steps: [gtm, acquisition]
+    cross_cutting: false
+    lang: ru
+  - id: ost
+    title: "Opportunity Solution Tree"
+    prompt_file: "resources/lenses/ost.md"
+    role: "OST consultant (Teresa Torres)"
+    host_steps: []
+    cross_cutting: true
+    lang: ru
+  - id: ab-design
+    title: "Проектирование A/B"
+    prompt_file: "resources/lenses/ab-design.md"
+    role: "A/B experiment design assistant"
+    host_steps: []
+    cross_cutting: true
+    lang: ru
+  - id: rat
+    title: "RAT — анализ рисков запуска"
+    prompt_file: "resources/lenses/rat.md"
+    role: "Risky Assumption Testing expert (JTBD)"
+    host_steps: []
+    cross_cutting: true
+    lang: ru
