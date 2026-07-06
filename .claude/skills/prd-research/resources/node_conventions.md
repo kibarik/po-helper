@@ -16,7 +16,7 @@ owner: Portfolio Manager      # роль из roster (RACI market → Portfolio 
 confidence: 0.3               # CP по источнику (см. шкалу §2.3)
 sources: ["onboarding:interview", "https://... (2026-07-06)"]
 updated: 2026-07-06
-ttl_days: 90                  # market/customer=90, growth=60
+ttl_days: 90                  # market/customer/product=90, growth=60
 ripeness: fresh
 hyp_status: hypothesis        # §2.3 lifecycle
 depends_on: []                # node_id первопричин из других шагов

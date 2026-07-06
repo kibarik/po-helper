@@ -31,7 +31,7 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `confidence` | float 0–1 | Confidence Point Узла. normative: 1.0 = полностью трассируется до [S1]–[S4]; empirical: уровень валидационных доказательств | ✅ |
 | `sources` | list[string] | Источники (`[S1]`,`[S2]`, URL, RB-STEP-N.M, интервью #N, аналитика). **Узел без `sources` = workslop** | ✅ |
 | `updated` | date ISO | Дата последнего обновления (YYYY-MM-DD) | ✅ |
-| `ttl_days` | int | Срок актуальности в днях. normative: 365; empirical: market/customer=90, growth=60 | ✅ |
+| `ttl_days` | int | Срок актуальности в днях. normative: 365; empirical: market/customer/product=90, growth=60 | ✅ |
 | `ripeness` | enum | `fresh` \| `ripening` \| `wilting` — вычисляется из `updated`+`ttl_days` (см. §4) | ✅ |
 | `tags` | list[string] | Доп. теги (Obsidian), напр. `[fit-point]`, `[sprint-engine]` | — |
 
@@ -54,7 +54,7 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `kind` | `empirical` |
 | `sources` | `["onboarding:<doc>"]` (из ингестии доков, Phase A) \| `["onboarding:interview"]` (из интервью, Phase B) \| последующие: аналитика, эксперимент, интервью Steps 1–8 |
 | `confidence` по умолчанию | **0.2–0.4** (допущение онбординга, **не валидировано**). CP поднимают Steps 1–8 (интервью/эксперименты → 0.5–1.0). |
-| `ttl_days` | короче, чем у normative (365): **market/customer = 90, growth = 60**. Быстрее wilting → раньше триггерит обновление/верификацию. |
+| `ttl_days` | короче, чем у normative (365): **market/customer/product = 90, growth = 60**. Быстрее wilting → раньше триггерит обновление/верификацию. |
 
 В тело каждого такого узла ставится пометка:
 
@@ -89,7 +89,7 @@ PAF сознательно «не фиксирует технологию» [S1]
 | web desk-research (якорь URL + дата) | 0.5–0.7 |
 | интервью / эксперимент | 0.7–1.0 |
 
-`ttl_days` для discovery-узлов наследует empirical-дефолты §2.2 (market/customer=90, growth=60).
+`ttl_days` для discovery-узлов наследует empirical-дефолты §2.2 (market/customer/product=90, growth=60).
 
 **Контур рассогласования:** при изменении узла-первопричины все узлы, где он числится в `depends_on`, помечаются `ripeness: wilting` (требуют re-check). Оркестратор `/prd-research` сводит такие рассинхроны в список на входе (см. `skills/prd-research/resources/board_state.md`).
 

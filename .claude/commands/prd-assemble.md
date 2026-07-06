@@ -21,9 +21,9 @@ description: 'PRD-витрина — пересобираемый PRD повер
 
 ### Этап 3: Разметка confidence раздела
 4. Для каждого раздела PRD (по шагам pipeline.md) определи метку:
-   - `✅ validated` — есть узлы с `hyp_status: validated` и CP ≥ 0.6;
-   - `🟡 assumed` — есть узлы `hypothesis`/`validating`, CP < 0.6;
-   - `🔴 open` — узлов нет / все `parked`.
+   - `✅ validated` — раздел имеет хотя бы один узел с `hyp_status: validated` и CP ≥ 0.6.
+   - `🟡 assumed` — есть узлы, но ни один не `validated`: любой из `draft`/`hypothesis`/`scoring`/`validating` (независимо от CP).
+   - `🔴 open` — узлов нет, либо все узла `parked`/`refuted`.
 
 ### Этап 4: Рендер `{prd_output_doc}`
 
