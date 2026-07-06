@@ -23,6 +23,7 @@
 | **OKR** | `/okr-context-gen → /okr-objectives → /okr-key-results → /okr-debate → /okr-enrich → /okr-validate → /okr-deliver` | Квартальный OKR (OBJ + KR + IMP + образ результата/действия + метрики/риски) |
 | **БФТ** | `/bft-context-gen → /bft-problem → /bft-concept → /bft-debate → /bft-draft → /bft-validate` (+ `/bft-deliver`, `/bft-context-gen-deep`) | Бизнес-Функциональные Требования по эпику |
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research по топику (sprint/epic/risk/decision/bft) |
+| **Задача в JIRA** | `/jira-task` | Свободный текст → задача в JIRA по шаблону (Образ результата/ASIS/ПРОБЛЕМА/TOBE) + relevance-ссылки |
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат |
 | **Онбординг PAF** | `/paf-init`, `/paf-nexus-create` | GROUND Vault: config + каталог Нексусов под продукт |
 
