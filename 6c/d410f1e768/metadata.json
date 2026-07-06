@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "6cd410f1e768",
+  "strategy": "manual-commit",
+  "branch": "feat/daily-review",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/plans/2026-07-06-daily-review.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/6c/d410f1e768/0/metadata.json",
+      "transcript": "/6c/d410f1e768/0/full.jsonl",
+      "compact_transcript": "/6c/d410f1e768/0/transcript.jsonl",
+      "content_hash": "/6c/d410f1e768/0/content_hash.txt",
+      "prompt": "/6c/d410f1e768/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 140,
+    "cache_creation_tokens": 152180,
+    "cache_read_tokens": 719526,
+    "output_tokens": 23183,
+    "api_call_count": 6
+  }
+}
