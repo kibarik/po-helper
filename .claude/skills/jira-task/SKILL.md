@@ -32,7 +32,7 @@ description: Оформляет свободный текст PO в задачу
 Если критичное поле (Образ результата / ПРОБЛЕМА / TOBE) пусто — задать PO 1–3 точечных вопроса до продолжения. Некритичные поля (ASIS, Описание) при отсутствии данных заполняются `[УТОЧНИТЬ у {кого}]`, интервью по ним не требуется.
 
 ### 3. Classify
-Определить `issue_type` (Task по умолчанию, Bug только при явных сигналах дефекта) и `project_key` (из `[PROJ]` вызова либо профиля) — правила и Summary-алгоритм см. `resources/template.md`.
+Определить `issue_type` (Task по умолчанию, Bug только при явных сигналах дефекта) и `project_key` (цепочка: аргумент `[PROJ]` вызова → `tracker.projects[0]` → `bft.default_project` из профиля) — правила и Summary-алгоритм см. `resources/template.md`.
 
 ### 4. Relevance-research (read-only)
 Поиск релевантного контекста в JIRA (и Confluence, если настроен `wiki.mcp`) по ключевым словам из Summary/полей шаблона — см. `resources/relevance-search.md`. Только `jira_search`/`confluence_search`, без записи. Пустой результат — норма, не блокирует пайплайн.

@@ -81,7 +81,7 @@ project = PROJ AND (text ~ "производительность" OR text ~ "API
 
 ### Confluence-поиск
 ```
-space = ENG (из `wiki.space`) AND text ~ "производительность" AND text ~ "SLA"
+space = ENG (из `wiki.space`) AND (text ~ "производительность" OR text ~ "SLA")
 ```
 
 **Найдено (релевантный материал):**
