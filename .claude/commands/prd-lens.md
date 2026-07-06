@@ -20,7 +20,7 @@ description: 'Cross-cutting Research-линза — запуск rat/ab-design/o
 
 ### Этап 2: Исполнение по Wrap
 4. Исполни линзу строго по `lens_runtime.md`: PULSE (вход из узлов `step` + первопричин) → запуск `prompt_file` дословно (гейты `продолжить/ревизия`, язык ru) → HARVEST.
-5. HARVEST: если у линзы есть `harvest` — по нему; иначе (rat/ab-design/ost/nsm без harvest в реестре) создай узлы по природе выхода: rat → `risk-card` (product), ab-design → `ab-test` (product), ost → `opportunity`/`solution`/`experiment` (product), nsm → `nsm-metric`/`input-metric` (growth). CP-политика: risk/ab/ost → `judgment` (или `estimate` для числовых); nsm → `judgment`. Нексус — по `step`.
+5. HARVEST: если у линзы есть `harvest` — по нему; иначе (rat/ab-design/ost/nsm без harvest в реестре) создай узлы по природе выхода: rat → `risk-card` (product), ab-design → `ab-test` (product), ost → `opportunity`/`solution`/`experiment` (product), nsm → `nsm-metric`/`input-metric` (в Нексус текущего шага — growth/product). CP-политика: risk/ab/ost → `judgment` (или `estimate` для числовых); nsm → `judgment`. Нексус — по `step`.
 
 ### Этап 3: СТОП
 ```
