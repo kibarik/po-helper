@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "26109a257ba6",
+  "strategy": "manual-commit",
+  "branch": "feat/okr-status",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/specs/2026-07-07-okr-status-design.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/26/109a257ba6/0/metadata.json",
+      "transcript": "/26/109a257ba6/0/full.jsonl",
+      "compact_transcript": "/26/109a257ba6/0/transcript.jsonl",
+      "content_hash": "/26/109a257ba6/0/content_hash.txt",
+      "prompt": "/26/109a257ba6/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 22739,
+    "cache_creation_tokens": 239829,
+    "cache_read_tokens": 764561,
+    "output_tokens": 24909,
+    "api_call_count": 18
+  }
+}
