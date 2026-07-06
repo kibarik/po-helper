@@ -42,6 +42,14 @@ description: Генеративный discovery-онбординг для све
 Каждый `/prd-*` внутри проходит цикл Product Sprint (docs/AI-PROCESSES engine):
 `PULSE` (что уже в Нексусе / гэп) → `SCOUT` (диалог + desk-research, наполнение) → `BUNCH/PITCH` (скоринг гипотез, рост CP, под-дебаты) → `HARVEST` (запись узлов). Какие фазы тяжёлые — по `overview.md` шага.
 
+## Research Lens Arsenal (сменные линзы)
+
+Шаги наполняются проверенными промтами PO как **сменными линзами** (реестр `resources/lenses.yaml`, тела — `resources/lenses/<id>.md`, дословно). Единый исполнитель — `resources/lens_runtime.md` (PULSE → запуск промта дословно → HARVEST в узлы).
+
+- Шаг-команда `/prd-<step>` = адаптивный плейлист линз шага (рекомендуемый порядок, PO волен отклоняться).
+- Cross-cutting линзы (rat/ab-design/ost/nsm) — через `/prd-lens <id>` на текущем шаге; оркестратор предлагает их на гейтах.
+- Промт не редактируется; Wrap добавляет только вход и персист. Оценки линз → `estimate`/`judgment` (низкий CP), не факты.
+
 ## Anti-rules
 
 1. **Нет узла без `sources` и `hyp_status`.** Гипотеза помечается гипотезой.
