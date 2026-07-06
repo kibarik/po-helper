@@ -38,6 +38,10 @@ paths:
   okr_workspace:    "CORTEX/_context-packs/okr/{quarter}"
   # Корень груминга OKR Фазы 2 (1 степ = 1 KR: SMART-якорь + US-декомпозиция + вопросы)
   okr_grooming_root: "{okr_workspace}/grooming"
+  # Рабочая папка пайплайна okr-status (fact-pack + assessment + raw/ субагентов). {quarter} — подстановка
+  status_workspace:  "CORTEX/_context-packs/okr-status/{quarter}"
+  # Финальный статус-отчёт по кварталу (рядом с Планированием). {checkpoint} = equator | final
+  status_report_doc: "GROUND/NEXUS/project-management/{quarter}/Статус/OKR-STATUS-{quarter}-{checkpoint}.md"
   # Рабочая папка пайплайна BFT (папка конкретного БФТ: финальный <epic>.md + artefacts/)
   bft_workspace:    "bft_documentation/{epic}"
   # Корень всех БФТ (готовые документы + золотые референсы)
