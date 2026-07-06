@@ -12,3 +12,5 @@
 | 6 GTM | /prd-gtm | 6 | growth | позиционирование/каналы | STEP-6-GO-TO-MARKET/overview.md | RB-STEP-6 | — |
 | 7 Solution | /prd-solution | 7 | product·system-landscape | требования/прототип/PMF | STEP-7-SOLUTION-PMF/overview.md | RB-STEP-7 | PMF |
 | 8 Acquisition | /prd-acquisition | 8 | growth | сегмент-канал-оффер/PCF | STEP-8-ACQUISITION-PCF/overview.md | RB-STEP-8 | PCF |
+
+> **Линзы шагов** — `resources/lenses.yaml` (реестр) + `resources/lenses/<id>.md` (промты дословно). Step 2 Customer: плейлист segmentation → consumer-context → odi. Cross-cutting (rat/ab-design/ost/nsm) — через `/prd-lens`.

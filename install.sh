@@ -118,7 +118,7 @@ COMMANDS=(
   po-research
   channel-map channel-list channel-route
   summary
-  prd-research prd-idea prd-assemble
+  prd-research prd-idea prd-assemble prd-customer prd-lens
 )
 
 # --- навыки ---
