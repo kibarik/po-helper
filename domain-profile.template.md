@@ -56,9 +56,27 @@ paths:
   calibration_workspace: "GROUND/NEXUS/team/_calibration/{run_id}"
   # Папка оперативных сведений — #summary-заметки встреч (/summary). Файл = встреча: {дата}-{slug}.md
   summary_notes: "GROUND/PULSE/summaries"
+  # Рабочая папка/состояние стадии discovery (журнал + state.yaml шага). {step} — подстановка (idea, customer, …)
+  discovery_workspace: "CORTEX/_context-packs/discovery/{step}"
+  # PRD-витрина — пересобираемый документ поверх наполненных Нексусов. {product} — slug продукта из config.yaml
+  prd_output_doc: "GROUND/RESULTS/PRD-{product}.md"
 ```
 
 Если у проекта нет какого-то документа (например `KR-EPIC-MAP`) — оставьте путь, команда при отсутствии файла предложит его создать (bootstrap), не выдумывая содержимое.
+
+---
+
+## 1.1 Discovery (генеративный онбординг)
+
+Настройки workflow `/prd-research` — наполнение Нексусов через диалог + desk-research (для свежих проектов без существующего контекста).
+
+```yaml
+discovery:
+  # Канон методологии. AI-PROCESSES — исполняемый хребет×движок; TRADITIONAL — raw-справочник методов.
+  methodology_track: "AI-PROCESSES"
+  # Включить активный web desk-research в фазе SCOUT (WebSearch/WebFetch + делегирование /po-research).
+  web_research: true
+```
 
 ---
 
