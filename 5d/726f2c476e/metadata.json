@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "5d726f2c476e",
+  "strategy": "manual-commit",
+  "branch": "feat/prd-research",
+  "checkpoints_count": 6,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/5d/726f2c476e/0/metadata.json",
+      "transcript": "/5d/726f2c476e/0/full.jsonl",
+      "compact_transcript": "/5d/726f2c476e/0/transcript.jsonl",
+      "content_hash": "/5d/726f2c476e/0/content_hash.txt",
+      "prompt": "/5d/726f2c476e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 60019,
+    "cache_creation_tokens": 1669618,
+    "cache_read_tokens": 20328246,
+    "output_tokens": 160056,
+    "api_call_count": 117
+  }
+}

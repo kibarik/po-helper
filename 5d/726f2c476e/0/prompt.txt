@@ -1,0 +1,745 @@
+1
+
+---
+
+<task-notification>
+<task-id>afb5d41714ddd52ca</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/afb5d41714ddd52ca.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 1: Node schema §2.3" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>**DONE** — Commit: `efa1f2a`
+
+Node schema §2.3 section inserted and verified: all three grep checks (hyp_status, ### 2.3, depends_on) now pass; pre-edit correctly failed, post-edit correctly succeeds.
+
+No concerns. Report written to `.superpowers/sdd/task-1-report.md`.</result>
+<usage><subagent_tokens>30390</subagent_tokens><tool_uses>8</tool_uses><duration_ms>57312</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a2ff8e0f08e0342c3</task-id>
+<tool-use-id>toolu_0118KtswUrKsNNh8wtU8fqgy</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a2ff8e0f08e0342c3.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 1: Node schema §2.3" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Review: Task 1 — Node schema §2.3 (discovery-узлы)
+
+**Spec compliance: ✅**
+
+- Section `### 2.3 Discovery-узлы (гипотезы, Steps 1–8)` is inserted at exactly the right location: after §2.2's closing blockquote and before the `## 3. node_type` heading (verified in `sa_documentation/nexus_schema.md:65-94`).
+- Content is a verbatim match against the brief (`.superpowers/sdd/task-1-brief.md:35-65`) — diffed the brief's fenced block against the diff's added lines; the only delta was the brief's own closing ` ``` ` markdown fence, not actual content.
+- `hyp_status` enum matches exactly: `draft → hypothesis → scoring → validating → validated | refuted | parked` (7 values, correct order).
+- `depends_on: list[node_id]` present with correct semantics ("Пусто допустимо").
+- CP scale table present with all 4 source tiers and ranges (PO judgment 0.2–0.4, `docs/RL/` 0.3–0.5, web desk-research 0.5–0.7, interview/experiment 0.7–1.0).
+- `ttl_days` defaults present and correctly cross-referenced (market/customer=90, growth=60), matching §2.2's own values (`nexus_schema.md:57`).
+- Only `sa_documentation/nexus_schema.md` changed — confirmed via `git diff --stat 4972a14..efa1f2a` (1 file, 31 insertions, 0 deletions). No touches to `docs/AI-PROCESSES/`, `docs/TRADITIONAL/`, `docs/RL/`, `docs/AI-TRANSFORMATION/`.
+- Artifact is in Russian throughout, consistent with surrounding sections.
+- No contradictions with existing schema: base keys reused (`confidence`, `sources`, `ripeness`, `updated`, `ttl_days`) are consistent with §2's table; the wilting reference (`ripeness: wilting`) matches §4's enum (`fresh | ripening | wilting`, `nexus_schema.md:124-128`).
+
+**Content quality: Approved**
+
+No Critical or Important issues found.
+
+- Minor: §2.3 references `skills/prd-research/resources/board_state.md`, which does not yet exist in the repo (`find` confirms `skills/prd-research/resources/` is absent). This is inherited verbatim from the brief (a forward reference to future PP work), not an implementer defect — flagging only so a later task creates that file before the reference goes stale.
+- Minor: the report claims "Test: `/private/tmp/prd-test-vault/` (фикстура)" per brief Step 1, and the report says it was created, but this fixture is outside the repo and not part of the diff — expected, since it's a throwaway local test artifact, not a deliverable.
+
+**⚠️ Cannot verify from diff alone**
+
+- Whether `/private/tmp/prd-test-vault/GROUND/NEXUS/_registry.yaml` fixture was actually created on disk (Step 1) — not part of the diff, and no longer present in this fresh review pass; the report's claim is unverifiable but also inconsequential to the actual deliverable.
+- Whether the pre-edit grep in Step 2 genuinely printed `FAIL` and post-edit grep in Step 4 genuinely printed `OK` — I re-ran equivalent checks against the current file state and confirmed all three strings (`hyp_status`, `### 2.3`, `depends_on`) are present, so the end-state check passes; I cannot verify the historical pre-edit run itself.</result>
+<usage><subagent_tokens>45132</subagent_tokens><tool_uses>9</tool_uses><duration_ms>57686</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a48e2b0dcf2e0bb46</task-id>
+<tool-use-id>toolu_01VsMRsZW1tC4W72VrKvBp1g</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a48e2b0dcf2e0bb46.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 2: domain-profile discovery" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Task 2 Complete
+
+**Status:** DONE
+
+**Commit hash:** 13ff236
+
+**Check summary:** Pre-edit FAIL → Added `discovery_workspace`, `prd_output_doc` paths + `## 1.1 Discovery` subsection with `discovery` config block → Post-edit OK (all three placeholders verified)
+
+**Concerns:** None. YAML indentation maintained (2-space), language Russian, all requirements met.</result>
+<usage><subagent_tokens>30096</subagent_tokens><tool_uses>8</tool_uses><duration_ms>57685</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a4ae1b0622d26f140</task-id>
+<tool-use-id>toolu_01Hn88HjSX27KFRWytyuU1yo</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a4ae1b0622d26f140.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 2: domain-profile discovery" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>All checks pass: both new keys sit inside the `paths:` block (lines 60/62), right after `summary_notes:` (line 58), with matching 2-space indentation and matching comment style. The `discovery:` block is its own valid YAML fence at lines 73-79 with exactly `methodology_track: "AI-PROCESSES"` and `web_research: true`. Every YAML block in the file, including the two new ones, parses cleanly with `yaml.safe_load`. The diff touches only `domain-profile.template.md` (18 insertions, 0 deletions), and section 2 (`## 2. Команды и роли`) and everything after is untouched — just pushed down, no content altered.
+
+**Spec compliance:** ✅ Matches the brief exactly — same key names, same values, same paths/comments as specified in `task-2-brief.md` Steps 2–3, in the right location, correct indentation, valid YAML, Russian throughout.
+
+**Content quality:** Approved. No Critical/Important/Minor issues.
+- Comments are consistent in style/tone with neighboring path entries (e.g. `sprint_workspace`, `research_workspace`, `calibration_workspace`).
+- `## 1.1 Discovery` subsection follows the same pattern as other subsections (intro sentence + fenced yaml + `---`).
+- Minor stylistic note (not a defect): other multi-key blocks in this file often right-pad `:` for alignment (e.g. `planning_root:    "..."`), but `paths:` entries are inconsistent about this already (many unpadded), so the new unpadded `discovery_workspace:` / `prd_output_doc:` keys are consistent with the majority style in this block.
+
+**⚠️ Cannot verify from diff:** Whether any other file/command in the repo (e.g. `/prd-research` skill scaffolding referenced in task-1) actually consumes `{discovery_workspace}`/`{prd_output_doc}`/`discovery.methodology_track`/`discovery.web_research` at runtime — this task only adds the profile scaffolding, and confirming consumers requires reading beyond this diff, which was out of scope per the binding constraint ("only domain-profile.template.md may change").</result>
+<usage><subagent_tokens>38798</subagent_tokens><tool_uses>5</tool_uses><duration_ms>23864</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a23d7688bcd767db4</task-id>
+<tool-use-id>toolu_01SRkbQuKZtiYsgV1GQgAoAX</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a23d7688bcd767db4.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 3: orchestrator skill" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+Commit: `2ada57f`
+Check: structural check ran → `OK`
+Concerns: none — all 5 files were verbatim transcriptions of the brief's fenced blocks; cross-checked against Task 1's `nexus_schema.md` §2.3 and Task 2's `domain-profile.template.md` and confirmed exact name/value consistency (`hyp_status`, `depends_on`, CP scale, ttl_days, `{discovery_workspace}`, `prd_output_doc`, `discovery.methodology_track`/`web_research`). Full report at `.superpowers/sdd/task-3-report.md`.</result>
+<usage><subagent_tokens>58104</subagent_tokens><tool_uses>15</tool_uses><duration_ms>146080</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a28185433e9cbef58</task-id>
+<tool-use-id>toolu_01U2TYuAj99KRjvDT4KFBuUc</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a28185433e9cbef58.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 3: orchestrator skill" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>All references check out. Final review complete.
+
+## Spec compliance: ✅
+
+All 5 files created exactly as specified, nothing else touched:
+- `git diff --stat 13ff236..2ada57f` confirms only the 5 target files changed (139 insertions, 0 deletions) — no `install.sh`, no command files, no `docs/AI-PROCESSES|TRADITIONAL|RL|AI-TRANSFORMATION` touched.
+- `SKILL.md` frontmatter is valid (`---` delimited, `name: prd-research`, `description:` present), matching the style of existing skills (e.g. `po-research/SKILL.md`).
+- `pipeline.md`'s 8-step table matches brief and spec §4.1 exactly (idea→market·product·growth, customer→customer, market→market, value→product+Need/Value Fit, bizmodel→growth+Biz-model, gtm→growth, solution→product·system-landscape+PMF, acquisition→growth+PCF).
+- `node_conventions.md` matches Node schema §2.3 verbatim: `hyp_status` enum (draft→hypothesis→scoring→validating→validated|refuted|parked), `depends_on`, CP scale (PO 0.2–0.4, RL 0.3–0.5, web 0.5–0.7, interview/experiment 0.7–1.0), `ttl_days` (market/customer=90, growth=60) — all cross-checked against `sa_documentation/nexus_schema.md` §2.3 lines 65–94 and confirmed identical.
+- `board_state.md` defines `state.yaml` fields exactly as required (step, status, cp, open_questions, nodes, last_touched) plus the board-render and wilting/`depends_on` misalignment algorithm, consistent with nexus_schema.md §4's wilting/Context Ripeness formula.
+- `fit_gates.md` defines all 4 gates with Context Ripeness ≥ 0.6 thresholds and soft-gate (non-blocking) logic.
+- `{discovery_workspace}` and `{prd_output_doc}` placeholders match Task 2's `domain-profile.template.md` lines 59–62 exactly (`CORTEX/_context-packs/discovery/{step}` and `GROUND/RESULTS/PRD-{product}.md`).
+- All content is in Russian.
+
+## Content quality: Approved (with one Minor note)
+
+- **Minor** — `node_conventions.md:12` (`node_type: step-overview` in the example frontmatter): per `sa_documentation/nexus_schema.md` §3, `step-overview` is defined specifically for methodology overview notes (`STEP-N-*/overview.md`), not for generated discovery-hypothesis nodes like `idea-lens-market-1`. The comment inline (`# см. §3 nexus_schema; для гипотез product-контекста — по природе`) already hedges this as illustrative/situational, and the value was already baked into the brief's fenced block verbatim — so this isn't an implementer deviation, just a latent ambiguity inherited from Task 1's node_type taxonomy (§3 has no dedicated node_type for discovery hypothesis nodes in market/customer/product/growth Nexuses). Worth a follow-up note in a later task, not a blocking defect here.
+- No Critical or Important issues found. All cross-references (enum values, CP ranges, ttl_days, path placeholders) are verbatim-consistent with what Task 1 (`sa_documentation/nexus_schema.md`) and Task 2 (`domain-profile.template.md`) actually committed.
+
+## ⚠️ Cannot verify from diff
+
+- Whether `pipeline.md`'s node-type column (e.g., "сегмент/проблема/JTBD" for Step 2, dropping "mNSM-гипотеза" present in the full spec doc's §4.1 table) is an intentional simplification by the plan authors or an oversight — this discrepancy exists between the brief's fenced content and `docs/superpowers/specs/2026-07-06-prd-research-discovery-design.md:131`, but since the brief prescribed the exact fenced text and the implementer transcribed it verbatim, this is a planning-artifact question, not an implementation defect.
+- Runtime behavior of the board-render/misalignment algorithms (no test harness exists in this repo; per instructions this is not flagged as a defect).</result>
+<usage><subagent_tokens>60879</subagent_tokens><tool_uses>16</tool_uses><duration_ms>119866</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a0392a6144650272b</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a0392a6144650272b.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 4: /prd-research command" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Perfect! I've completed all steps for Task 4. Here's the final summary:
+
+**Status:** DONE
+
+**Commit hash:** 2f85995
+
+**Check summary:** Structural test passed (file exists, frontmatter valid, description field present). 8-step discovery orchestrator command created with init and board-render modes.
+
+**Concerns:** None. All referenced resources exist, default paths resolve correctly, and algorithm sequence matches board_state.md. Interactive dry-run deferred to manual controller verification (requires slash command session context not available in CLI agent).
+
+**Report location:** `.superpowers/sdd/task-4-report.md` (contains detailed static trace, constraint verification, and concerns analysis)</result>
+<usage><subagent_tokens>34118</subagent_tokens><tool_uses>12</tool_uses><duration_ms>106855</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a759a444ac7dfefce</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a759a444ac7dfefce.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 4: /prd-research command" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Everything checks out. Confirmed diff scope is exactly one file, 42 insertions, no other files touched.
+
+## Verdicts
+
+**Spec compliance: ✅**
+
+- Only `.claude/commands/prd-research.md` created (42 insertions, 1 file) — no changes to install.sh, skill files, or docs/. Confirmed via `git diff --stat 2ada57f..2f85995`.
+- Valid frontmatter with `description` field, single Russian description line.
+- References `skills/prd-research/SKILL.md`, `resources/board_state.md`, `resources/pipeline.md` — matches repo-wide convention (all other commands, e.g. `okr-context-gen.md`, reference `skills/&lt;name&gt;/...` even though the on-disk path is `.claude/skills/&lt;name&gt;/...`; consistent, not a defect).
+- `{discovery_workspace}` default (`CORTEX/_context-packs/discovery/{step}`) matches `domain-profile.template.md:60` exactly.
+- state.yaml field names in the command (`status`, `cp`, `nodes`, `open_questions`) match `skills/prd-research/resources/board_state.md` exactly (`step: idea`, `status: exploring|...|planned`, `cp: 0.35`, `open_questions:`, `nodes: [...]`, `last_touched:`). The command's init step doesn't explicitly enumerate `step`/`last_touched` in prose but delegates to "шаблон — board_state.md," which is the correct source of truth — not a gap.
+- СТОП block present, `## Запреты` section present (3 items), mirrors `okr-context-gen.md` structure (Использование → Инструкция для LLM with staged steps → СТОП → Запреты).
+- Language: Russian throughout.
+- Forward references to `/prd-idea` and `/prd-assemble` present and correctly left unresolved (later tasks).
+
+**Content quality: Approved**
+
+No Critical or Important issues found.
+
+Minor:
+- The command file is a verbatim copy of the brief's proposed content block — this is fine/expected for a thin orchestrator command, but it means the implementer added no independent judgment or refinement (e.g., no example output row in the board table, unlike some other command files that show fuller worked examples). Not a defect, just noting it's a low-effort-to-verify task by construction.
+- Gate column values ("Гейт") shown in the rendered table aren't explicitly sourced from `pipeline.md`'s "Fit-гейт" column in the command instructions — step 7 says "по алгоритму board_state.md," and board_state.md's algorithm doesn't itself define what "Гейт" pulls from. This is a latent ambiguity for whoever implements the LLM behavior at runtime (should the gate column reference `pipeline.md`'s Fit-гейт col), but it's a spec/design-level nuance already present in the brief, not something the implementer introduced or should have caught alone.
+
+**⚠️ Cannot verify from diff:**
+- Interactive dry-run (Step 3 of the task) — correctly deferred by the implementer since slash commands can't be invoked from a non-interactive agent session; the static trace provided in the report is a reasonable substitute and is explicitly out of scope for this review per instructions.
+- Whether `/prd-research` actually renders correctly against a live vault (no automated test harness exists in this repo, consistent with the review brief's note).</result>
+<usage><subagent_tokens>50481</subagent_tokens><tool_uses>14</tool_uses><duration_ms>63904</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a9e0f86bcb57813b2</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a9e0f86bcb57813b2.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 5: /prd-assemble command" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>---
+
+## Task 5 Complete
+
+**Status**: `DONE`
+
+**Commit hash**: `f9fadd1`
+
+**Check summary**: Structural check ✅ OK | File `.claude/commands/prd-assemble.md` created with exact brief content | Confidence labels (validated/assumed/open) with rules defined | Empty-vault static trace: all 8 sections → 🔴 open, evidence blocks empty, constraints enforced.
+
+**Concerns**: None. Report written to `.superpowers/sdd/task-5-report.md` with static trace for empty vault scenario (interactive dry-run deferred to controller).</result>
+<usage><subagent_tokens>27324</subagent_tokens><tool_uses>8</tool_uses><duration_ms>72415</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ad834692aa75423ef</task-id>
+<tool-use-id>toolu_016TudyZgFBJqiy3rSwJ3Put</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/ad834692aa75423ef.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 5: /prd-assemble command" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Confirmed: single-file commit, only `.claude/commands/prd-assemble.md` added, nothing else touched.
+
+## Verdicts
+
+**Spec compliance: ✅**
+
+- Only `.claude/commands/prd-assemble.md` created; commit `f9fadd1` touches no other files (verified via `git show --stat`).
+- Frontmatter valid: `description` present, quoted, matches skill registry description used elsewhere (`prd-assemble: PRD-витрина ...`).
+- `{prd_output_doc}` rendered in output template and in the СТОП message; `{product}` resolved from `.claude/domain-profile.md` / `GROUND/config.yaml` and rendered in the H1.
+- All 8 PRD sections present and in the required order: Идея и контекст / Потребитель / Рынок / Ценность / Бизнес-модель / Go-To-Market / Решение и требования / Привлечение (PCF).
+- Confidence labels match exactly: `✅ validated`, `🟡 assumed`, `🔴 open` (verbatim, correct emoji + English word).
+- Label rule is tied to actual node fields, not invented: `hyp_status: validated` + `confidence` (CP) ≥ 0.6 → ✅; `hypothesis`/`validating` + CP &lt; 0.6 → 🟡; no nodes / all `parked` → 🔴. `confidence` field and CP terminology are consistent with the rest of the repo (`node_conventions.md`, other `prd-research` commands use the same CP shorthand and 0.6 threshold convention).
+- СТОП block present (`── СТОП ──` fenced block) plus `## Запреты` with all three required honesty rules: don't render 🟡 as ✅ (rule 1), no-nodes section → 🔴, don't invent content (rule 2), every fact needs a sourced node (rule 3).
+- Content is byte-identical to the Step 1 spec in `task-5-brief.md` (only a trailing-newline difference), so it faithfully implements what was authored/approved at the planning stage.
+- Empty-vault behavior: not literally executed (no automated harness, as expected), but the label rule as written deterministically forces `🔴 open` when a section has no nodes, and `## Открытые вопросы` / `## Доказательная база` are populated purely from an aggregate/table over collected nodes — with zero nodes both render empty. Nothing in the template fabricates content for the empty case. Implementer's static trace in the report matches this correctly.
+
+**Content quality: Approved, with one Minor note**
+
+- Minor: the `hyp_status` enum per `sa_documentation/nexus_schema.md` is `draft | hypothesis | scoring | validating | validated | refuted | parked`. The three labeling rules explicitly cover `validated`, `hypothesis`/`validating`, and `parked`/no-nodes, but leave `draft`, `scoring`, and `refuted` unmapped. In practice this can't cause a false-positive "gaming" (a `refuted` or `draft`-only section will just fail to match any rule cleanly, defaulting most plausibly to 🔴 open under "conservative default" reading — not to 🟡 or ✅), so it isn't a honesty/gaming risk, just an underspecified edge case. This exact wording was already present verbatim in the plan doc (`docs/superpowers/plans/2026-07-06-prd-research-pp0-pp1.md`), so it's a pre-existing planning-level gap the implementer correctly carried forward rather than a defect introduced in this task.
+- No Critical or Important issues found. The gaming-resistance check specifically requested (a section with no nodes must be 🔴; an assumed section must not render as validated) holds: the mapping is one-directional and keyed off real frontmatter, and `## Запреты` rule 1 explicitly forbids the failure mode.
+
+**⚠️ Cannot verify from diff:**
+- Whether an actual live `/prd-assemble` run against a genuinely empty vault produces the exact rendered output described (Step 3 "Acceptance dry-run" in the brief was explicitly deferred by the implementer as requiring a live REPL — consistent with the reviewer instructions that this is not to be flagged as a defect).
+- Whether `{prd_output_doc}` and `{product}` placeholders actually resolve correctly at runtime from `.claude/domain-profile.md` / `GROUND/config.yaml`, since those files' current schema wasn't inspected as part of this diff (forward reference, per instructions, OK).</result>
+<usage><subagent_tokens>47789</subagent_tokens><tool_uses>13</tool_uses><duration_ms>86308</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ab64c5e104dec5ee1</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/ab64c5e104dec5ee1.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 6: /prd-idea stage" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Task complete.
+
+Status: DONE_WITH_CONCERNS
+Commit: 577c79a
+Check: `test -f ... &amp;&amp; grep hyp_status &amp;&amp; grep HARVEST` → `OK`
+
+Concerns:
+- `node_type` for market/product/growth hypothesis nodes isn't a formally enumerated value in `nexus_schema.md` §3 (that table covers other nexuses); I chose `bet`/`lever`/`feature` by artifact nature per the STEP-1-IDEA overview's 3-lens table rather than reusing node_conventions.md's literal placeholder (`step-overview`). Easy to rename if the controller expects a single generic value like `hypothesis`.
+- CP for the `parked` node (0.2) isn't schema-fixed (the CP scale is keyed to source-type, not to `hyp_status`); I treated it as PO-judgment-sourced and non-zero to keep `cp &gt; 0` invariant viable — a defensible but judgment-based choice.
+- Step 4 (interactive acceptance dry-run) was NOT executed as a live slash-command session — only statically traced against the command text; full report has the detailed trace and explicitly flags this as deferred to manual/controller verification.
+
+Full report with file paths, frontmatter table, diff-verified verbatim transcription proof, and static trace: `.superpowers/sdd/task-6-report.md`.</result>
+<usage><subagent_tokens>76455</subagent_tokens><tool_uses>31</tool_uses><duration_ms>248516</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a98aea60ec1ac952d</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a98aea60ec1ac952d.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 6: /prd-idea stage" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Spec Compliance: ✅ Compliant
+
+Verified directly against the brief and the actual repo state:
+
+- **Scope**: `git show --stat 577c79a` touches exactly the 2 files (`.claude/commands/prd-idea.md`, `.claude/skills/prd-research/examples/ideal_idea_nodes.md`). No other commands/skills/docs/install.sh touched. The pre-existing `M .entire/.gitignore` predates this task and is correctly excluded from the commit.
+- **`prd-idea.md` verbatim check**: `diff` of brief lines 27–78 against the committed file returns **zero differences** — byte-for-byte verbatim, as the implementer claimed.
+- **`ideal_idea_nodes.md` header**: matches the brief's specified title/disclaimer exactly.
+- **3 example nodes**: market (`hypothesis`, CP 0.3), growth (`parked`, CP 0.2), product (`validating`, CP 0.5, URL `https://example.com/reports/hybrid-workplace-booking-trend-2026` + retrieval date `2026-07-06`) — matches the brief's required distribution.
+- **Frontmatter completeness**: programmatically parsed all 3 YAML blocks — all 15 required keys (base §2 + `hyp_status`/`depends_on` from §2.3) present, valid YAML, no missing keys.
+- **CP scale**: hypothesis 0.3 ∈ [0.2,0.4] ✅; validating 0.5 ∈ [0.5,0.7] with URL+date ✅; parked 0.2 (reasonable, see Minor below).
+- **ttl_days**: market=90, growth=60, product=90 — growth constraint satisfied ✅.
+- **Structural check** (brief Step 3 command) run live → `OK`.
+- **Language**: Russian throughout. ✅
+- Body notes carry the exact `⚠️ гипотеза discovery, CP отражает доверие к допущению, не факт.` marker in all 3 nodes.
+- **Запреты / СТОП block**: present, matches brief wording exactly (verbatim copy already covers this).
+
+## Content Quality: Issues found (Important × 2, Minor × 2)
+
+**Important — `owner` field violates the documented RACI mapping** (`.claude/skills/prd-research/examples/ideal_idea_nodes.md:23,60,96`).
+`sa_documentation/nexus_catalog.md:25-28` and `sa_documentation/nexus_schema.md:157` both explicitly state: market→**Portfolio Manager**, customer→Product Engineer, product→Product Engineer, growth→**Growth Engineer**. The exemplar uses `owner: Product Engineer` for *all three* nodes:
+- Line 23 (market node) — should be `Portfolio Manager`.
+- Line 60 (growth node) — should be `Growth Engineer`.
+- Line 96 (product node) — correct as-is.
+
+The market-node error is inherited from `node_conventions.md`'s own (also-wrong) template example; the growth-node error is new in this task. Since this is the flagship exemplar Steps 2–8 will clone (and Steps 3/5/6/8 also touch market/growth), an uncorrected wrong-owner pattern will propagate.
+
+**Important — `node_type` values not in §3 enum** (see dedicated finding below).
+
+**Minor** — CP=0.2 for the `parked` node isn't backed by an explicit schema rule; §2.3's CP-by-source table only covers `hypothesis`/`validating`/etc., not `parked` specifically. Implementer flagged this ambiguity itself; a defensible choice, but worth resolving explicitly in `node_conventions.md` so later steps don't diverge (someone could equally argue CP=0 for parked).
+
+**Minor** — `ttl_days=90` for the `product` nexus relies on the `/prd-idea` instruction's own "иначе 90" fallback; `nexus_schema.md`'s ttl_days row only names "market/customer=90, growth=60" explicitly, product isn't named. Self-consistent within this diff, but a latent gap in the base schema worth tightening.
+
+## node_type finding — explicit call
+
+Checked `sa_documentation/nexus_schema.md` §3 (lines 98–119). The enumerated valid values are: `spine, operating-model, gates, bootstrap, step-overview, sprint-phase, person, deliverable, channel, component, decision, rule, regulation, nfr, risk, term, metric`.
+
+**`bet`, `lever`, `feature` are NOT in this list.** Confirmed as new, unsanctioned values, not a misreading on my part.
+
+They aren't arbitrary, however: they trace directly to the "Три Линзы" table in `docs/AI-PROCESSES/STEP-1-IDEA/overview.md:97-99` (Strategy→market→"Bet", Business→growth→"Lever", Product→product→"Feature/Vision"), and `pipeline.md`'s own "node_type/типы" column lists similar per-step semantic artifact names for Steps 2-8 (Force/Trend/Constant/Competitor/Gap for Step 3, etc.) that likewise don't map to §3's enum. `node_conventions.md`'s own template already carries an unresolved placeholder here (`node_type: step-overview ... для гипотез product-контекста — по природе`) — itself wrong per §3, since `step-overview` is defined as "overview шага" for `STEP-N-*/overview.md` meta-docs, not hypothesis content nodes.
+
+**Judgment: this is a genuine schema inconsistency, not merely a defensible semantic choice.** §2 explicitly types `node_type` as a closed `enum` ("см. §3"), and §3 was never extended to cover discovery-hypothesis artifact types. The implementer made a reasonable, methodology-grounded choice given an already-broken placeholder — but it leaves the exemplar's `node_type` values out of sync with the committed enum, in the one file Steps 2–8 will clone verbatim. Every subsequent step will hit the same fork by the same logic (Step 3: Force/Trend/Bet/Competitor/Gap; Step 5/6/8: growth-specific types), so this gap compounds fast if not resolved at the schema level now. **Rate: Important, not Critical** — no automated validator enforces the enum in this repo, and it doesn't threaten the load-bearing invariants of the task (CP discipline, `sources`-required, no-fabrication). But it needs triage before Steps 2-8 clone the pattern: either extend §3 with a documented discovery/artifact-type tier, or standardize discovery nodes on a single generic `node_type` (e.g. `hypothesis`) and carry the artifact nature via `tags` instead.
+
+## ⚠️ Cannot verify from diff
+
+- Interactive dry-run (brief Step 4) — deferred by implementer, not executed. Per review instructions, not flagged as a defect (no test harness in this repo; deferred interactive verification is explicitly out of scope for this review).
+- Downstream effect on `/prd-research` board rendering and `/prd-assemble` 🟡-assumed marking against these new nodes — plausible from reading `board_state.md`'s algorithm, but not exercised end-to-end (those commands are unmodified by this task).
+- Whether "Product Engineer" as owner for market/growth was an intentional simplification I'm missing elsewhere (e.g. a smaller-team config override) — I checked `nexus_catalog.md` and `nexus_schema.md` §6, both consistently contradict it, and there's no client `config.yaml`/roster in this generic framework repo to check for an override. High confidence this is a real defect, not a false positive.</result>
+<usage><subagent_tokens>78955</subagent_tokens><tool_uses>24</tool_uses><duration_ms>290380</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a4c450db5ffffceb8</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a4c450db5ffffceb8.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Task 6 findings" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+Commit: `1317c50`
+All five verification checks printed their `*_OK` line (FIX1_OK, FIX2_OK, FIX2b_OK, YAML_OK, TASK6CHECK_OK).</result>
+<usage><subagent_tokens>75210</subagent_tokens><tool_uses>31</tool_uses><duration_ms>249173</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a4b8a1504828ba322</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a4b8a1504828ba322.output</output-file>
+<status>completed</status>
+<summary>Agent "Re-review Task 6 after fixes" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Re-review of Task 6 fix pass (commit 1317c50)
+
+**Findings resolved?**
+
+- **Important #1 (node_type enum)** — RESOLVED. `sa_documentation/nexus_schema.md` now has `### 3.1 Discovery artifact-типы` inserted right after the §3 table and before `## 4. Wilting...`. It lists all 9 required types (`bet`, `lever`, `feature` for Step 1; `force`, `trend`, `constant`, `tam-sam-som`, `competitor`, `gap` for Step 3), each row cites a concrete `docs/AI-PROCESSES/STEP-N-*/overview.md` source, and closes with a note that Steps 2/4–8 types are added when those stages are implemented. `git diff f9fadd1..1317c50 --stat -- docs/` is empty — docs/ was cited, not modified.
+
+- **Important #2 (owner RACI)** — RESOLVED. Cross-checked against `sa_documentation/nexus_catalog.md` (§3.2/3.3/3.4, and the intro table): `market` → Portfolio Manager, `growth` → Growth Engineer, `product` → Product Engineer. `.claude/skills/prd-research/examples/ideal_idea_nodes.md` now has exactly these owners on nodes 1–3, and `.claude/skills/prd-research/resources/node_conventions.md` template shows `owner: Portfolio Manager` with `node_type: bet` (no longer the `step-overview` placeholder), inline comment now points to §3.1.
+
+- **Minor #1 (exemplar node_type per §3.1)** — RESOLVED (was already correct; now formally traceable): market→`bet`, growth→`lever`, product→`feature`, all present in §3.1's table.
+
+- **Minor #2 (ttl_days / parked CP clarification)** — RESOLVED. `node_conventions.md` "## Правила" gained two new bullets: `ttl_days` market/customer/product=90, growth=60 (product explicit), and parked-node `confidence` semantics (reflects trust in last-stated hypothesis, typically 0.2, not 0).
+
+**Regressions?** No.
+- `prd-idea.md` byte-identical across f9fadd1..1317c50 (untouched by the fix commit, as intended).
+- All 3 example YAML frontmatter blocks still parse and contain all required keys (`nexus, node_id, node_type, paf_step, sprint_phase, kind, owner, confidence, sources, updated, ttl_days, ripeness, hyp_status, depends_on, tags`).
+- CP scale still respected against §2.3: hypothesis=0.3 (0.2–0.4 range ✓), validating=0.5 with URL+date (0.5–0.7 range ✓), parked=0.2.
+- ttl_days: growth=60, market/product=90 — unchanged, matches §2.2/§2.3 empirical defaults.
+- The stray markdown `---` horizontal-rule cleanup in `ideal_idea_nodes.md` (noted as a side-fix) is cosmetic only — the 3 frontmatter fences remain intact and valid.
+
+**Scope check.** Fix commit 1317c50 touched exactly the 3 expected files (`sa_documentation/nexus_schema.md`, `examples/ideal_idea_nodes.md`, `resources/node_conventions.md`) — confirmed via `git show --stat 1317c50`. `prd-idea.md` was not modified by this commit. No docs/ files touched. The pre-existing unrelated `M .entire/.gitignore` working-tree change (noted in the original report, item 5) remains untouched/uncommitted by either commit — not in scope.
+
+**New issues:** None found.
+
+**Verdict: APPROVED**</result>
+<usage><subagent_tokens>60673</subagent_tokens><tool_uses>11</tool_uses><duration_ms>72604</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>aaa186bcf1aad7a6f</task-id>
+<tool-use-id>toolu_01BLs1qiRJUevSwQYDoARi7i</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/aaa186bcf1aad7a6f.output</output-file>
+<status>completed</status>
+<summary>Agent "Implement Task 7: matrix + install.sh" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>DONE, e83c0af, structural check OK / bash -n install.sh exits 0 with no output, no concerns.</result>
+<usage><subagent_tokens>48556</subagent_tokens><tool_uses>13</tool_uses><duration_ms>81209</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ac0f497fa8930a8b6</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/ac0f497fa8930a8b6.output</output-file>
+<status>completed</status>
+<summary>Agent "Review Task 7: matrix + install.sh" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>All prior entries confirmed present in the same order, with only the new additions appended. Everything checks out.
+
+## Verdicts
+
+**Spec compliance:** ✅ Both Step 1 (matrix note + §4 row) and Step 2 (`SKILLS`/`COMMANDS` registration) match the brief's exact wording/text. Only the 2 required files were touched (`git diff --stat 1317c50 e83c0af` shows exactly `install.sh` and `sa_documentation/nexus_process_map.md`, 5 insertions/1 deletion, nothing else).
+
+**Content quality:** Approved. No Critical/Important/Minor issues found.
+- Discovery note wording is verbatim from the brief, placed correctly right after the §2 matrix table.
+- §4 row wording is verbatim from the brief, appended after the `release-guard` row.
+- All content is Russian, consistent with surrounding doc style.
+- `SKILLS=(...)` and `COMMANDS=(...)` edits are minimal, single-line additions exactly as specified.
+
+**Array integrity:** Confirmed, no prior entry lost or reordered.
+- Before (`1317c50`): `SKILLS=(bft-writer okr-planner sprint-planner po-research info-channels summary)`
+- After (`e83c0af`): `SKILLS=(bft-writer okr-planner sprint-planner po-research info-channels summary prd-research)` — all 6 original entries intact in original order, `prd-research` appended.
+- `COMMANDS` before: `bft-*` (9), `okr-*` (7), `sprint-*` (6), `po-research`, `channel-*` (3), `summary` — all present unchanged, in the same order, in `e83c0af`, with `prd-research prd-idea prd-assemble` appended as a new line before the closing `)`.
+- `bash -n install.sh` → exit code `0`, no output. Confirmed independently (matches report's claim).
+
+Additionally verified beyond the brief's checklist:
+- `.claude/commands/prd-research.md`, `prd-idea.md`, `prd-assemble.md` all exist.
+- `.claude/skills/prd-research/` exists with `SKILL.md`, `resources/`, `examples/`.
+- `.claude/skills/prd-research/resources/pipeline.md` exists (the file referenced in the new §2 note).
+
+**⚠️ Cannot verify from diff:** Nothing — the diff, report, and repo state are fully consistent and everything needed was checkable directly (file existence, syntax, array contents, git history range).</result>
+<usage><subagent_tokens>39677</subagent_tokens><tool_uses>4</tool_uses><duration_ms>37386</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>a206e8d1f823132bf</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/a206e8d1f823132bf.output</output-file>
+<status>completed</status>
+<summary>Agent "Final whole-branch review" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I've completed a full cross-check of the branch diff against all ground-truth references. Here are my findings.
+
+---
+
+## Whole-branch review: `feat/prd-research` (iteration 1, PP-0 + PP-1)
+
+### 1. Spec/plan coverage — COMPLETE
+Every promised iteration-1 component is present and accounted for:
+- Orchestrator skill `SKILL.md` + all 5 resources (`pipeline.md`, `node_conventions.md`, `board_state.md`, `fit_gates.md`, `examples/ideal_idea_nodes.md`) ✓
+- `/prd-research` (board + `init` + navigation) ✓, `/prd-assemble` stub (honest labeling) ✓, `/prd-idea` (full PULSE→SCOUT→BUNCH/PITCH→HARVEST) + few-shot ✓
+- Node schema §2.3 (`hyp_status`, `depends_on`) ✓ and §3.1 discovery node_type tier ✓
+- domain-profile additions (`discovery_workspace`, `prd_output_doc`, `discovery:` block) ✓
+- `nexus_process_map.md` matrix note + reverse-write row ✓, `install.sh` SKILLS + COMMANDS registration ✓
+- Steps 2–8 correctly stubbed as `planned` (accepted scope). No YAGNI over-build detected.
+
+### 2. Internal consistency — STRONG
+All the interfaces the prompt flagged agree across files:
+- `hyp_status` enum identical in schema §2.3, node_conventions, prd-idea, ideal_idea_nodes.
+- CP scale (0.2–0.4 / 0.3–0.5 / 0.5–0.7 / 0.7–1.0) identical everywhere.
+- state.yaml fields (`step/status/cp/open_questions/nodes/last_touched`) consistent between board_state.md, prd-research init, and prd-idea's update step.
+- 8-step pipeline table matches spec §4.1 (nexuses, steps, gates).
+- fit-gate threshold Ripeness ≥ 0.6 in fit_gates.md traces **exactly** to schema §4 ("Целевой порог Context Ripeness ≥ 0.6") — grounded, not invented.
+- node_type values (bet/lever/feature/force/trend/constant/tam-sam-som/competitor/gap) are all in the new §3.1 tier, none in base §3.
+- RACI owners verified against `nexus_catalog.md`: market→Portfolio Manager, growth→Growth Engineer, product→Product Engineer — all three match the example nodes and node_conventions.
+
+### 3. Zero-hallucination discipline — ENFORCED
+No path for silent invention:
+- `/prd-idea` Запреты: no source → `parked` (not fabricated); PO judgment → `hypothesis` CP 0.2–0.4 (not asserted fact); no node without `sources`.
+- `/prd-assemble` Запреты: explicitly forbids rendering `🟡 assumed` as `✅ validated`; section with no nodes → `🔴 open`; every fact ← node with `sources`.
+- `/prd-research` Запреты: doesn't fill nexuses, no invented progress.
+
+### 4. Methodology fidelity — CLEAN
+- **Verified:** `git diff --name-only 245e851..fffbb51` touches **zero** files under `docs/AI-PROCESSES|TRADITIONAL|RL|AI-TRANSFORMATION`. docs/ stayed read-only.
+- Mappings trace to the methodology, not invented: §3.1 node_types cite real overviews — STEP-1 overview literally says "Strategy Lens → Нексус рынка → Ставки (Bets)"; STEP-3 overview lists exactly the 7 market types. The three lenses (`docs/TRADITIONAL/RB-STEP-1-IDEA/2.1–2.3`) exist as real files (`2.1 Linza Strategy.md`, etc.).
+- Note: the plan's *original* draft used `node_type: step-overview` for discovery nodes (would have been wrong — that type is for methodology docs), but commit `1317c50` fixed this by introducing §3.1 with traced types. Final state is correct.
+
+### 5. Convention match — GOOD
+Command files (`prd-idea/prd-research/prd-assemble`) mirror `okr-context-gen.md` structure precisely: frontmatter `description`, `## Использование`, `## Инструкция для LLM` with `### Этап N`, СТОП block, `## Запреты`. SKILL.md follows okr-planner shape (`## Роль`, `## Pipeline`, anti-rules).
+
+### 6. Correctness gotchas — no broken references
+- All referenced methodology paths exist (10 overview.md, fit-points.md, README.md, RB-STEP-1-IDEA, docs/RL).
+- Placeholders resolve: `{discovery_workspace}` = `CORTEX/.../discovery/{step}` with `{step}` substitution used consistently; `{prd_output_doc}`/`{product}` resolved from domain-profile/config.yaml with `[УТОЧНИТЬ]` fallback.
+- depends_on → wilting contour is coherent between schema §2.3 and board_state.md; Step-1 nodes correctly carry `depends_on: []` (no upstream yet).
+
+---
+
+## Minor findings (none blocking)
+
+- **Minor — `product` ttl_days not grounded in schema.** Schema §2.2/§2.3 defines empirical `ttl_days` only for `market/customer=90, growth=60`; `product` is absent. Yet `/prd-idea` and node_conventions write product nodes with `ttl_days: 90` ("иначе 90" / "product явно = 90"). Reasonable inference, but technically not traced to the schema. Cheap fix: add `product=90` to the §2.2 empirical ttl line. (`sa_documentation/nexus_schema.md` §2.2/§2.3)
+
+- **Minor — `/prd-assemble` labeling gap.** `🟡 assumed` = hypothesis/validating with `CP &lt; 0.6`; `✅ validated` = `hyp_status: validated` AND `CP ≥ 0.6`. A `validating` node with CP 0.6–0.7 (valid per the web desk-research band) matches neither bucket. Honest-labeling intent still holds (it can't over-claim), but the rule has an undefined case. (`.claude/commands/prd-assemble.md` Этап 3)
+
+- **Minor/cosmetic — pipeline.md RB shorthand.** RB-источник column abbreviates Steps 2–8 as `RB-STEP-2…8` while actual dirs are `RB-STEP-2-CUSTOMER-VALIDATION`, etc. It's a read-only reference table and those steps are out of scope, but full names would be cleaner. Step 1's path is exact and exists. (`.claude/skills/prd-research/resources/pipeline.md`)
+
+- **Cosmetic** — SKILL.md pipeline ASCII tree has two `└─` glyphs at the same indent level (prd-acquisition + prd-assemble); heading is "Anti-rules" vs the "Запреты" used elsewhere. Purely stylistic.
+
+---
+
+## Verdict: READY TO MERGE
+
+The branch is internally consistent, faithfully grounded in the read-only methodology (docs/ verified untouched), enforces the zero-hallucination contract in every command, and covers the full PP-0 + PP-1 scope. The one real bug that existed in the plan (`step-overview` node_type) was already corrected via §3.1 in commit `1317c50`. The remaining items are all Minor/cosmetic and do not block merge — the `product` ttl_days line is the only one worth a quick follow-up (one-line schema addition), and it can land as a trivial post-merge tidy.</result>
+<usage><subagent_tokens>101976</subagent_tokens><tool_uses>9</tool_uses><duration_ms>265716</duration_ms></usage>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>ad25ded6bd4ba0cda</task-id>
+<tool-use-id>toolu_01BxtpnD1Zqod9gU9rXCEdvQ</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper--claude-worktrees-clever-pascal-f88567/c1e1bf3d-7a8d-4b3c-98bd-30a64b1960ce/tasks/ad25ded6bd4ba0cda.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix final-review Minors" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>**Status:** DONE
+
+**Commit hash:** `80c15fc`
+
+**Verification:**
+- ✅ FIXA_OK — `market/customer/product` now in nexus_schema.md (3 locations aligned)
+- ✅ FIXB_OK — prd-assemble labeling rules exhaustive: all 7 hyp_statuses covered, `parked` and `refuted` now explicit in open case
+
+Both fixes applied and committed. Report written to `.superpowers/sdd/final-fix-report.md`.</result>
+<usage><subagent_tokens>33518</subagent_tokens><tool_uses>13</tool_uses><duration_ms>69452</duration_ms></usage>
+</task-notification>
+
+---
+
+2
+
+---
+
+Проведи тесты, убедись что функция реально работает
+Для примера - проведи исследование идеи "Хочу создать витрину по продаже мероприятий в ТГ. Нет цели быть эффективнее конкурентов - единственная цель, эффективный рекламный канал в сравнении с конкурентами. Более дешевый трафик и высокий Retention "
+
+Полностью автономно пройди весь цикл и убедись что результатом эксперемента идея пройдена и верифицирована, имеет потенциал и готова к разработке
+
+---
+
+Да, я хочу чтобы ты прошел все этапы и подтвердил что все действительно работаем именно так как ожидается
+
+На тему prd-customer
+я бы хотел, чтобы ты использовал вот этот промт для распаковки
+
+
+----
+
+You are a Consumer Context Analysis Expert following the methodology of Sergey Tikhomirov for product management and consumer research.
+
+Your mission is to:
+- Conduct a complete step-by-step analysis of the "unified consumer context."
+- Formulate value propositions grounded in real consumer behavior, problems, motivations, and blockers.
+- Output only valid YAML at each stage — no commentary, no extra text.
+- Wait for explicit user commands after each step: "продолжить," "далее," or "ревизия."
+
+*
+
+##  Workflow Rules
+
+### Sequential Execution
+You will execute 6 stages in strict order. After completing each stage:
+1. Output only YAML in the specified format for that stage.
+2. Stop and wait for user input.
+3. If the user writes "ревизия" — ask which elements need revision, apply changes, and re-output the YAML for the current stage.
+4. If the user writes "продолжить" or "далее" — proceed to the next stage.
+
+### YAML Output Standards
+- All blocks must be valid, nested YAML.
+- Strings should be concise but informative.
+- Use `-` for lists.
+- Use `|` for multi-line ASCII diagrams or text blocks.
+- Never add text outside YAML blocks.
+
+### Handling Missing Data
+If insufficient information is available for a stage, output:
+
+```yaml
+data_needed: true
+missing:
+  - "описание продукта"
+  - "целевой сегмент"
+```
+
+Then stop and wait for user input. Do not proceed until data is provided.
+
+*
+
+##  6-Stage Process & Required YAML Formats
+
+### STAGE 1 — HYPOTHESES
+Formulate 3–5 hypotheses of each type.
+
+Output:
+
+```yaml
+step: 1
+hypotheses:
+  behavior:
+    - "Когда ..., то ..., потому что ..."
+  problems:
+    - "Когда ..., то ..., а это мешает ..."
+  motivation:
+    - "[Роль] хочет ..., а не ..., чтобы ..."
+  blockers:
+    - "[Роль] ..., потому что ..."
+```
+
+*
+
+### STAGE 2 — INTERVIEW QUESTIONS
+Generate interview questions for each hypothesis.
+
+Output:
+
+```yaml
+step: 2
+interview_questions:
+  - hypothesis: "<короткая формулировка гипотезы>"
+    questions:
+      - "Вопрос 1"
+      - "Вопрос 2"
+```
+
+*
+
+### STAGE 3 — CONTEXT STRUCTURE
+Build the unified consumer context based on data or interviews.
+
+Output:
+
+```yaml
+step: 3
+context_structure:
+  segment: "<персона / ключевые характеристики>"
+  trigger: "<ситуация-триггер>"
+  initial_state: "<начальное состояние>"
+  goal_state: "<целевое состояние>"
+  motivation: "<глубинная мотивация>"
+  alternative_paths:
+    - name: "<путь 1>"
+      steps:
+        - step: "<действие>"
+          problem: "<проблема (ресурсы)>"
+          cause: "<причина (субъективная)>"
+```
+
+*
+
+### STAGE 4 — VISUAL SCHEME
+Create an ASCII or text-based visual representation of the consumer journey.
+
+Output:
+
+```yaml
+step: 4
+visual_scheme: |
+  <ASCII или текстовая схема:
+   Trigger -> Initial State -> [Path1: steps->problems->causes] -> Goal State>
+```
+
+*
+
+### STAGE 5 — VALUE PROPOSITIONS
+Formulate value propositions addressing root causes of consumer problems.
+
+Output:
+
+```yaml
+step: 5
+value_propositions:
+  level: "Big jobs / Small jobs"
+  propositions:
+    - problem: "<проблема>"
+      cause: "<корневая причина>"
+      solution: "<конкретное предложение>"
+  differentiation_points:
+    - "<чем отличается от альтернатив>"
+```
+
+*
+
+### STAGE 6 — BUSINESS CONNECTION
+Connect consumer insights to business goals and gaps.
+
+Output:
+
+```yaml
+step: 6
+business_connection:
+  current_state: "<текущее состояние компании>"
+  target_state: "<цель компании>"
+  cause_of_gap: "<почему не достигается>"
+  consumer_solution_link: "<как value propositions закрывают gap>"
+```
+
+*
+
+##  Initial Input Request
+
+Before beginning Stage 1, request the following input from the user in one message:
+
+```yaml
+input_request:
+  product_description: ""
+  target_audience: ""
+  problem_or_hypothesis: ""
+  extra_context: ""
+```
+
+Do not proceed until the user provides this information.
+
+*
+
+##  Behavioral Guidelines
+- YAML-Only Output: Never include commentary, explanations, or text outside YAML blocks during stage execution.
+- Wait for Commands: After each stage, stop and wait for "продолжить," "далее," or "ревизия."
+- Revision Mode: If "ревизия" is requested, ask which specific elements need changes, apply them, and re-output the updated YAML for the current stage.
+- Data Validation: If data is incomplete, output `data_needed: true` with a list of missing elements and pause.
+- Professional Tone: Maintain a structured, analytical, research-oriented approach throughout.
+
+---
+
+@"/Users/aleksishmanov/Downloads/Проектирование A_B.txt" @"/Users/aleksishmanov/Downloads/Выбор каналов дистрибуции.txt" @"/Users/aleksishmanov/Downloads/Анализ нишевых возможностей.txt" @"/Users/aleksishmanov/Downloads/NSM - консультант.txt" @"/Users/aleksishmanov/Downloads/Сегментация ЦА.txt" @"/Users/aleksishmanov/Downloads/Проектирование UNIT-экономики.txt" @"/Users/aleksishmanov/Downloads/Маркетинговый допрос (Rory Sutherland).txt" @"/Users/aleksishmanov/Downloads/TAM _ SAM _ SOM.txt" @"/Users/aleksishmanov/Downloads/RAT -  анализ продуктовых рисков запуска.txt" @"/Users/aleksishmanov/Downloads/Outcome-Driven Innovation.txt" @"/Users/aleksishmanov/Downloads/OST (Opportunity Solution Tree).txt" @"/Users/aleksishmanov/Downloads/Проектирование AARRR воронки.txt" @"/Users/aleksishmanov/Downloads/Единый контекст потребителя.txt" @"/Users/aleksishmanov/Downloads/4P распаковка позиционирования.txt"
+В целом используй вот эти наборы промтов для исследования. Раздели их по командам для релевантности. Каждый промт раскрывает разные стороны продукта. Это все проверенные промты которые я регулярно использую в своей работе по Product Discovery & Research. Они помогают мне комплексно и всесторонне провести исследование. Давай обдумаем каким образом можно переиспользовать все эти промты последовательно для проведения качественного исследования.
