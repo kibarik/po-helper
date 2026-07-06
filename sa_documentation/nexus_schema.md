@@ -119,6 +119,26 @@ PAF сознательно «не фиксирует технологию» [S1]
 
 ---
 
+### 3.1 Discovery artifact-типы (Steps 1–8, узлы-гипотезы)
+
+Узлы `/prd-research` (Steps 1–8) несут `node_type` из методологического набора artifact-типов: каждый тип ← конкретный `docs/AI-PROCESSES/STEP-N-*/overview.md` (zero-hallucination: тип узла не изобретается, а трассируется до шага методологии). Таблица расширяет §3 под генеративный discovery.
+
+| `node_type` | Линза/шаг | Источник |
+|---|---|---|
+| `bet` | Strategy (Step 1); Ставки (Step 3) | STEP-1-IDEA/overview.md, STEP-3-MARKET/overview.md |
+| `lever` | Business (Step 1) | STEP-1-IDEA/overview.md |
+| `feature` | Product (Step 1) | STEP-1-IDEA/overview.md |
+| `force` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `trend` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `constant` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `tam-sam-som` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `competitor` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `gap` | Market (Step 3) | STEP-3-MARKET/overview.md |
+
+Типы для Steps 2, 4–8 добавляются при реализации соответствующей стадии — каждый ← `overview.md` своего шага.
+
+---
+
 ## 4. Wilting и Context Ripeness (вычисляемые метрики)
 
 ### `ripeness` Узла (из `updated` + `ttl_days`)

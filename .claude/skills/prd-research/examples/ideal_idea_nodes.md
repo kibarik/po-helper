@@ -4,8 +4,6 @@
 
 <!-- Предметная область примера — иллюстративная (условный B2B-сервис бронирования переговорных). Доменные термины ниже — образец заполнения, не часть фреймворка. Универсальна структура: набор frontmatter-ключей §2.3, три Линзы (Strategy → market, Business → growth, Product → product), три статуса hyp_status, шкала CP по источнику. -->
 
----
-
 ## Узел 1 — `market` · Линза Strategy · `hyp_status: hypothesis`
 
 <!-- PO-суждение о сдвиге/адресате, не проверено desk-research или интервью → CP в нижней трети шкалы (0.2–0.4). -->
@@ -20,7 +18,7 @@ node_type: bet
 paf_step: 1
 sprint_phase: scout
 kind: empirical
-owner: Product Engineer
+owner: Portfolio Manager
 confidence: 0.3
 sources: ["onboarding:interview"]
 updated: 2026-07-06
@@ -41,8 +39,6 @@ PO-гипотеза (Линза Strategy): в компаниях 50–300 чел
 
 > ⚠️ гипотеза discovery, CP отражает доверие к допущению, не факт.
 
----
-
 ## Узел 2 — `growth` · Линза Business · `hyp_status: parked`
 
 <!-- PO ответил «не знаю, кто и как будет платить» — легальный терминальный статус. Узел всё равно создаётся (source = сам факт вопроса/ответа PO), но без гипотезы монетизации: не выдумываем модель. -->
@@ -57,7 +53,7 @@ node_type: lever
 paf_step: 1
 sprint_phase: scout
 kind: empirical
-owner: Product Engineer
+owner: Growth Engineer
 confidence: 0.2
 sources: ["onboarding:interview"]
 updated: 2026-07-06
@@ -76,8 +72,6 @@ PO-гипотеза (Линза Business): на вопрос «кто плати
 Решение: не придумывать модель (freemium/per-seat/enterprise) без основания. Узел паркуется до Step 5 (Business Model) или до отдельного интервью с 2–3 кандидатами в первые платящие клиенты.
 
 > ⚠️ гипотеза discovery, CP отражает доверие к допущению, не факт.
-
----
 
 ## Узел 3 — `product` · Линза Product · `hyp_status: validating` (web-якорь)
 
@@ -112,8 +106,6 @@ Elevator pitch PO (Линза Product): «Сервис показывает св
 Desk-research (лёгкий, WebSearch): найден отраслевой отчёт о росте спроса на self-service бронирование переговорных в гибридных офисах (аналог/тренд подтверждает направление, но не подтверждает конкретно наш сегмент/гео) — источник `https://example.com/reports/hybrid-workplace-booking-trend-2026`, дата получения 2026-07-06. Статус `validating`: гипотеза подкреплена внешним источником, но ещё не проверена интервью/экспериментом на целевом сегменте — до `validated` не дотягивает.
 
 > ⚠️ гипотеза discovery, CP отражает доверие к допущению, не факт.
-
----
 
 ## Что взять со собой в /prd-idea
 
