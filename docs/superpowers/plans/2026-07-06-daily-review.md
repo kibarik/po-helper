@@ -899,7 +899,7 @@ Expected: `≥ 1`
 - `report.md` — прогресс-к-цели с тегами словами, План PO на сегодня.
 - `sprint-pulse.md` — перемещения карточек.
 - Показан dry-run проекции в Backlog: SMART-задачи с labels `commitment`/`blocker`/`agreement` (сверить с `examples/backlog-projection.md`). При `planner.type: none` — сообщение «проекция отключена».
-- После approve задачи созданы: `backlog task list -l commitment --plain` показывает ≥1 задачу.
+- После approve задачи созданы: `backlog task list -s "To Do" --plain` показывает ≥1 задачу с label `commitment` (фильтр по label — в выводе, не флагом).
 - Навык останавливается на approve-гейте, показывает превью `blockers.md` + dry-run Backlog.
 
 Расхождения с `examples/planning-2026-07-06-0958/` или `examples/backlog-projection.md` → поправить соответствующий `resources/*.md` или SKILL, перезапустить.
