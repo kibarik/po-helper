@@ -16,7 +16,7 @@
 - assignee: Алексей Ишманов
 - due: 7 июля
 - acceptance criteria: ручка на dev, FE разблокирован; маппинг городов решён
-- описание: ← blockers.md B1 · meetings/planning-2026-07-06-0958 · KR отгрузка кино в Prod
+- описание: ← blockers.md блокатор 1 · meetings/planning-2026-07-06-0958 · KR отгрузка кино в Prod
 
 ## agreement
 Заголовок: Держать релиз кино: Trunk 13–15 июля, Prod ~20-е
