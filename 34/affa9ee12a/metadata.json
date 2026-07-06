@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "34affa9ee12a",
+  "strategy": "manual-commit",
+  "branch": "feat/prd-research",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/specs/2026-07-06-prd-research-discovery-design.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/34/affa9ee12a/0/metadata.json",
+      "transcript": "/34/affa9ee12a/0/full.jsonl",
+      "compact_transcript": "/34/affa9ee12a/0/transcript.jsonl",
+      "content_hash": "/34/affa9ee12a/0/content_hash.txt",
+      "prompt": "/34/affa9ee12a/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 19547,
+    "cache_creation_tokens": 328977,
+    "cache_read_tokens": 1165033,
+    "output_tokens": 31364,
+    "api_call_count": 21
+  }
+}
