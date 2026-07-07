@@ -14,3 +14,5 @@
 | 8 Acquisition | /prd-acquisition | 8 | growth | сегмент-канал-оффер/PCF | STEP-8-ACQUISITION-PCF/overview.md | RB-STEP-8 | PCF |
 
 > **Линзы шагов** — `resources/lenses.yaml` (реестр) + `resources/lenses/<id>.md` (промты дословно). Step 2 Customer: плейлист segmentation → consumer-context → odi. Cross-cutting (rat/ab-design/ost/nsm) — через `/prd-lens`.
+
+> **Плейлисты шагов 3–8:** Market → tam-sam-som · Value → nsm/odi/rory-interrogation (гейт Need/Value Fit) · BizModel → unit-economics/aarrr (гейт Biz-model) · GTM → positioning-4p/distribution-channels/rory-interrogation · Solution → ost/ab-design/rat (гейт PMF) · Acquisition → aarrr/distribution-channels (гейт PCF).
