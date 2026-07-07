@@ -77,6 +77,10 @@ lenses:
         nexus: market
         node_type: tam-sam-som
         cp_policy: estimate
+      - output: "выявленные конкуренты/альтернативы"
+        nexus: market
+        node_type: competitor
+        cp_policy: judgment
   - id: nsm
     title: "North Star Metric"
     prompt_file: "resources/lenses/nsm.md"

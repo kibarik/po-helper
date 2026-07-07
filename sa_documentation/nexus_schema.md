@@ -134,7 +134,7 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `tam-sam-som` | Market (Step 3) | STEP-3-MARKET/overview.md |
 | `competitor` | Market (Step 3) | STEP-3-MARKET/overview.md |
 | `gap` | Market (Step 3) | STEP-3-MARKET/overview.md |
-| `opportunity` | niche-opportunities, OST | market/customer |
+| `opportunity` | niche-opportunities, OST | market/customer/product |
 | `segment` | segmentation | customer |
 | `jtbd` | segmentation, ODI | customer |
 | `outcome` | ODI (desired outcome) | customer/product |
