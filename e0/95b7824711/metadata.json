@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "e095b7824711",
+  "strategy": "manual-commit",
+  "branch": "feat/prd-research",
+  "checkpoints_count": 17,
+  "files_touched": [
+    "docs/superpowers/specs/2026-07-06-research-lens-arsenal-design.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e0/95b7824711/0/metadata.json",
+      "transcript": "/e0/95b7824711/0/full.jsonl",
+      "compact_transcript": "/e0/95b7824711/0/transcript.jsonl",
+      "content_hash": "/e0/95b7824711/0/content_hash.txt",
+      "prompt": "/e0/95b7824711/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 64168,
+    "cache_creation_tokens": 2684817,
+    "cache_read_tokens": 77162307,
+    "output_tokens": 286251,
+    "api_call_count": 244
+  }
+}
