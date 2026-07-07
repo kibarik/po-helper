@@ -1,0 +1,102 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_id": "ae8c4f47c5d0",
+  "session_id": "b16e391c-b024-414f-b6fc-9078dda4a82b",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-07T11:56:07.086863Z",
+  "branch": "fix/bft-writer-doc-style",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "3d0f690a4cea",
+  "token_usage": {
+    "input_tokens": 20101,
+    "cache_creation_tokens": 48316,
+    "cache_read_tokens": 252515,
+    "output_tokens": 12814,
+    "api_call_count": 7
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01JXSUt59fs5hNWsSnQREwwL",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:brainstorming"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "3d0f690a4cea",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 31,
+        "end": 32,
+        "entry_ids": [
+          "8bf0c09d-ea0c-4e68-b8d4-61316263b781"
+        ],
+        "tool_use_id": "toolu_01JXSUt59fs5hNWsSnQREwwL"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01JXSUt59fs5hNWsSnQREwwL"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:brainstorming",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 758,
+      "user_lines_removed": 671,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/commands/bft-concept.md": 3,
+        ".claude/commands/bft-context-gen-deep.md": 11,
+        ".claude/commands/bft-context-gen.md": 42,
+        ".claude/commands/bft-debate.md": 3,
+        ".claude/commands/bft-deliver.md": 33,
+        ".claude/commands/bft-draft.md": 27,
+        ".claude/commands/bft-problem.md": 7,
+        ".claude/commands/bft-validate.md": 20,
+        ".claude/skills/bft-writer/SKILL.md": 28,
+        ".claude/skills/bft-writer/examples/golden_bft_example.md": 2,
+        ".claude/skills/bft-writer/examples/ideal_bft.md": 140,
+        ".claude/skills/bft-writer/resources/anchor_rules.md": 3,
+        ".claude/skills/bft-writer/resources/bft_standards.md": 95,
+        ".claude/skills/bft-writer/resources/catwoe.md": 1,
+        ".claude/skills/bft-writer/resources/hard_gates.md": 28,
+        ".claude/skills/bft-writer/resources/review_feedback.md": 26,
+        ".claude/skills/bft-writer/resources/writing_style.md": 4,
+        "docs/superpowers/pm-skills-analysis.md": 285
+      },
+      "user_removed_per_file": {
+        ".claude/commands/bft-concept.md": 3,
+        ".claude/commands/bft-context-gen-deep.md": 32,
+        ".claude/commands/bft-context-gen.md": 71,
+        ".claude/commands/bft-debate.md": 3,
+        ".claude/commands/bft-deliver.md": 9,
+        ".claude/commands/bft-draft.md": 32,
+        ".claude/commands/bft-problem.md": 11,
+        ".claude/commands/bft-validate.md": 21,
+        ".claude/skills/bft-writer/SKILL.md": 52,
+        ".claude/skills/bft-writer/examples/golden_bft_example.md": 2,
+        ".claude/skills/bft-writer/examples/ideal_bft.md": 190,
+        ".claude/skills/bft-writer/resources/anchor_rules.md": 3,
+        ".claude/skills/bft-writer/resources/bft_standards.md": 187,
+        ".claude/skills/bft-writer/resources/catwoe.md": 1,
+        ".claude/skills/bft-writer/resources/hard_gates.md": 34,
+        ".claude/skills/bft-writer/resources/review_feedback.md": 18,
+        ".claude/skills/bft-writer/resources/writing_style.md": 2
+      }
+    }
+  ]
+}
