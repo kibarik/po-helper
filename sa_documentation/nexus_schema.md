@@ -147,7 +147,7 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `funnel-stage` | AARRR | growth |
 | `positioning` | 4P, Rory | product/growth |
 | `four-p` | 4P | growth |
-| `channel` | distribution-channels | growth |
+| `dist-channel` | distribution-channels | growth |
 | `risk-card` | RAT | product |
 | `solution` | OST | product |
 | `experiment` | OST | product |

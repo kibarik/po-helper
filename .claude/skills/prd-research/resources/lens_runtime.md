@@ -15,6 +15,9 @@
 
 ## HARVEST — персист выходов в узлы
 8. По `harvest`-мапу линзы: каждый указанный `output` → узел в `nexus` с `node_type`, `cp_policy` (см. node_conventions «CP-политики»). Frontmatter — строго по node_conventions (обяз. ключи + hyp_status/CP по политике + sources + depends_on на input-узлы + ttl_days по нексусу + ripeness: fresh).
+
+8a. **Мультихост-линзы** (`host_steps` из ≥2 шагов, напр. odi/rory-interrogation/aarrr/distribution-channels): harvest-нексус/тип задаёт **host-команда** текущего шага; блок `harvest` в реестре — дефолт первого хоста. Команда приоритетна.
+
 9. Уважать разметку допущений промта: помеченное `[Assumption]`/оценка → `estimate`/`judgment`, не `validated`.
 10. Узел без `sources` не создавать.
 11. Обновить `{discovery_workspace(step)}/state.yaml` (nodes/cp/status/open_questions/last_touched) + дописать `journal.md` (какая линза, какие выходы, ссылки).

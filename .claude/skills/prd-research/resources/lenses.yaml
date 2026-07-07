@@ -51,6 +51,7 @@ lenses:
     host_steps: [customer, value]
     cross_cutting: false
     lang: ru
+    # harvest ниже — дефолт для host customer; на host value команда /prd-value направляет outcome → product (см. lens_runtime).
     harvest:
       - output: "Core Functional Job"
         nexus: customer
@@ -71,6 +72,11 @@ lenses:
     host_steps: [market]
     cross_cutting: false
     lang: ru
+    harvest:
+      - output: "TAM/SAM/SOM + sensitivity (Stage 9)"
+        nexus: market
+        node_type: tam-sam-som
+        cp_policy: estimate
   - id: nsm
     title: "North Star Metric"
     prompt_file: "resources/lenses/nsm.md"
@@ -92,6 +98,15 @@ lenses:
     host_steps: [bizmodel]
     cross_cutting: false
     lang: ru
+    harvest:
+      - output: "LTV/CAC/ratio + cohorts"
+        nexus: growth
+        node_type: unit-econ
+        cp_policy: estimate
+      - output: "CohortsTable"
+        nexus: growth
+        node_type: cohort
+        cp_policy: estimate
   - id: aarrr
     title: "Проектирование AARRR воронки"
     prompt_file: "resources/lenses/aarrr.md"
@@ -106,6 +121,15 @@ lenses:
     host_steps: [gtm]
     cross_cutting: false
     lang: ru
+    harvest:
+      - output: "four_p итог"
+        nexus: growth
+        node_type: four-p
+        cp_policy: judgment
+      - output: "рекомендованное позиционирование"
+        nexus: product
+        node_type: positioning
+        cp_policy: judgment
   - id: distribution-channels
     title: "Выбор каналов дистрибуции"
     prompt_file: "resources/lenses/distribution-channels.md"
