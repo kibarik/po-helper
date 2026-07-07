@@ -36,4 +36,4 @@ Step 5 (BizModel): линз L/2. Узлов N (growth). CP: X. Гейт Biz-mode
 ```
 
 ## Запреты
-1. Тела линз не редактировать. 2. Финансовые числа → `estimate` CP ≤ 0.4 (нет данных = не факт); узел без `sources` не создавать. 3. Не выдавать 🟡 за гейт. 4. RACI growth → Growth Engineer. `docs/` read-only.
+1. Тела линз не редактировать. 2. Финансовые числа → `estimate` CP ≤ 0.4 (нет данных = не факт); узел без `sources` не создавать; «не знаю» → parked. 3. Не выдавать 🟡 за гейт. 4. RACI growth → Growth Engineer. `docs/` read-only.
