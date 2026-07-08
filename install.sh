@@ -29,7 +29,7 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --update)  MODE="update" ;;
     --install) MODE="install" ;;
-    --ref)     shift; REF="${1:-main}" ;;
+    --ref)     if [ $# -ge 2 ]; then REF="$2"; shift; else REF="main"; fi ;;
     --ref=*)   REF="${1#--ref=}" ;;
     *)         TARGET="$1" ;;
   esac
@@ -342,8 +342,8 @@ check_present docs      "docs"
 check_present sadoc     "sa_documentation"
 check_present mcp        ".mcp.json"
 
-SKILL_N="$(find "$TARGET/.claude/skills" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | wc -l | tr -d ' ')"
-CMD_N="$(find "$TARGET/.claude/commands" -maxdepth 1 -name '*.md' 2>/dev/null | wc -l | tr -d ' ')"
+SKILL_N="$( { find "$TARGET/.claude/skills" -maxdepth 1 -mindepth 1 -type d 2>/dev/null || true; } | wc -l | tr -d ' ')"
+CMD_N="$( { find "$TARGET/.claude/commands" -maxdepth 1 -name '*.md' 2>/dev/null || true; } | wc -l | tr -d ' ')"
 rep "skills_count:     $SKILL_N"
 rep "commands_count:   $CMD_N"
 
