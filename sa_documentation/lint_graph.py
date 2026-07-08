@@ -36,6 +36,7 @@ def lint_graph(nexus_root) -> list:
     valid_nexus = _load_registry_slugs(nexus_root)
 
     nodes = {}      # node_id -> frontmatter
+    node_paths = {} # node_id -> path (для диагностики коллизий)
     out_links = {}  # node_id -> set(target node_id)
     in_links = {}   # target node_id -> count
 
@@ -48,7 +49,14 @@ def lint_graph(nexus_root) -> list:
         if not fm:  # no frontmatter block => not a node
             continue
         nid = fm.get("node_id", md.stem)
+        rel = md.relative_to(nexus_root)
+        if nid in nodes:
+            # коллизия node_id — иначе один узел молча перезаписал бы другой,
+            # скрыв его из проверок broken-link/orphan (hard-error verify-гейта).
+            errs.append(f"{nid}: duplicate node_id ({node_paths[nid]} and {rel})")
+            continue
         nodes[nid] = fm
+        node_paths[nid] = rel
         targets = set(re.findall(r"\[\[([a-z0-9-]+)\]\]", text))
         out_links[nid] = targets
         for t in targets:
