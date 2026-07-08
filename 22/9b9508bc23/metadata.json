@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "229b9508bc23",
+  "strategy": "manual-commit",
+  "branch": "fix/context-architecture-update",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "GROUND/README.md",
+    "sa_documentation/nexus_process_map.md",
+    "sa_documentation/paf_loop_schema.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/22/9b9508bc23/0/metadata.json",
+      "transcript": "/22/9b9508bc23/0/full.jsonl",
+      "compact_transcript": "/22/9b9508bc23/0/transcript.jsonl",
+      "content_hash": "/22/9b9508bc23/0/content_hash.txt",
+      "prompt": "/22/9b9508bc23/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 138,
+    "cache_creation_tokens": 16727,
+    "cache_read_tokens": 930338,
+    "output_tokens": 4086,
+    "api_call_count": 5
+  }
+}
