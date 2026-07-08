@@ -61,7 +61,26 @@ paths:
   calibration_workspace: "GROUND/NEXUS/team/_calibration/{run_id}"
   # Папка оперативных сведений — #summary-заметки встреч (/summary). Файл = встреча: {дата}-{slug}.md
   summary_notes: "GROUND/PULSE/summaries"
+  # Корень заметок созвонов (/daily-review). Один прогон = папка {type}-{ГГГГ-ММ-ДД-ЧЧММ}/ с report.md + blockers.md + commitments.md + sprint-pulse.md
+  meeting_notes: "GROUND/PULSE/meetings"
 ```
+
+## 1a. Планнер PO (planner)
+
+Личный трекер действий PO (`/daily-review` проецирует сюда обязательства/блокеры/договорённости как SMART-задачи). `type: none` отключает проекцию.
+
+```yaml
+planner:
+  type: "backlog"          # backlog | none
+  root: "backlog"          # корень Backlog.md (backlog init)
+  labels:
+    commitment: "commitment"
+    blocker:    "blocker"
+    agreement:  "agreement"
+  reminder_horizon_days: 3 # «due-скоро» для блока «Висит на PO»
+```
+
+---
 
 Если у проекта нет какого-то документа (например `KR-EPIC-MAP`) — оставьте путь, команда при отсутствии файла предложит его создать (bootstrap), не выдумывая содержимое.
 
