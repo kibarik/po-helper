@@ -14,11 +14,11 @@ def _kicker_headline(data: dict, theme: Theme, y=0.07) -> list[Element]:
 
 def title(data: dict, theme: Theme) -> list[Element]:
     return [
-        rect(0, 0, 1, 1, fill="#141A2E"),
+        rect(0, 0, 1, 1, fill=theme.dark_bg),
         text(0.06, 0.30, 0.8, 0.05, data.get("kicker", ""), color=theme.accent, size_pt=13, bold=True),
         text(0.06, 0.37, 0.85, 0.18, data.get("headline", ""), color="#FFFFFF",
              font=theme.heading_font, size_pt=40, bold=True),
-        text(0.06, 0.62, 0.7, 0.1, data.get("sub", ""), color="#AEB6CE", size_pt=13),
+        text(0.06, 0.62, 0.7, 0.1, data.get("sub", ""), color=theme.subtitle_on_dark, size_pt=13),
     ]
 
 
@@ -85,7 +85,7 @@ def how_to_read(data: dict, theme: Theme) -> list[Element]:
         text(0.06, 0.42, 0.4, 0.2, data.get("now_note", "Как есть сегодня."),
              color=theme.body, size_pt=12),
         rect(0.518, 0.32, 0.44, 0.34, fill=theme.card_bg, radius=0.03),
-        text(0.536, 0.35, 0.4, 0.05, "СТАНЕТ", color="#2F7D54", size_pt=13, bold=True),
+        text(0.536, 0.35, 0.4, 0.05, "СТАНЕТ", color=theme.positive, size_pt=13, bold=True),
         text(0.536, 0.42, 0.4, 0.2, data.get("becomes_note", "Какой результат хотим."),
              color=theme.heading, size_pt=12),
         text(0.042, 0.72, 0.916, 0.1, data.get("footnote", ""), color=theme.muted, size_pt=11),
@@ -125,8 +125,8 @@ def order_of_work(data: dict, theme: Theme) -> list[Element]:
     ow = data.get("order", {})
     groups = [
         ("СНАЧАЛА · ИЮЛЬ", ow.get("now", []), theme.accent),
-        ("К АВГУСТУ", ow.get("august", []), "#2E4B7A"),
-        ("ДАЛЬШЕ", ow.get("later", []), "#2F7D54"),
+        ("К АВГУСТУ", ow.get("august", []), theme.info),
+        ("ДАЛЬШЕ", ow.get("later", []), theme.positive),
     ]
     return _list_columns(data, theme, groups)
 
@@ -258,7 +258,7 @@ def now_becomes_detail(data: dict, theme: Theme) -> list[Element]:
         text(0.042, 0.20, 0.55, 0.05, "", color=theme.body, size_pt=12.5,
              runs=[("СЕЙЧАС  ", theme.muted, True), (data.get("now", ""), theme.body, False)]),
         text(0.042, 0.26, 0.55, 0.05, "", color=theme.heading, size_pt=12.5,
-             runs=[("СТАНЕТ  ", "#2F7D54", True), (data.get("becomes", ""), theme.heading, False)]),
+             runs=[("СТАНЕТ  ", theme.positive, True), (data.get("becomes", ""), theme.heading, False)]),
         text(0.042, 0.34, 0.55, 0.04, "ОБРАЗ ДЕЙСТВИЯ", color=theme.accent, size_pt=11, bold=True),
     ]
     y = 0.40

@@ -40,4 +40,6 @@ def rect(fx, fy, fw, fh, fill=None, **kw) -> Element:
 def chip(fx, fy, fw, fh, s="", fill=None, **kw) -> Element:
     kw.setdefault("align", "center")
     kw.setdefault("valign", "middle")
+    kw.setdefault("bold", True)
+    kw.setdefault("radius", 0.18)
     return Element("chip", fx, fy, fw, fh, text=s, fill=fill, **kw)

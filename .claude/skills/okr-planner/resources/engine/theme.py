@@ -16,6 +16,10 @@ class Theme:
     body: str = "#434C60"
     muted: str = "#8B94A6"
     card_bg: str = "#F5F7FB"
+    dark_bg: str = "#141A2E"
+    subtitle_on_dark: str = "#AEB6CE"
+    positive: str = "#2F7D54"
+    info: str = "#2E4B7A"
     direction_palette: list[str] = field(default_factory=lambda: list(_DEFAULT_PALETTE))
     role_color_map: dict[str, str] = field(default_factory=lambda: dict(_DEFAULT_ROLES))
     heading_font: str = "Cambria"
@@ -33,6 +37,8 @@ class Theme:
 _KEYS = {
     "accent_color": "accent", "heading_color": "heading", "body_color": "body",
     "muted_color": "muted", "card_bg": "card_bg",
+    "dark_bg": "dark_bg", "subtitle_on_dark": "subtitle_on_dark",
+    "positive_color": "positive", "info_color": "info",
     "direction_palette": "direction_palette", "heading_font": "heading_font",
     "body_font": "body_font",
 }

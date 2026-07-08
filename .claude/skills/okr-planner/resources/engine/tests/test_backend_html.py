@@ -21,6 +21,10 @@ def test_page_is_self_contained():
     assert "1280px" in doc and "720px" in doc
     assert "Deck" in doc and "class=\"slide\"" in doc
 
+def test_plain_text_newline_becomes_br():
+    html = element_html(text(0.1, 0.2, 0.3, 0.05, "a\nb"), T)
+    assert "a<br>b" in html
+
 def test_runs_render_mixed_colors():
     e = text(0, 0, 1, 0.1, "", runs=[("СЕЙЧАС ", "#8B94A6", True), ("текст", "#434C60", False)])
     html = element_html(e, T)

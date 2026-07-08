@@ -15,6 +15,10 @@
 | `body` | `#434C60` | основной текст |
 | `muted` | `#8B94A6` | второстепенный/подписи |
 | `card_bg` | `#F5F7FB` | фон карточек |
+| `dark_bg` | `#141A2E` | фон тёмных слайдов (`title`) |
+| `subtitle_on_dark` | `#AEB6CE` | подзаголовок на тёмном фоне (`title`) |
+| `positive` | `#2F7D54` | позитивный акцент («СТАНЕТ», «ДАЛЬШЕ») |
+| `info` | `#2E4B7A` | нейтрально-информационный акцент («К АВГУСТУ») |
 | `direction_palette` | `["#E4002B", "#2E4B7A", "#0F7A8C", "#2F7D54"]` | цвета направлений по кругу |
 | `role_color_map` | см. §2 | цвет чипа по роли |
 | `heading_font` | `Cambria` | шрифт заголовков |
@@ -55,6 +59,10 @@
 | `body_color` | `body` |
 | `muted_color` | `muted` |
 | `card_bg` | `card_bg` |
+| `dark_bg` | `dark_bg` |
+| `subtitle_on_dark` | `subtitle_on_dark` |
+| `positive_color` | `positive` |
+| `info_color` | `info` |
 | `direction_palette` | `direction_palette` |
 | `heading_font` | `heading_font` |
 | `body_font` | `body_font` |

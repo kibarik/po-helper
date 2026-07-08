@@ -253,6 +253,10 @@ present:
   body_color:           "#434C60"
   muted_color:          "#8B94A6"
   card_bg:              "#F5F7FB"
+  dark_bg:              "#141A2E"       # фон тёмных слайдов (title)
+  subtitle_on_dark:     "#AEB6CE"       # подзаголовок на тёмном фоне
+  positive_color:       "#2F7D54"       # «СТАНЕТ» / позитивный акцент
+  info_color:           "#2E4B7A"       # нейтрально-информационный акцент
   heading_font:         "Cambria"
   body_font:            "Calibri"
   direction_palette:    ["#E4002B", "#2E4B7A", "#0F7A8C", "#2F7D54"]

@@ -24,6 +24,8 @@ def audit(spec: DeckSpec) -> Report:
                     red.append(f"{tag}: нет ни одной sprint-ячейки (нет исполнителя/цикла)")
                 if not kr.risks:
                     yellow.append(f"{tag}: без рисков")
+                if not kr.src:
+                    yellow.append(f"{tag}: без источника (src)")
                 for sp, cells in kr.sprint_cells.items():
                     for c in cells:
                         if "·" not in c:
@@ -46,3 +48,9 @@ def format_report(rep: Report) -> str:
     if not rep.red and not rep.yellow:
         lines.append("  всё покрыто")
     return "\n".join(lines)
+
+
+if __name__ == "__main__":
+    import sys
+    from .deckspec import load_deckspec
+    print(format_report(audit(load_deckspec(sys.argv[1]))))

@@ -38,7 +38,7 @@ def element_html(e: Element, theme: Theme) -> str:
             style.append("align-items:center")
         elif e.align == "right":
             style.append("align-items:flex-end")
-    inner = _runs_html(e, theme) if e.runs else escape(e.text)
+    inner = _runs_html(e, theme) if e.runs else escape(e.text).replace("\n", "<br>")
     return f'<div style="{";".join(style)}">{inner}</div>'
 
 

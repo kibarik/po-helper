@@ -22,3 +22,10 @@ def test_market_without_src_is_red(minimal_spec):
     spec.authored.market = [{"value": "100", "label": "x"}]  # no src
     rep = audit(spec)
     assert rep.level == "🔴"
+
+def test_kr_without_src_is_yellow(minimal_spec):
+    spec = copy.deepcopy(minimal_spec)
+    spec.directions[0].objs[0].krs[0].src = None
+    rep = audit(spec)
+    assert any("src" in m for m in rep.yellow)
+    assert rep.level == "🟡"

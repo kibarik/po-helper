@@ -43,12 +43,16 @@ def _write_text(tf, e: Element, theme: Theme):
     p.alignment = _ALIGN.get(e.align, PP_ALIGN.LEFT)
     runs = e.runs or [(e.text, e.color or theme.body, e.bold)]
     for txt, color, bold in runs:
-        r = p.add_run()
-        r.text = txt
-        r.font.name = e.font or theme.body_font
-        r.font.size = Pt(e.size_pt or 12)
-        r.font.bold = bold
-        r.font.color.rgb = _rgb(color or theme.body)
+        segments = txt.split("\n")
+        for i, seg in enumerate(segments):
+            if i > 0:
+                p.add_line_break()
+            r = p.add_run()
+            r.text = seg
+            r.font.name = e.font or theme.body_font
+            r.font.size = Pt(e.size_pt or 12)
+            r.font.bold = bold
+            r.font.color.rgb = _rgb(color or theme.body)
 
 
 def add_slide(prs: Presentation, s: Slide, theme: Theme) -> None:
@@ -66,7 +70,7 @@ def add_slide(prs: Presentation, s: Slide, theme: Theme) -> None:
             _fill_shape(shp, e.fill or theme.card_bg)
             e2 = Element("text", e.fx, e.fy, e.fw, e.fh, text=e.text, runs=e.runs,
                          color=e.color or "#FFFFFF", font=e.font, size_pt=e.size_pt or 9,
-                         bold=True, align="center", valign="middle")
+                         bold=e.bold, align="center", valign="middle")
             _write_text(shp.text_frame, e2, theme)
         else:  # text
             box = slide.shapes.add_textbox(x, y, w, h)
