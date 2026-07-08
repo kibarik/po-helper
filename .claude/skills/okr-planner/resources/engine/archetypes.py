@@ -173,3 +173,116 @@ ARCHETYPES = {
     "direction_divider": direction_divider, "order_of_work": order_of_work,
     "right_now": right_now, "after_meeting": after_meeting, "takeaways": takeaways,
 }
+
+
+def _first_role(cell_text: str) -> str:
+    # "SA·ADR" or "BE·Go" -> "SA" / "BE"
+    return cell_text.split("·")[0].strip()
+
+
+def sprint_lifecycle_table(data: dict, theme: Theme) -> list[Element]:
+    els = _kicker_headline(data, theme)
+    els.append(text(0.042, 0.20, 0.916, 0.05,
+                    "Каждая строка — шаг направления; слева направо — жизненный цикл.",
+                    color=theme.body, size_pt=11))
+    sprints = data.get("sprints", [])
+    rows = data.get("rows", [])
+    lx, top = 0.042, 0.28
+    label_w = 0.30
+    grid_w = 1 - 2 * 0.042 - label_w
+    n = len(sprints) or 1
+    col_w = grid_w / n
+    # header
+    for j, sp in enumerate(sprints):
+        els.append(text(lx + label_w + j * col_w, top, col_w, 0.04, sp,
+                        color=theme.muted, size_pt=10, bold=True, align="center"))
+    row_h = min(0.075, (0.60 - top) / (len(rows) or 1))
+    for i, r in enumerate(rows):
+        y = top + 0.05 + i * row_h
+        els.append(text(lx, y, label_w - 0.01, row_h, r.get("label", ""),
+                        color=theme.heading, size_pt=11, bold=True, valign="middle"))
+        for j, sp in enumerate(sprints):
+            for k, cellval in enumerate(r.get("cells", {}).get(sp, [])):
+                cx = lx + label_w + j * col_w + 0.004
+                els.append(chip(cx, y + 0.006 + k * 0.032, col_w - 0.008, 0.028, cellval,
+                                fill=theme.role_color(_first_role(cellval)),
+                                color="#FFFFFF", size_pt=8))
+    if data.get("owners"):
+        els.append(text(0.042, 0.85, 0.916, 0.06, "ОТВЕТСТВЕННЫЕ",
+                        color=theme.accent, size_pt=10, bold=True))
+        els.append(text(0.042, 0.885, 0.916, 0.06, data["owners"],
+                        color=theme.body, size_pt=10))
+    return els
+
+
+def roles_sprint_table(data: dict, theme: Theme) -> list[Element]:
+    els = _kicker_headline(data, theme)
+    sprints = data.get("sprints", [])
+    rows = data.get("rows", [])
+    lx, top = 0.042, 0.26
+    label_w = 0.26
+    grid_w = 1 - 2 * 0.042 - label_w
+    n = len(sprints) or 1
+    col_w = grid_w / n
+    els.append(text(lx, top, label_w, 0.04, "ЭКСПЕРТИЗА И ЛЮДИ",
+                    color=theme.muted, size_pt=10, bold=True))
+    for j, sp in enumerate(sprints):
+        els.append(text(lx + label_w + j * col_w, top, col_w, 0.04, sp,
+                        color=theme.muted, size_pt=10, bold=True, align="center"))
+    row_h = min(0.09, (0.80 - top) / (len(rows) or 1))
+    for i, r in enumerate(rows):
+        y = top + 0.05 + i * row_h
+        els.append(rect(lx, y, 0.05, row_h - 0.01, fill=theme.role_color(r.get("role", "")),
+                        radius=0.1))
+        els.append(text(lx, y, 0.05, row_h - 0.01, r.get("role", ""), color="#FFFFFF",
+                        size_pt=10, bold=True, align="center", valign="middle"))
+        els.append(text(lx + 0.055, y, label_w - 0.06, row_h - 0.01,
+                        f"{r.get('expertise','')} · {r.get('people','')}",
+                        color=theme.heading, size_pt=9, valign="middle"))
+        for j, sp in enumerate(sprints):
+            cv = r.get("cells", {}).get(sp)
+            if cv:
+                els.append(text(lx + label_w + j * col_w, y, col_w, row_h - 0.01, cv,
+                                color=theme.body, size_pt=9, align="center", valign="middle"))
+    if data.get("note"):
+        els.append(text(0.042, 0.86, 0.916, 0.05, data["note"], color=theme.muted, size_pt=11))
+    return els
+
+
+def now_becomes_detail(data: dict, theme: Theme) -> list[Element]:
+    els = [
+        text(0.042, 0.06, 0.9, 0.04, data.get("kicker", ""), color=theme.accent,
+             size_pt=12, bold=True),
+        text(0.042, 0.11, 0.9, 0.07, data.get("title", ""), color=theme.heading,
+             font=theme.heading_font, size_pt=22, bold=True),
+        text(0.042, 0.20, 0.55, 0.05, "", color=theme.body, size_pt=12.5,
+             runs=[("СЕЙЧАС  ", theme.muted, True), (data.get("now", ""), theme.body, False)]),
+        text(0.042, 0.26, 0.55, 0.05, "", color=theme.heading, size_pt=12.5,
+             runs=[("СТАНЕТ  ", "#2F7D54", True), (data.get("becomes", ""), theme.heading, False)]),
+        text(0.042, 0.34, 0.55, 0.04, "ОБРАЗ ДЕЙСТВИЯ", color=theme.accent, size_pt=11, bold=True),
+    ]
+    y = 0.40
+    for st in data.get("stages", [])[:4]:
+        els.append(text(0.042, y, 0.55, 0.035, st.get("label", ""),
+                        color=theme.heading, size_pt=11, bold=True))
+        y += 0.045
+        for step in st.get("steps", [])[:5]:
+            els.append(text(0.055, y, 0.53, 0.03, "", size_pt=9,
+                            runs=[(step.get("role", "") + "  ", theme.role_color(step.get("role", "")), True),
+                                  (step.get("text", ""), theme.body, False)]))
+            y += 0.032
+        y += 0.005
+    # risks column
+    els.append(text(0.62, 0.34, 0.35, 0.04, "РИСКИ", color=theme.accent, size_pt=11, bold=True))
+    for i, rk in enumerate(data.get("risks", [])[:8]):
+        ry = 0.40 + i * 0.06
+        els.append(rect(0.62, ry + 0.004, 0.012, 0.012, fill=theme.accent, radius=0.5))
+        els.append(text(0.64, ry, 0.33, 0.055, rk, color=theme.body, size_pt=8.5))
+    return els
+
+
+ARCHETYPES.update({
+    "sprint_lifecycle_table": sprint_lifecycle_table,
+    "roles_sprint_table": roles_sprint_table,
+    "now_becomes_detail": now_becomes_detail,
+})
