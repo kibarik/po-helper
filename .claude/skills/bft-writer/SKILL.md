@@ -16,7 +16,7 @@
 
 ---
 
-## Pipeline (6 стадий, зеркало sa-helper FNR)
+## Pipeline (7 стадий, зеркало sa-helper FNR)
 
 ```
 /bft-context-gen  → context-pack          [СТОП: PO ревьюит pack]
@@ -42,7 +42,7 @@
 
 | Стадия | Команда | Роль | Артефакт |
 |---|---|---|---|
-| 0 Контекст | `/bft-context-gen` | Context Builder (Кортексы C1–C5 + Нексусы N1–N7) | `artefacts/bft-context-pack.md` |
+| 0 Контекст | `/bft-context-gen` | Context Builder (CORTEX C1/C3/BR/C5 + JIRA) | `artefacts/bft-context-pack.md` |
 | 1 Проблема | `/bft-problem` | Problem Analyst (диагноз, не решение) | `artefacts/problem.md` |
 | 2 Концепты | `/bft-concept` | Solution Designer (2-3 варианта) | `artefacts/concept.md` |
 | 3 Дебаты | `/bft-debate` | Architect vs Devil's Advocate | вердикт в `artefacts/concept.md` |
@@ -127,7 +127,7 @@
 ## Стандарты и ресурсы
 
 - `resources/bft_standards.md` — идентификаторы, различение типов (ПТ≠ФТ≠НФТ), НФТ-набор + приоритет корпоративного реестра НФТ, frontmatter, словарь, порядок разделов (ЗМ-005), формат таблиц.
-- `resources/hard_gates.md` — **15 бинарных 🔴-гейтов** (вкл. гейт 13 «Стиль/Голос», гейт 14 «Высота БФТ», гейт 15 «Known-Mistake») + чек-лист + Светофор.
+- `resources/hard_gates.md` — **16 бинарных 🔴-гейтов** (вкл. гейт 13 «Стиль/Голос», гейт 14 «Высота БФТ», гейт 15 «Known-Mistake», гейт 16 «Self-Consistency») + чек-лист + Светофор.
 - `resources/anchor_rules.md` — ранги якорей R1 (код, As-Is) / R2 (JIRA/Confluence/BR/ADR) / R3 (PO-решение); код-якорь только для As-Is.
 - `resources/catwoe.md` — CATWOE-декомпозиция (W→БТ, O→Ревью, E→НФТ).
 - `resources/writing_style.md` — стиль и голос (Humanizer): стоп-слова, тире, эмодзи, bold, `[УТОЧНИТЬ]`-дисциплина, калибровка под золотой референс.
