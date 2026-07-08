@@ -1,0 +1,7 @@
+<task-notification>
+<task-id>bzivc0zlz</task-id>
+<tool-use-id>toolu_01GfNgqEWGDKYnX5fnWqvvAR</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-aleksishmanov-projects-po-helper/4ff20a0e-e83c-4298-9a3e-c94a7b06d443/tasks/bzivc0zlz.output</output-file>
+<status>completed</status>
+<summary>Background command "Poll for fresh qodo reviews on all three PRs" completed (exit code 0)</summary>
+</task-notification>
