@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "2b60eca1c7dd",
+  "strategy": "manual-commit",
+  "branch": "feat/confluence-indexator",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "sa_documentation/lint_graph.py",
+    "sa_documentation/tests/test_lint_graph.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/2b/60eca1c7dd/0/metadata.json",
+      "transcript": "/2b/60eca1c7dd/0/full.jsonl",
+      "compact_transcript": "/2b/60eca1c7dd/0/transcript.jsonl",
+      "content_hash": "/2b/60eca1c7dd/0/content_hash.txt",
+      "prompt": ""
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 5915,
+    "cache_creation_tokens": 17902,
+    "cache_read_tokens": 1713844,
+    "output_tokens": 7491,
+    "api_call_count": 15
+  }
+}

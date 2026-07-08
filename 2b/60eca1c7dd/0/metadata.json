@@ -1,0 +1,40 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_id": "2b60eca1c7dd",
+  "session_id": "4ff20a0e-e83c-4298-9a3e-c94a7b06d443",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-08T15:57:18.27433Z",
+  "branch": "feat/confluence-indexator",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "sa_documentation/lint_graph.py",
+    "sa_documentation/tests/test_lint_graph.py"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "0993fbaa5e3b",
+  "checkpoint_transcript_start": 226,
+  "transcript_lines_at_start": 226,
+  "token_usage": {
+    "input_tokens": 5915,
+    "cache_creation_tokens": 17902,
+    "cache_read_tokens": 1713844,
+    "output_tokens": 7491,
+    "api_call_count": 15
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-08T15:57:18.24543Z",
+    "agent_lines": 149,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 149,
+    "total_lines_changed": 149,
+    "agent_percentage": 100,
+    "metric_version": 2
+  }
+}
