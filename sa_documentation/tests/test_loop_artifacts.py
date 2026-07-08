@@ -1,5 +1,5 @@
 import pathlib
-from sa_documentation.validate_ground import validate_loop_artifacts
+from sa_documentation.validate_ground import validate_loop_artifacts, validate_loop_references
 
 VALID_PULSE = """---
 nexus: product
@@ -71,6 +71,54 @@ nexus_writeback:
   - {nexus: product, node: feature-x, change: "cp 0.4->0.6", source: harvest-s14}
 ---
 # Harvest
+"""
+
+
+VALID_BUNCH_QUARTER = """---
+nexus: product
+node_id: bunch-q3
+node_type: sprint-phase
+sprint_phase: bunch
+paf_step: null
+kind: empirical
+owner: Product Engineer
+confidence: 0.4
+sources: ["OKR-Q3"]
+updated: 2026-07-08
+ttl_days: 90
+ripeness: fresh
+level: quarter
+cycle_ref: Q3
+bunch_size: 5
+bunch_window: quarter-3
+items:
+  - {ref: PROJ-123, kind: hypothesis, trace: "GROUND/NEXUS/product/feature-x.md", initial_cp: 3}
+gate: {final_cp: 0.5, cost_of_risk: "переоценка объёма", decision: commit}
+---
+# Quarter Bunch
+"""
+
+VALID_HARVEST_QUARTER = """---
+nexus: product
+node_id: harvest-q3
+node_type: sprint-phase
+sprint_phase: harvest
+paf_step: null
+kind: empirical
+owner: Portfolio Manager
+confidence: 0.6
+sources: ["okr-harvest-quarter:Q3"]
+updated: 2026-07-08
+ttl_days: 90
+ripeness: fresh
+level: quarter
+cycle_ref: Q3
+outcomes: {cp_change: "+0.2", mNSM_delta: "[УТОЧНИТЬ]", npv_actual: "[УТОЧНИТЬ]"}
+insights: ["квартальный итог"]
+nexus_writeback:
+  - {nexus: market, node: growth, change: "cp 0.4->0.6", source: harvest-q3}
+---
+# Quarter Harvest
 """
 
 
@@ -148,3 +196,43 @@ node_type: bootstrap
 """
     _mk(tmp_path, "PULSE", "00-bootstrap.md", note)
     assert validate_loop_artifacts(tmp_path) == []
+
+
+def test_harvest_missing_cp_change_fails(tmp_path):
+    broken = VALID_HARVEST.replace(
+        'outcomes: {cp_change: "+0.2", mNSM_delta: "[УТОЧНИТЬ]", npv_actual: "[УТОЧНИТЬ]"}',
+        'outcomes: {mNSM_delta: "[УТОЧНИТЬ]", npv_actual: "[УТОЧНИТЬ]"}',
+    )
+    _mk(tmp_path, "RESULTS", "S14-harvest.md", broken)
+    errs = validate_loop_artifacts(tmp_path)
+    assert any("cp_change" in e for e in errs), errs
+
+
+def test_bunch_in_wrong_folder_fails(tmp_path):
+    # bunch-артефакт, ошибочно положенный в PULSE/, должен падать на
+    # рассинхроне sprint_phase vs folder, а не молча проходить.
+    _mk(tmp_path, "PULSE", "S14-bunch.md", VALID_BUNCH)
+    errs = validate_loop_artifacts(tmp_path)
+    assert any("folder" in e and "sprint_phase" in e for e in errs), errs
+
+
+def test_confidence_bool_fails(tmp_path):
+    broken = VALID_PULSE.replace("confidence: 0.5\n", "confidence: true\n")
+    _mk(tmp_path, "PULSE", "S14-pulse.md", broken)
+    errs = validate_loop_artifacts(tmp_path)
+    assert any("confidence" in e for e in errs), errs
+
+
+def test_loop_references_valid_chain_resolves(tmp_path):
+    _mk(tmp_path, "BUNCH", "Q3-bunch.md", VALID_BUNCH_QUARTER)
+    _mk(tmp_path, "RESULTS", "Q3-harvest.md", VALID_HARVEST_QUARTER)
+    _mk(tmp_path, "BUNCH", "S14-bunch.md", VALID_BUNCH)
+    _mk(tmp_path, "RESULTS", "S14-harvest.md", VALID_HARVEST)
+    assert validate_loop_references(tmp_path) == []
+
+
+def test_loop_references_dangling_rolls_up_to_fails(tmp_path):
+    broken = VALID_HARVEST.replace("rolls_up_to: harvest-q3\n", "rolls_up_to: harvest-QX\n")
+    _mk(tmp_path, "RESULTS", "S14-harvest.md", broken)
+    errs = validate_loop_references(tmp_path)
+    assert any("rolls_up_to" in e for e in errs), errs

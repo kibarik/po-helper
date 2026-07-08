@@ -54,7 +54,7 @@
     sprint-fact   ──▶ RESULTS/S{n}-harvest      факт + NPV/mNSM/инсайты → запись в Нексус
         └──────────────────▶ вход следующего sprint-sync (петля уже декларирована)
   конец квартала:
-  /sprint-harvest-quarter ──▶ RESULTS/Q{n}-harvest  rollup → Нексус рынка/роста → intent Q+1
+  /okr-harvest-quarter ──▶ RESULTS/Q{n}-harvest  rollup → Нексус рынка/роста → intent Q+1
 ```
 
 **Три принципа связывания:**
@@ -167,7 +167,7 @@ next_intent: "вход в S15-pulse"
 | `okr-deliver` (публикация OKR) | Банч Ставок под Goal Map | `BUNCH/Q{n}-bunch.md` |
 
 **1 новая стадия** (нет хоста сейчас):
-- `/sprint-harvest-quarter` (или под-режим okr-скилла) — конец квартала: rollup спринтовых урожаев → `RESULTS/Q{n}-harvest.md` → writeback в `market`/`growth` → `next_intent` для Pulse Q+1.
+- `/okr-harvest-quarter` (под-режим okr-скилла) — конец квартала: rollup спринтовых урожаев → `RESULTS/Q{n}-harvest.md` → writeback в `market`/`growth` → `next_intent` для Pulse Q+1.
 
 **1 расширение:**
 - `sa_documentation/validate_ground.py` + фикстуры (`ground_ok`/`ground_bad`) — принимать empirical sprint-phase артефакты в `PULSE/BUNCH/RESULTS`; проверять обязательные поля (`nexus_writeback` у harvest, `gate.decision` у bunch, `parent_bunch`/`rolls_up_to` у вложенных).
@@ -223,7 +223,7 @@ next_intent: "вход в S15-pulse"
 
 - `paf_loop_schema.md` создан; `nexus_process_map.md` §4 обновлён (Pulse/Bunch/Results как write-targets).
 - 5 стадий расширены: материализуют артефакт + (для harvest) пишут `nexus_writeback`.
-- `/sprint-harvest-quarter` замыкает верхний уровень.
+- `/okr-harvest-quarter` замыкает верхний уровень.
 - `validate_ground.py` + фикстуры валидируют новые артефакты; тесты зелёные.
 - Один сквозной прогон одного спринт-цикла: `sprint-sync`→Pulse-узел → `sprint-deliver`→Bunch-узел (с gate) → `sprint-fact`→Harvest-узел с writeback в `product` → узел `product` реально обновлён (confidence/updated). Пустые `BUNCH/RESULTS` перестают быть пустыми **по факту работы**, а не бэкфиллом.
 

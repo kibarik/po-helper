@@ -90,6 +90,8 @@ def _validate_loop_node(fm, rel):
             errs.append(f"{rel}: harvest requires insights")
         if level == "sprint" and not fm.get("rolls_up_to"):
             errs.append(f"{rel}: sprint harvest requires rolls_up_to")
+        if not (fm.get("outcomes") or {}).get("cp_change"):
+            errs.append(f"{rel}: harvest requires outcomes.cp_change")
     return errs
 
 
@@ -109,7 +111,61 @@ def validate_loop_artifacts(ground_dir):
             # пропускается вместо того, чтобы упасть на валидации.
             if not fm or fm.get("node_type") != "sprint-phase":
                 continue
-            errs.extend(_validate_loop_node(fm, f"{folder}/{p.name}"))
+            rel = f"{folder}/{p.name}"
+            errs.extend(_validate_loop_node(fm, rel))
+            expected_phase = LOOP_DIRS[folder]
+            phase = fm.get("sprint_phase")
+            if phase in LOOP_PHASES and phase != expected_phase:
+                errs.append(
+                    f"{rel}: sprint_phase {phase!r} does not match folder {folder}"
+                )
+    return errs
+
+
+def validate_loop_references(ground_dir):
+    """Проверить referential integrity вложенности loop-артефактов на весь свод.
+
+    В отличие от validate_loop_artifacts (изолированная валидация одного
+    файла), здесь проверяется, что parent_bunch/rolls_up_to спринтовых
+    артефактов резолвятся в node_id, реально присутствующий среди всех
+    loop-артефактов. Список ошибок (пустой = OK).
+    """
+    ground_dir = pathlib.Path(ground_dir)
+    nodes = []  # (rel, fm)
+    node_ids = set()
+    for folder in LOOP_DIRS:
+        d = ground_dir / folder
+        if not d.is_dir():
+            continue
+        for p in sorted(d.glob("*.md")):
+            fm = _parse_frontmatter(p.read_text())
+            if not fm or fm.get("node_type") != "sprint-phase":
+                continue
+            if fm.get("sprint_phase") not in LOOP_PHASES:
+                continue
+            rel = f"{folder}/{p.name}"
+            nodes.append((rel, fm))
+            nid = fm.get("node_id")
+            if nid:
+                node_ids.add(nid)
+
+    errs = []
+    for rel, fm in nodes:
+        if fm.get("level") != "sprint":
+            continue
+        phase = fm.get("sprint_phase")
+        if phase == "bunch":
+            parent = fm.get("parent_bunch")
+            if parent and parent not in node_ids:
+                errs.append(
+                    f"{rel}: parent_bunch {parent!r} does not resolve to any loop node_id"
+                )
+        elif phase == "harvest":
+            rolls_up_to = fm.get("rolls_up_to")
+            if rolls_up_to and rolls_up_to not in node_ids:
+                errs.append(
+                    f"{rel}: rolls_up_to {rolls_up_to!r} does not resolve to any loop node_id"
+                )
     return errs
 
 
@@ -146,6 +202,7 @@ def validate_ground(ground_dir):
                 errs.append(f"nexus {s!r} source must be default|custom")
 
     errs.extend(validate_loop_artifacts(ground_dir))
+    errs.extend(validate_loop_references(ground_dir))
 
     return errs
 

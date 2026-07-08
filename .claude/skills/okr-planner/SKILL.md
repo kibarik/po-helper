@@ -127,7 +127,7 @@ OKR-скилл материализует loop-артефакты уровня `
 
 ### Под-режим `/okr-harvest-quarter <quarter>`
 Роль: Quarter Harvester. Шаги:
-1. Собрать все `GROUND/RESULTS/S*-harvest.md`, у которых `rolls_up_to` = `harvest-{quarter}`.
+1. Собрать все `GROUND/RESULTS/S*-harvest.md`, у которых `rolls_up_to` = `harvest-<quarter в нижнем регистре>` (node_id квартального harvest всегда lowercase, например `harvest-q3`).
 2. Свести `outcomes.cp_change` и `insights` спринтов в квартальный итог.
 3. Сформировать `nexus_writeback` в `market`/`growth` (агрегированный инкремент).
 4. Записать `GROUND/RESULTS/{quarter}-harvest.md` (`level: quarter`, owner Portfolio Manager) + применить writeback к узлам Нексуса.
