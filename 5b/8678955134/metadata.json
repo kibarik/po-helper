@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "5b8678955134",
+  "strategy": "manual-commit",
+  "branch": "test/pr-agent-smoke",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "scripts/pr_agent_smoke.py"
+  ],
+  "sessions": [
+    {
+      "metadata": "/5b/8678955134/0/metadata.json",
+      "transcript": "/5b/8678955134/0/full.jsonl",
+      "compact_transcript": "/5b/8678955134/0/transcript.jsonl",
+      "content_hash": "/5b/8678955134/0/content_hash.txt",
+      "prompt": "/5b/8678955134/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 6,
+    "cache_creation_tokens": 2198,
+    "cache_read_tokens": 198525,
+    "output_tokens": 1712,
+    "api_call_count": 3
+  }
+}

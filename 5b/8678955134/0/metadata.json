@@ -1,0 +1,48 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_id": "5b8678955134",
+  "session_id": "f4c709a2-7def-4baf-9acd-02eb0f5235e1",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-08T14:34:07.189Z",
+  "branch": "test/pr-agent-smoke",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "scripts/pr_agent_smoke.py"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "2db67967e98e",
+  "checkpoint_transcript_start": 104,
+  "transcript_lines_at_start": 104,
+  "token_usage": {
+    "input_tokens": 6,
+    "cache_creation_tokens": 2198,
+    "cache_read_tokens": 198525,
+    "output_tokens": 1712,
+    "api_call_count": 3
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-08T14:34:07.174712Z",
+    "agent_lines": 23,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 23,
+    "total_lines_changed": 23,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
