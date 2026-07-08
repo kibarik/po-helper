@@ -86,6 +86,20 @@ planner:
 
 ---
 
+## 1.1 Discovery (генеративный онбординг)
+
+Настройки workflow `/prd-research` — наполнение Нексусов через диалог + desk-research (для свежих проектов без существующего контекста).
+
+```yaml
+discovery:
+  # Канон методологии. AI-PROCESSES — исполняемый хребет×движок; TRADITIONAL — raw-справочник методов.
+  methodology_track: "AI-PROCESSES"
+  # Включить активный web desk-research в фазе SCOUT (WebSearch/WebFetch + делегирование /po-research).
+  web_research: true
+```
+
+---
+
 ## 2. Команды и роли (teams)
 
 Кто исполняет KR. Используется в «Образ действия» (теги ролей) и при распределении.

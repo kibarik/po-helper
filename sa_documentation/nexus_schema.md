@@ -31,7 +31,7 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `confidence` | float 0–1 | Confidence Point Узла. normative: 1.0 = полностью трассируется до [S1]–[S4]; empirical: уровень валидационных доказательств | ✅ |
 | `sources` | list[string] | Источники (`[S1]`,`[S2]`, URL, RB-STEP-N.M, интервью #N, аналитика). **Узел без `sources` = workslop** | ✅ |
 | `updated` | date ISO | Дата последнего обновления (YYYY-MM-DD) | ✅ |
-| `ttl_days` | int | Срок актуальности в днях. normative: 365; empirical: market/customer=90, growth=60 | ✅ |
+| `ttl_days` | int | Срок актуальности в днях. normative: 365; empirical: market/customer/product=90, growth=60 | ✅ |
 | `ripeness` | enum | `fresh` \| `ripening` \| `wilting` — вычисляется из `updated`+`ttl_days` (см. §4) | ✅ |
 | `tags` | list[string] | Доп. теги (Obsidian), напр. `[fit-point]`, `[sprint-engine]` | — |
 
@@ -54,13 +54,44 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `kind` | `empirical` |
 | `sources` | `["onboarding:<doc>"]` (из ингестии доков, Phase A) \| `["onboarding:interview"]` (из интервью, Phase B) \| последующие: аналитика, эксперимент, интервью Steps 1–8 |
 | `confidence` по умолчанию | **0.2–0.4** (допущение онбординга, **не валидировано**). CP поднимают Steps 1–8 (интервью/эксперименты → 0.5–1.0). |
-| `ttl_days` | короче, чем у normative (365): **market/customer = 90, growth = 60**. Быстрее wilting → раньше триггерит обновление/верификацию. |
+| `ttl_days` | короче, чем у normative (365): **market/customer/product = 90, growth = 60**. Быстрее wilting → раньше триггерит обновление/верификацию. |
 
 В тело каждого такого узла ставится пометка:
 
 > ⚠️ **допущение клиента (онбординг)**, требует валидации в Steps 1–8. CP отражает уровень доверия к допущению, не подтверждённый факт.
 
 > Онбординг цифровизует, **не валидирует** [S1] Принцип 4, [S2] III.7. Не выдавать допущения за факты. См. [[nexus_catalog]] (seed_questions для интервью) и [[ground_schema]] (структура GROUND Vault).
+
+### 2.3 Discovery-узлы (гипотезы, Steps 1–8)
+
+Узлы, порождённые генеративным discovery (`/prd-research`), — это **гипотезы в работе**, а не готовые факты. Поверх базовой Node schema (§2) они несут два дополнительных ключа:
+
+| Ключ | Тип | Описание |
+|---|---|---|
+| `hyp_status` | enum | Жизненный цикл гипотезы: `draft` → `hypothesis` → `scoring` → `validating` → `validated` \| `refuted` \| `parked` |
+| `depends_on` | list[node_id] | Узлы-первопричины из других шагов (напр. ценность Step 4 ← сегмент Step 2). Пусто допустимо. |
+
+**Жизненный цикл:**
+- `draft` — черновой захват в диалоге, ещё не сформулирован как проверяемое утверждение.
+- `hypothesis` — сформулирован, ждёт скоринга/проверки.
+- `scoring` — идёт приоритизация/дебаты (Адвокат Дьявола).
+- `validating` — собираются доказательства (desk-research / интервью / эксперимент).
+- `validated` — подтверждён (CP поднят источником доказательств).
+- `refuted` — опровергнут (сохраняем как прецедент, не удаляем).
+- `parked` — «PO не знает / отложено». Легальный терминальный статус, не блокирует. **Не выдумывать вместо `parked`.**
+
+**Шкала CP (`confidence`) по источнику доказательства:**
+
+| Источник | Диапазон `confidence` |
+|---|---|
+| суждение PO (не проверено) | 0.2–0.4 |
+| внутр. библиотека `docs/RL/` (метод) | 0.3–0.5 |
+| web desk-research (якорь URL + дата) | 0.5–0.7 |
+| интервью / эксперимент | 0.7–1.0 |
+
+`ttl_days` для discovery-узлов наследует empirical-дефолты §2.2 (market/customer/product=90, growth=60).
+
+**Контур рассогласования:** при изменении узла-первопричины все узлы, где он числится в `depends_on`, помечаются `ripeness: wilting` (требуют re-check). Оркестратор `/prd-research` сводит такие рассинхроны в список на входе (см. `skills/prd-research/resources/board_state.md`).
 
 ---
 
@@ -85,6 +116,44 @@ PAF сознательно «не фиксирует технологию» [S1]
 | `risk` | Нексус `risk` — один риск | GROUND/NEXUS/risk/*.md |
 | `term` | Нексус `lexicon` — термин Ubiquitous Language | GROUND/NEXUS/lexicon/*.md |
 | `metric` | Нексус `metrics` — одна метрика | GROUND/NEXUS/metrics/*.md |
+
+---
+
+### 3.1 Discovery artifact-типы (Steps 1–8, узлы-гипотезы)
+
+Узлы `/prd-research` (Steps 1–8) несут `node_type` из методологического набора artifact-типов: каждый тип ← конкретный `docs/AI-PROCESSES/STEP-N-*/overview.md` (zero-hallucination: тип узла не изобретается, а трассируется до шага методологии). Таблица расширяет §3 под генеративный discovery.
+
+| `node_type` | Линза/шаг | Источник |
+|---|---|---|
+| `bet` | Strategy (Step 1); Ставки (Step 3) | STEP-1-IDEA/overview.md, STEP-3-MARKET/overview.md |
+| `lever` | Business (Step 1) | STEP-1-IDEA/overview.md |
+| `feature` | Product (Step 1) | STEP-1-IDEA/overview.md |
+| `force` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `trend` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `constant` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `tam-sam-som` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `competitor` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `gap` | Market (Step 3) | STEP-3-MARKET/overview.md |
+| `opportunity` | niche-opportunities, OST | market/customer/product |
+| `segment` | segmentation | customer |
+| `jtbd` | segmentation, ODI | customer |
+| `outcome` | ODI (desired outcome) | customer/product |
+| `persona-context` | consumer-context | customer |
+| `nsm-metric` | NSM | product/growth |
+| `input-metric` | NSM, AARRR | growth |
+| `value-prop` | consumer-context, ODI | product |
+| `unit-econ` | unit-economics | growth |
+| `cohort` | unit-economics, AARRR | growth |
+| `funnel-stage` | AARRR | growth |
+| `positioning` | 4P, Rory | product/growth |
+| `four-p` | 4P | growth |
+| `dist-channel` | distribution-channels | growth |
+| `risk-card` | RAT | product |
+| `solution` | OST | product |
+| `experiment` | OST | product |
+| `ab-test` | A/B design | product/growth |
+
+Типы для Steps 2, 4–8 добавляются при реализации соответствующей стадии — каждый ← `overview.md` своего шага.
 
 ---
 

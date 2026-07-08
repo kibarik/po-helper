@@ -33,6 +33,8 @@
 | `capacity` | | ● | ○ | | ● | ● | ● | ○ |
 | `market`/`customer`/`product`/`growth` | ○ | ○ | ○ | ○ | ● | ○ | ○ | ● |
 
+**Discovery (`/prd-*`)** наполняет `market/customer/product/growth` генеративно (Steps 1–8); Step 1 `/prd-idea` — `●` для всех трёх продуктовых Нексусов. См. `skills/prd-research/resources/pipeline.md`.
+
 ---
 
 ## 3. Как процесс грунтуется (единый контракт)
@@ -60,6 +62,7 @@
 | `okr-planner` | `strategy` (OKR квартала → образ действия) |
 | `sprint-planner` | `capacity` (velocity/ёмкость по факту спринта) |
 | `release-guard` | `capacity` (cost of delay, дрейф) |
+| prd-research (discovery Steps 1–8) | market, customer, product, growth (узлы-гипотезы, hyp_status/CP) |
 
 > Обратная запись — по спросу, не обязательна в v1: минимально процессы **читают** Нексусы (§3). Запись включается, когда PO хочет, чтобы разбор запросов накапливал прецеденты и мощность в GROUND, а не только в артефактах пайплайна.
 
