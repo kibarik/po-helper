@@ -60,6 +60,10 @@
 | `okr-planner` | `strategy` (OKR квартала → образ действия) |
 | `sprint-planner` | `capacity` (velocity/ёмкость по факту спринта) |
 | `release-guard` | `capacity` (cost of delay, дрейф) |
+| `sprint-planner` (петля) | `PULSE/S{n}` (sprint-sync) · `BUNCH/S{n}` (sprint-deliver) · `RESULTS/S{n}` + writeback в `product` (sprint-fact) |
+| `okr-planner` (петля) | `PULSE/Q{n}` (okr-context-gen) · `BUNCH/Q{n}` (okr-deliver) · `RESULTS/Q{n}` + writeback в `market`/`growth` (okr-harvest-quarter) |
+
+> **Loop-артефакты** (Pulse/Bunch/Harvest) — материализация цикла Product Sprint, схема в [[paf_loop_schema]]. `harvest.nexus_writeback` замыкает петлю: результат цикла возвращается инкрементом в Нексус, а не оседает в доке.
 
 > Обратная запись — по спросу, не обязательна в v1: минимально процессы **читают** Нексусы (§3). Запись включается, когда PO хочет, чтобы разбор запросов накапливал прецеденты и мощность в GROUND, а не только в артефактах пайплайна.
 

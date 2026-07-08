@@ -25,9 +25,9 @@ GROUND/
 │   ├── product/
 │   ├── growth/
 │   └── project-management/  ← обязательный Нексус PO (delivery map: этапы, сроки, проекты/артефакты/планы)
-├── PULSE/               ← Progress Pulse (динамика продукта)
-├── BUNCH/               ← Банчи (связки инициатив/экспериментов)
-└── RESULTS/             ← Harvesting (урожай — результаты и инсайты)
+├── PULSE/               ← Progress Pulse: sprint-sync/okr-context-gen (схема paf_loop_schema)
+├── BUNCH/               ← Банчи: sprint-deliver/okr-deliver (вместо беклога)
+└── RESULTS/             ← Harvesting: sprint-fact/okr-harvest-quarter + writeback в Нексус
 ```
 
 ## Правила
