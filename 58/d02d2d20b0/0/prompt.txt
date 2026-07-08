@@ -1,0 +1,12 @@
+@"/Users/aleksishmanov/Library/Mobile Documents/iCloud~md~obsidian/Documents/MTS/Roadmap-GDS-Q3-2026.xlsx" @"/Users/aleksishmanov/Library/Mobile Documents/iCloud~md~obsidian/Documents/MTS/GDS-Q3-2026.pptx"
+Работай в ветке fix/quarter-presentation
+
+Я хочу чтобы результатом всего планирования квартала становилась вот такая презентация и Roadmap в .xlsx формате. Этот этап должен финализировать процесс разработки квартала. От этих двух артефактов PO должен сгенерировать вместе с LLM и дальше через коррекцию презентации и xlsx файла фактически дорабатывать итоговый план.
+
+---
+
+Продолжи
+
+---
+
+Ссылка не открывается на спеку

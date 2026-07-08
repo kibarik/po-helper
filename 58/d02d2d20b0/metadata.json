@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "58d02d2d20b0",
+  "strategy": "manual-commit",
+  "branch": "fix/quarter-presentation",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/specs/2026-07-08-okr-present-design.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/58/d02d2d20b0/0/metadata.json",
+      "transcript": "/58/d02d2d20b0/0/full.jsonl",
+      "compact_transcript": "/58/d02d2d20b0/0/transcript.jsonl",
+      "content_hash": "/58/d02d2d20b0/0/content_hash.txt",
+      "prompt": "/58/d02d2d20b0/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 23471,
+    "cache_creation_tokens": 181438,
+    "cache_read_tokens": 1378365,
+    "output_tokens": 30266,
+    "api_call_count": 24
+  }
+}
