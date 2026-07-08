@@ -196,7 +196,7 @@ Sprint Goal: <повтор из плана>
 
 ## 5. Пайплайн (стадии одного прогона)
 
-0. **Загрузка + carry-forward + напоминания** — `.claude/domain-profile.md` (`paths`, `jira`, `planner`, `meta.current_quarter`), SKILL, `resources/*`. Резолв **Sprint Goal + плановых историй** (`planning_root/SPRINT-*`), **OKR-квартала** (`okr_output_doc`), **People Graph** (`GROUND/NEXUS/team`), **KR-EPIC-MAP**. Прочитать **открытые задачи Backlog** (labels `commitment`/`blocker`/`agreement`) как входное состояние. **Напоминания:** сразу показать блок «Висит на PO» — просроченные и due-скоро задачи Backlog.
+0. **Загрузка + carry-forward + напоминания** — `.claude/domain-profile.md` (`paths`, `jira`, `planner`, `meta.current_quarter`), SKILL, `resources/*`. Резолв **Sprint Goal + плановых историй** (`planning_root/SPRINT-*`), **OKR-квартала** (`okr_output_doc`), **People Graph** (`GROUND/NEXUS/team`), **KR-EPIC-MAP**. Прочитать **открытые задачи Backlog** (labels `commitment`/`blocker`/`agreement`) как входное состояние. **Напоминания:** сразу показать блок «Висит на PO» — просроченные и скоро-по-сроку задачи Backlog.
 1. **Приём транскрипта** — arg/путь/вставка. Пусто → попросить. Авто-саммари сверху — подсказка, факты ← сырой лог.
 2. **Извлечение** — активность по участникам, статус-изменения карточек, блокаторы, риски-дельта, новые договорённости, упоминания задач и вех/дат.
 3. **Якорение** — коды JIRA ← KR-EPIC-MAP/план (неизвестно → `[КОД?]`); имена ← team (не сматчено — не додумывать); блокаторы → KR отгрузки в Prod (`[KR?]`).
@@ -311,7 +311,7 @@ planner:
 | **R**elevant | привязка к KR (отгрузка в Prod) |
 | **T**ime-bound | срок → в описание задачи (у Backlog.md нет поля `due`; хранится текстом `Срок: <дата>`) |
 
-Тело задачи несёт обратную ссылку на источник: `← C-NNN · {meeting_notes}/{папка}` — для аудита.
+Тело задачи несёт срок + обратную ссылку на источник: `Срок: <дата> · ← C-NNN · {meeting_notes}/{папка}` — срок для «Висит на PO» (парсинг из описания) + backlink для аудита.
 
 ### Reconcile (стадия 8 пайплайна, dry-run → approve)
 
