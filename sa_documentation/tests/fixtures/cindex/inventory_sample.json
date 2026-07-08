@@ -1,0 +1,30 @@
+{
+  "space": "PROD",
+  "crawled_at": "2026-07-04",
+  "pages": [
+    {
+      "id": "131074",
+      "title": "Платёжный шлюз",
+      "ancestors": ["Архитектура"],
+      "labels": ["adr", "payments"],
+      "links": ["131080"],
+      "url": "https://wiki/131074"
+    },
+    {
+      "id": "131080",
+      "title": "Глоссарий платёжного домена",
+      "ancestors": ["Домен платежей"],
+      "labels": ["glossary"],
+      "links": [],
+      "url": "https://wiki/131080"
+    },
+    {
+      "id": "131090",
+      "title": "Риски интеграции с процессинговым партнёром",
+      "ancestors": ["Риски"],
+      "labels": ["risk"],
+      "links": [],
+      "url": "https://wiki/131090"
+    }
+  ]
+}

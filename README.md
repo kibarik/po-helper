@@ -25,6 +25,7 @@
 | **Визуализация** | `/diagram-view` | Рендер PlantUML inline в чат | [skill](.claude/skills/diagram-view/) |
 | **Карта людей** | `/people-links` · `/people-map` | Описание отношений PO с сотрудниками (контур) → навигатор: кто ближе/дальше, кто с чем приходит, у кого уточнить, кто согласовывает | [links](.claude/skills/people-links/SKILL.md) · [map](.claude/skills/people-map/SKILL.md) |
 | **Калибровка нексуса людей** | `/radar-graph` · `/radar-calibrate` · `/radar-review` | Диаграмма связей команды + проверка качества People Graph: ситуационные вопросы → сверка с реальностью → correction-Prompt, цикл до 10/10 (short) или 50/50 (long) | [SKILL](.claude/skills/nexus-calibration/SKILL.md) |
+| **Confluence-индексатор** | `/cindex <space>` (6 стадий) | Наполнение нексусов из Confluence + граф `[[wiki-links]]` + навигационный MOC | [SKILL](.claude/skills/confluence-indexator/SKILL.md) |
 | **Операционный штаб** | `backlog board` (+ MCP `backlog`) | Доска: какие артефакты в работе и на какой стадии оборвались | [↓ Штаб](#-операционный-штаб-backlogmd) |
 | **Онбординг** | `/paf-init`, `/paf-nexus-create` | GROUND Vault под продукт | [↓ Онбординг](#-онбординг-paf) |
 | **Контекст-recall** | `entire search` · чат-агент `entire-search` | «Чем занимались / на чём остановились» — сессии индексируются рядом с коммитами | [↓ Установка](#-установка) |
