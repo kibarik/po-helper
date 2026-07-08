@@ -38,13 +38,20 @@ def _validate_loop_node(fm, rel):
     if fm.get("kind") != "empirical":
         errs.append(f"{rel}: kind must be 'empirical'")
     conf = fm.get("confidence")
-    if not isinstance(conf, (int, float)) or not (0 <= conf <= 1):
+    if (
+        isinstance(conf, bool)
+        or not isinstance(conf, (int, float))
+        or not (0 <= conf <= 1)
+    ):
         errs.append(f"{rel}: confidence must be float 0..1")
     level = fm.get("level")
     if level not in ("quarter", "sprint"):
         errs.append(f"{rel}: level must be quarter|sprint")
 
     phase = fm.get("sprint_phase")
+    if phase not in LOOP_PHASES:
+        errs.append(f"{rel}: sprint_phase must be pulse|bunch|harvest")
+        return errs
     if phase == "pulse":
         if not isinstance(fm.get("nexus_snapshot"), dict):
             errs.append(f"{rel}: pulse requires nexus_snapshot (map)")
@@ -96,8 +103,11 @@ def validate_loop_artifacts(ground_dir):
             continue
         for p in sorted(d.glob("*.md")):
             fm = _parse_frontmatter(p.read_text())
-            # не loop-артефакт (init-pulse, summary, без frontmatter) → пропустить
-            if not fm or fm.get("sprint_phase") not in LOOP_PHASES:
+            # не loop-артефакт (init-pulse, summary, без frontmatter) → пропустить.
+            # Классифицируем по node_type, а не по sprint_phase — иначе
+            # артефакт с отсутствующим/опечатанным sprint_phase молча
+            # пропускается вместо того, чтобы упасть на валидации.
+            if not fm or fm.get("node_type") != "sprint-phase":
                 continue
             errs.extend(_validate_loop_node(fm, f"{folder}/{p.name}"))
     return errs

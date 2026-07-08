@@ -122,3 +122,29 @@ def test_non_loop_pulse_note_skipped(tmp_path):
     # init-pulse / summary без sprint_phase не должны падать
     _mk(tmp_path, "PULSE", "00-init-pulse.md", "# просто заметка без frontmatter\n")
     assert validate_loop_artifacts(tmp_path) == []
+
+
+def test_declared_artifact_with_bad_sprint_phase_fails(tmp_path):
+    broken = VALID_PULSE.replace("sprint_phase: pulse\n", "sprint_phase: Pulse\n")
+    _mk(tmp_path, "PULSE", "S14-pulse.md", broken)
+    errs = validate_loop_artifacts(tmp_path)
+    assert any("sprint_phase" in e for e in errs), errs
+
+
+def test_declared_artifact_missing_sprint_phase_fails(tmp_path):
+    broken = VALID_PULSE.replace("sprint_phase: pulse\n", "")
+    _mk(tmp_path, "PULSE", "S14-pulse.md", broken)
+    errs = validate_loop_artifacts(tmp_path)
+    assert any("sprint_phase" in e for e in errs), errs
+
+
+def test_note_without_node_type_skipped(tmp_path):
+    note = """---
+nexus: product
+node_id: bootstrap-note
+node_type: bootstrap
+---
+# заметка без node_type: sprint-phase
+"""
+    _mk(tmp_path, "PULSE", "00-bootstrap.md", note)
+    assert validate_loop_artifacts(tmp_path) == []
