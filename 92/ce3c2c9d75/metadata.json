@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "92ce3c2c9d75",
+  "strategy": "manual-commit",
+  "branch": "fix/context-architecture-update",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/plans/2026-07-08-paf-loop-bridge.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/92/ce3c2c9d75/0/metadata.json",
+      "transcript": "/92/ce3c2c9d75/0/full.jsonl",
+      "compact_transcript": "/92/ce3c2c9d75/0/transcript.jsonl",
+      "content_hash": "/92/ce3c2c9d75/0/content_hash.txt",
+      "prompt": "/92/ce3c2c9d75/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 140,
+    "cache_creation_tokens": 34074,
+    "cache_read_tokens": 896308,
+    "output_tokens": 29115,
+    "api_call_count": 6
+  }
+}
