@@ -33,6 +33,9 @@ def _validate_loop_node(fm, rel):
     for k in _LOOP_BASE_REQUIRED:
         if fm.get(k) in (None, "", []):
             errs.append(f"{rel}: missing required field {k!r}")
+    # paf_step обязателен как ключ (для loop-узлов значение = null) — см. node/loop schema.
+    if "paf_step" not in fm:
+        errs.append(f"{rel}: missing required field 'paf_step' (null for loop)")
     if fm.get("node_type") != "sprint-phase":
         errs.append(f"{rel}: node_type must be 'sprint-phase'")
     if fm.get("kind") != "empirical":
@@ -69,8 +72,8 @@ def _validate_loop_node(fm, rel):
             errs.append(f"{rel}: bunch requires non-empty items")
         else:
             for i, it in enumerate(items):
-                if not isinstance(it, dict) or not it.get("ref") or not it.get("trace"):
-                    errs.append(f"{rel}: item[{i}] requires ref and trace")
+                if not isinstance(it, dict) or not it.get("ref") or not it.get("kind") or not it.get("trace"):
+                    errs.append(f"{rel}: item[{i}] requires ref, kind and trace")
         gate = fm.get("gate")
         if not isinstance(gate, dict) or gate.get("decision") not in ("commit", "defer", "refuse"):
             errs.append(f"{rel}: bunch requires gate.decision in commit|defer|refuse")
@@ -90,7 +93,7 @@ def _validate_loop_node(fm, rel):
             errs.append(f"{rel}: harvest requires insights")
         if level == "sprint" and not fm.get("rolls_up_to"):
             errs.append(f"{rel}: sprint harvest requires rolls_up_to")
-        if not (fm.get("outcomes") or {}).get("cp_change"):
+        if (fm.get("outcomes") or {}).get("cp_change") is None:
             errs.append(f"{rel}: harvest requires outcomes.cp_change")
     return errs
 
@@ -179,7 +182,10 @@ def validate_ground(ground_dir):
     if not cfg_p.exists():
         return [f"missing {cfg_p}"]
 
-    cfg = yaml.safe_load(cfg_p.read_text()) or {}
+    try:
+        cfg = yaml.safe_load(cfg_p.read_text()) or {}
+    except yaml.YAMLError as e:
+        return [f"{cfg_p}: invalid YAML ({e})"]
 
     # product.slug — ascii-slug
     slug = (cfg.get("product") or {}).get("slug", "")
@@ -193,7 +199,11 @@ def validate_ground(ground_dir):
 
     # NEXUS/_registry.yaml (опционально, но если есть — валидируем)
     if reg_p.exists():
-        reg = yaml.safe_load(reg_p.read_text()) or {}
+        try:
+            reg = yaml.safe_load(reg_p.read_text()) or {}
+        except yaml.YAMLError as e:
+            errs.append(f"{reg_p}: invalid YAML ({e})")
+            reg = {}
         for t in reg.get("nexus_types", []) or []:
             s = t.get("slug", "")
             if not re.fullmatch(r"[a-z][a-z0-9-]*", str(s)):
