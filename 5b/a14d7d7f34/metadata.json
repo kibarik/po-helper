@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "5ba14d7d7f34",
+  "strategy": "manual-commit",
+  "branch": "feat/code-review-agent",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/workflows/pr-agent.yml"
+  ],
+  "sessions": [
+    {
+      "metadata": "/5b/a14d7d7f34/0/metadata.json",
+      "transcript": "/5b/a14d7d7f34/0/full.jsonl",
+      "compact_transcript": "/5b/a14d7d7f34/0/transcript.jsonl",
+      "content_hash": "/5b/a14d7d7f34/0/content_hash.txt",
+      "prompt": "/5b/a14d7d7f34/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 797,
+    "cache_creation_tokens": 11688,
+    "cache_read_tokens": 266591,
+    "output_tokens": 4247,
+    "api_call_count": 5
+  }
+}

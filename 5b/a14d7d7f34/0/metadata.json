@@ -1,0 +1,48 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_id": "5ba14d7d7f34",
+  "session_id": "f4c709a2-7def-4baf-9acd-02eb0f5235e1",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-08T14:20:09.708507Z",
+  "branch": "feat/code-review-agent",
+  "checkpoints_count": 1,
+  "files_touched": [
+    ".github/workflows/pr-agent.yml"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "0f8631cbf039",
+  "checkpoint_transcript_start": 61,
+  "transcript_lines_at_start": 61,
+  "token_usage": {
+    "input_tokens": 797,
+    "cache_creation_tokens": 11688,
+    "cache_read_tokens": 266591,
+    "output_tokens": 4247,
+    "api_call_count": 5
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-08T14:20:09.687537Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 0,
+    "total_lines_changed": 0,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
