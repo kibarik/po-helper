@@ -1,0 +1,82 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_id": "3e68a5a81662",
+  "session_id": "dd814dea-c23b-4f7f-819e-b12f16a3961a",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-08T11:13:23.93159Z",
+  "branch": "fix/quarter-presentation",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/specs/2026-07-08-okr-present-design.md"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "54e46354bd37",
+  "checkpoint_transcript_start": 128,
+  "transcript_lines_at_start": 128,
+  "token_usage": {
+    "input_tokens": 288,
+    "cache_creation_tokens": 119765,
+    "cache_read_tokens": 1732066,
+    "output_tokens": 14274,
+    "api_call_count": 15
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01RgYrJ3fpihXNTfh165NKpR",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:brainstorming"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "54e46354bd37",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 14,
+        "end": 15,
+        "entry_ids": [
+          "60522c61-b790-4b57-a65e-dd955e12fae4"
+        ],
+        "tool_use_id": "toolu_01RgYrJ3fpihXNTfh165NKpR"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01RgYrJ3fpihXNTfh165NKpR"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:brainstorming",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-08T11:13:23.900889Z",
+    "agent_lines": 44,
+    "agent_removed": 25,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 44,
+    "total_lines_changed": 69,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
