@@ -1,5 +1,5 @@
 ---
-description: 'OKR Pipeline стадия 6 — публикация OKR в ROADMAP + INDEX + KR-EPIC-MAP (роль: Deliverer)'
+description: 'OKR Pipeline стадия 6 — публикация OKR в planning_root (Нексус project-management) + INDEX + KR-EPIC-MAP (роль: Deliverer)'
 ---
 
 ## Использование
@@ -102,7 +102,7 @@ description: 'OKR Pipeline стадия 6 — публикация OKR в ROADMA
 ### Следующие шаги
 1. Уточнить эпики JIRA для новых KR → обновить KR-EPIC-MAP (TODO → реальные ключи)
 2. Показать OKR команде на kick-off спринта
-3. Запустить `/sprint-plan {first-sprint}` для первого спринта квартала
+3. Построить roadmap по спринтам: `/sprint-roadmap {quarter}` → затем `/sprint-sync {first-sprint}`
 ```
 
 ### Этап 6: STOP — финал
@@ -111,7 +111,7 @@ OKR {quarter} опубликован.
 Файл: {okr_output_doc}
 KR заведены в KR-EPIC-MAP (TODO → нужно уточнить эпики JIRA).
 ── Цикл планирования завершён ──
-Следующий шаг: /sprint-plan {first-sprint-id}
+Следующий шаг: /sprint-roadmap {quarter} (roadmap по спринтам) → /sprint-sync {first-sprint-id}
 ```
 
 ## Запреты

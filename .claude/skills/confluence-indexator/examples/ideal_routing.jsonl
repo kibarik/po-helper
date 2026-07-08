@@ -1,0 +1,2 @@
+{"tmp_id": "n-131074-1", "node_type": "decision", "target_nexus": "precedents", "node_id": "precedents-vybor-sinhronnogo-platezhnogo-potoka", "route_confidence": 0.82, "links": ["[[system-landscape-payment-gateway]]"], "action": "auto"}
+{"tmp_id": "n-131090-2", "node_type": "risk", "target_nexus": null, "route_confidence": 0.34, "action": "queue", "reason": "нет уверенного нексуса"}

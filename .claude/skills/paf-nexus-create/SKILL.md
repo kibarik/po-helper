@@ -1,21 +1,24 @@
 ---
 name: paf-nexus-create
-description: "Создаёт кастомный Нексус под решение клиента (sellers, buyers, team, …): интервью → GROUND/NEXUS/<slug>/ + запись в _registry.yaml. Знает каталожные опц. типы (team/ops-model/company) и засевает team из roster."
+description: "Создаёт кастомный Нексус под решение клиента (sellers, buyers, team, …): интервью → GROUND/NEXUS/<slug>/ + запись в _registry.yaml. Знает каталожные опц. типы (team/ops-model/company/channels) и засевает team из roster, landscape — из domain-profile.landscape.ext_teams."
 ---
 
 # /paf-nexus-create — создание кастомного Нексуса
 
-Skill коробки «PAF Team OS». Добавляет Нексус сверх дефолтного минимума (`/paf-init` создал market/customer/product/growth). Два режима:
+Skill коробки «PAF Team OS». Добавляет Нексус сверх дефолтного минимума (`/paf-init` создал market/customer/product/growth + обязательный project-management). Два режима:
 
-1. **Каталожный опц. тип** (`team`, `ops-model`, `company`) — берёт готовое определение из `sa_documentation/nexus_catalog.md` §4/§4.1, не выдумывает.
+1. **Каталожный опц. тип** — берёт готовое определение из `sa_documentation/nexus_catalog.md`, не выдумывает:
+   - PAF-канон: `team`, `ops-model`, `company` (§4/§4.1).
+   - Расширения коробки для ИИ-навигации: `channels` (§4.2).
+   - BFT-ярус (коробочное расширение po-helper, не канон PAF): `system`, `decisions`, `rules`, `quality`, `risk`, `lexicon`, `metrics` (§4.3). Регуляторику покрывает уже дефолтный `compliance` (node_type `regulation`, §4.3.4).
 2. **Свежий кастом** (`sellers`, `buyers`, `supply-chain`, …) — интервью под решение клиента.
 
 > Пошаговый план для LLM. Выполняй по порядку. Читай файлы перед записью. Ноль выдуманной PAF-терминологии вне `sa_documentation/naming_conventions.md`.
 
 ## 0. Контекст (прочитать перед стартом)
 
-- `sa_documentation/nexus_catalog.md` — мастер-каталог. §2 таблица типов; §4 опц. PAF-типы; **§4.1 — полная спецификация `team`** (schema_extensions, seed_questions, пример person-узла).
-- `sa_documentation/nexus_schema.md` — Node schema (§2 ключи, §3 `node_type` включая `person`, §4 wilting).
+- `sa_documentation/nexus_catalog.md` — мастер-каталог. §2 таблица типов; §4 опц. PAF-типы; **§4.1 — `team`**; **§4.2 — `channels`**; **§4.3 — BFT-ярус** (`system`/`decisions`/`rules`/`quality`/`risk`/`lexicon`/`metrics` + node_type `regulation` для `compliance` — коробочное расширение, полные YAML-определения).
+- `sa_documentation/nexus_schema.md` — Node schema (§2 ключи, §3 `node_type` включая `person`, `channel`, `deliverable` и типы BFT-яруса, §4 wilting).
 - `sa_documentation/ground_schema.md` — schema `_registry.yaml` (§«_registry.yaml»: slug `[a-z][a-z0-9-]*`, source, owner, purpose, onboarded).
 - `GROUND/config.yaml` — `team.roster` (источник людей для засева `team`), `nexus.custom_count`.
 - `GROUND/NEXUS/_registry.yaml` — текущий реестр (проверка уникальности slug).
@@ -33,16 +36,19 @@ Skill коробки «PAF Team OS». Добавляет Нексус сверх
 
 1. **Какой Нексус создаём?** — slug (ascii, паттерн `[a-z][a-z0-9-]*`). Помоги транслитерировать кириллицу.
 2. **Определи режим:**
-   - slug ∈ {`team`, `ops-model`, `company`} → **каталожный режим** (§3). Подтверди клиенту: «Беру определение из мастер-каталога».
+   - slug ∈ {`team`, `ops-model`, `company`, `channels`, `system`, `decisions`, `rules`, `compliance`, `quality`, `risk`, `lexicon`, `metrics`} → **каталожный режим** (§3). Подтверди клиенту: «Беру определение из мастер-каталога». Для типов BFT-яруса (`system`/`decisions`/`rules`/`quality`/`risk`/`lexicon`/`metrics` + `compliance` с node_type `regulation`) уточни: «Это BFT-ярус — коробочное расширение po-helper, не канон PAF».
+     - Для `channels` есть отдельный навык `info-channels` (`/channel-map`) с интервью и разметкой входящей информации — если клиент хочет вести каналы, направь туда; каталожный режим здесь создаёт только каркас (`_index.md` + `_template.md`).
+   - slug = `landscape` → **кастомный режим (§4) с засевом из domain-profile** (§4.1). Тип определён в po-helper, не в мастер-каталоге.
    - иначе → **кастомный режим** (§4).
 
 ---
 
-## 3. Каталожный режим (team / ops-model / company)
+## 3. Каталожный режим (PAF-канон + channels + BFT-ярус)
 
-Прочитай определение типа из `nexus_catalog.md`:
+Прочитай определение типа из `nexus_catalog.md` (PAF-канон `team`/`ops-model`/`company` — §4/§4.1; `channels` — §4.2; BFT-ярус `system`/`decisions`/`rules`/`quality`/`risk`/`lexicon`/`metrics` + `compliance` — §4.3):
 - `name`, `purpose`, `owner_role`, `seed_questions`, `schema_extensions` — **из каталога, не выдумывай**.
 - `owner` — резолвь `owner_role` → конкретное имя из `config.yaml team.roster`; если роль не назначена (null) → `"Cortex"`.
+- Типы BFT-яруса засева узлов не имеют (в отличие от `team`) — создаётся только `_index.md`; узлы наполнит `/paf-onboard`. Источник онбординга: `system`←`cortex.architecture`, `decisions`←`cortex.decisions`, `rules`←`cortex.business_rules`, `compliance`←`cortex.regulatory`; `quality`/`risk`/`lexicon`/`metrics` — с нуля (CORTEX-предка нет).
 
 ### 3.1 Спец-обработка `team` — засев person-узлов из roster
 
@@ -54,6 +60,8 @@ Skill коробки «PAF Team OS». Добавляет Нексус сверх
    - `full_name` = значение из roster (как есть; уточнить полное ФИО при онбординге).
    - `role_title` = человекочитаемое имя роли (`product_engineer` → "Product Engineer" по `naming_conventions.md`).
    - `reports_to` / `manages` / `collaborates_with` = `[]` или `null` (**не угадывать иерархию** — заполнит человек/онбординг).
+   - `team_unit` / `team_role` / `team_mission` = `null`/пусто (группировку по командам заполнит онбординг).
+   - **PO Navigation Layer** (`proximity` / `interaction_cadence` / `inbound_topics` / `clarify_with` / `approves` / `escalate_via`) = `null`/`[]` — **не угадывать**. Это рёбра «я-как-PO ↔ человек», их знает только PO; заполняются в онбординге для `/people-map`.
    - `influence_zones` / `expertise_topics` / `contact_for` = `[]` с пометкой в теле «заполнить в онбординге».
    - `confidence: 0.3` (допущение из roster, не валидировано); `sources: ["config.yaml:roster"]`; `ttl_days: 180`.
 3. Пометь тело: `> ⚠️ заготовка из roster. ФИО/связи/экспертиза требуют наполнения (/paf-onboard или вручную).`
@@ -73,6 +81,26 @@ Skill коробки «PAF Team OS». Добавляет Нексус сверх
 4. **seed_questions** — 3–5 вопросов для будущего онбординга (как в каталоге §3).
 5. **(опц.) paf_step** — привязка к шагу 0–8 или null.
 6. **(опц.) schema_extensions** — тип-специфичные поля поверх базовой Node schema (напр. `quota_attainment` для sellers). Формат — как в `nexus_schema.md` §2.1.
+
+---
+
+### 4.1 Спец-обработка `landscape` — засев из domain-profile
+
+`landscape` — Нексус команд вокруг PO (`node_type: ext-team`; шаблон и `_index.md` уже есть в дистрибутиве `GROUND/NEXUS/landscape/`). Определение (не из мастер-каталога):
+- `name`: «Нексус ландшафта»; `purpose`: «Команды вокруг PO — миссия, PO, системы, тип связи, точки касания»; `owner`: из `config.yaml team.roster` (роль Product Ops) или `"Cortex"`.
+- `seed_questions` — из существующего `GROUND/NEXUS/landscape/_index.md` (не выдумывай).
+
+**Засев ext-team узлов** из `.claude/domain-profile.md` секции `landscape.ext_teams` (аналог team-from-roster, источник другой):
+
+Для каждой записи `landscape.ext_teams[]` (`{code, name, po, relationship}`):
+1. `node_id` = `landscape-team-<translit(name)>` (ascii, `[a-z][a-z0-9-]*`).
+2. Создай заготовку по шаблону `GROUND/NEXUS/landscape/_template.md`, заполнив из профиля:
+   - `team_name` = `name`; `po_name` = `po`; `relationship` = `relationship` (или `peer`, если пусто).
+   - `owned_systems` / `touchpoints` / `influence` / `mission` — `[]`/пусто с пометкой «заполнить в /okr-landscape» (**не угадывать** системы/стыки).
+   - `confidence: 0.3`; `sources: ["domain-profile:landscape.ext_teams"]`; `ttl_days: 180`; `updated` = сегодня.
+3. Пометь тело: `> ⚠️ заготовка из domain-profile. Системы/стыки/влияние наполняет /okr-landscape.`
+
+> **domain-profile = источник ролей команд; landscape-нексус = богатый профиль.** Засев устраняет двойной ввод, но НЕ выдумывает данные сверх профиля. Секция `landscape.ext_teams` пуста → создай только `_index.md` (уже есть), узлы добавит `/okr-landscape`. Узел без `sources[]` не создавать.
 
 ---
 
@@ -134,7 +162,9 @@ python3 sa_documentation/validate_ground.py GROUND
 - _registry.yaml: +1 запись (onboarded: todo). config.yaml: custom_count → <N>.
 - Валидатор: OK.
 
-→ /paf-onboard — наполнить узлы (интервью + ингестия). Для team: уточнить ФИО, связи (reports_to/collaborates_with), зоны влияния и экспертизу.
+→ /paf-onboard — наполнить узлы (интервью + ингестия). Для team: уточнить ФИО, связи (reports_to/collaborates_with), группировку по командам (team_unit/team_mission), зоны влияния, экспертизу.
+→ /people-links — описать отношения PO с каждым (PO Navigation Layer) и собрать контур.
+→ /people-map — навигация по контуру, как только PO-слой наполнен.
 ```
 
 ---
