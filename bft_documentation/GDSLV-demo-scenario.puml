@@ -1,7 +1,7 @@
 @startuml
 title Демо-план приёмки БФТ — исключение страниц шоу «кино» из рекламных фидов Яндекса (GDSLV)
 
-actor "Стейкхолдер\n(П. Любимов)" as SH
+actor "Стейкхолдер" as SH
 participant "Команда extapi\n(демо-ведущий)" as TEAM
 participant "Витрина Ticketland\n(страницы шоу)" as SITE
 participant "Рекламный фид Яндекса\n(csv / xml)" as FEED

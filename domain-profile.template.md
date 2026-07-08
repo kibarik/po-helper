@@ -32,6 +32,11 @@ paths:
   sprint_output_doc: "{execution_root}/{sprint}/ПЛАН-{sprint}.md"
   # ФАКТ спринта (итог по завершении: velocity, carryover, достижение Sprint Goal) — вход для /sprint-sync следующего
   sprint_fact_doc:  "{execution_root}/{sprint}/ФАКТ-{sprint}.md"
+  # Финал квартала (/okr-present)
+  deck_spec_doc:        "{okr_workspace}/present/deck-spec.yaml"
+  quarter_deck_html:    "{planning_root}/presentation/{product}-{quarter}.html"
+  quarter_deck_doc:     "{planning_root}/presentation/{product}-{quarter}.pptx"
+  quarter_roadmap_xlsx: "{planning_root}/presentation/Roadmap-{product}-{quarter}.xlsx"
   # Рабочая папка пайплайна спринта (промежуточные артефакты стадий)
   sprint_workspace: "CORTEX/_context-packs/sprint/{sprint}"
   # Рабочая папка пайплайна OKR (промежуточные артефакты стадий)
@@ -56,11 +61,26 @@ paths:
   calibration_workspace: "GROUND/NEXUS/team/_calibration/{run_id}"
   # Папка оперативных сведений — #summary-заметки встреч (/summary). Файл = встреча: {дата}-{slug}.md
   summary_notes: "GROUND/PULSE/summaries"
-  # Рабочая папка/состояние стадии discovery (журнал + state.yaml шага). {step} — подстановка (idea, customer, …)
-  discovery_workspace: "CORTEX/_context-packs/discovery/{step}"
-  # PRD-витрина — пересобираемый документ поверх наполненных Нексусов. {product} — slug продукта из config.yaml
-  prd_output_doc: "GROUND/RESULTS/PRD-{product}.md"
+  # Корень заметок созвонов (/daily-review). Один прогон = папка {type}-{ГГГГ-ММ-ДД-ЧЧММ}/ с report.md + blockers.md + commitments.md + sprint-pulse.md
+  meeting_notes: "GROUND/PULSE/meetings"
 ```
+
+## 1a. Планнер PO (planner)
+
+Личный трекер действий PO (`/daily-review` проецирует сюда обязательства/блокеры/договорённости как SMART-задачи). `type: none` отключает проекцию.
+
+```yaml
+planner:
+  type: "backlog"          # backlog | none
+  root: "backlog"          # корень Backlog.md (backlog init)
+  labels:
+    commitment: "commitment"
+    blocker:    "blocker"
+    agreement:  "agreement"
+  reminder_horizon_days: 3 # «due-скоро» для блока «Висит на PO»
+```
+
+---
 
 Если у проекта нет какого-то документа (например `KR-EPIC-MAP`) — оставьте путь, команда при отсутствии файла предложит его создать (bootstrap), не выдумывая содержимое.
 
@@ -249,6 +269,40 @@ capacity:
 ```
 
 Поля пустые → команда работает на дефолтах (`focus_factor: 0.7`, `sp_per_person_sprint`) и помечает оценки `[УТОЧНИТЬ velocity]`.
+
+---
+
+## 7b. Дизайн-система презентации квартала (present) — для `/okr-present`
+
+Тема deck.html/.pptx/.xlsx финала квартала. Пусто → дефолты эталона (см. `engine/theme.py`).
+
+```yaml
+# Дизайн-система презентации квартала (/okr-present). Пусто → дефолты эталона.
+present:
+  product_display_name: ""            # дефолт: profile.product
+  footer_subtitle:      ""            # напр. «витрина Ticketland»
+  accent_color:         "#E4002B"
+  heading_color:        "#1C2333"
+  body_color:           "#434C60"
+  muted_color:          "#8B94A6"
+  card_bg:              "#F5F7FB"
+  dark_bg:              "#141A2E"       # фон тёмных слайдов (title)
+  subtitle_on_dark:     "#AEB6CE"       # подзаголовок на тёмном фоне
+  positive_color:       "#2F7D54"       # «СТАНЕТ» / позитивный акцент
+  info_color:           "#2E4B7A"       # нейтрально-информационный акцент
+  heading_font:         "Cambria"
+  body_font:            "Calibri"
+  direction_palette:    ["#E4002B", "#2E4B7A", "#0F7A8C", "#2F7D54"]
+  role_color_map:
+    SA: "#B37D0C"
+    ADR: "#B37D0C"
+    BA: "#B37D0C"
+    BE: "#2E4B7A"
+    FE: "#2E4B7A"
+    QA: "#7E56A6"
+    RELEASE: "#2F8557"
+    DBA: "#0F7A8C"
+```
 
 ---
 

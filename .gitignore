@@ -5,6 +5,9 @@
 # Claude Code worktrees (on-disk scratch, never commit)
 .claude/worktrees/
 
+# Entire session-tracking (checkpoints/context stay local, never push to remote)
+.entire/
+
 # Generated artifacts (regenerable — do not track)
 repomix-output.xml
 **/repomix-output.xml

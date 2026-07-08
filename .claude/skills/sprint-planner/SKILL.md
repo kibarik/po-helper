@@ -95,6 +95,20 @@
 
 ---
 
+## PAF-петля (материализация Pulse→Bunch→Harvest)
+
+Три стадии дополнительно материализуют loop-артефакты по схеме [[sa_documentation/paf_loop_schema|paf_loop_schema]] (образцы — `examples/loop/`). Это замыкает цикл Product Sprint в `GROUND/`, не меняя основной выход стадии.
+
+| Стадия | Доп. артефакт | Ключевое |
+|---|---|---|
+| `/sprint-sync` | `GROUND/PULSE/{sprint}-pulse.md` | снимок Нексуса (Context Ripeness **вычислять**, не выдумывать) + гэп + intent + lens |
+| `/sprint-deliver` | `GROUND/BUNCH/{sprint}-bunch.md` | обёртка ПЛАНа в Банч; `items` — ссылки на JIRA; `gate` из спринт-гейтов (Светофор) = Pitch-штамп; `parent_bunch` = квартальный Банч |
+| `/sprint-fact` | `GROUND/RESULTS/{sprint}-harvest.md` | урожай + **`nexus_writeback` в `product`** (обязательно: поднять confidence узла, обновить updated, добавить source) + `rolls_up_to` = квартальный Harvest |
+
+Правила: NPV/mNSM — прогрессивно (L0 CP-only сейчас → `[УТОЧНИТЬ]`, не выдумка); Банч формируется из текущего Нексуса, беклог не воскрешать; артефакт проходит `validate_ground.py` (loop-проверка). Bridge-каденция: Pulse привязан к границе спринта (осознанное отклонение, см. paf_loop_schema).
+
+---
+
 ## Принципы качества
 
 ### 1. Образ результата команды (Sprint Goal) = стратегичен и доказуем
