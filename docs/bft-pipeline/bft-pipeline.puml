@@ -1,0 +1,53 @@
+@startuml
+title Текущий пайплайн генерации БФТ (bft-writer) — 10 стадий
+
+skinparam defaultFontName Helvetica
+skinparam ArrowColor #33668E
+skinparam ActivityBorderColor #33668E
+skinparam ActivityBackgroundColor #EAF2F8
+skinparam NoteBackgroundColor #FFF6D5
+skinparam NoteBorderColor #C9A227
+
+start
+
+:/bft-value → value.md;
+note right: Стадия 0. ЗАЧЕМ инвестировать\nценность ← KR/стратегия [STOP]
+if (Ценность доказана?) then (нет)
+  :Вернуть продукту\n(разработку не начинать);
+  stop
+else (да)
+endif
+
+:/bft-context-gen → bft-context-pack.md;
+note right: Стадия 1. Кортексы C1–C5 + Нексусы N1–N7\n[STOP: PO ревьюит pack]
+
+:/bft-ext-teams → external-teams-actions.md;
+note right: Стадия 1.5. Карта связей\nс командами вокруг [STOP]
+
+:/bft-problem → problem.md;
+note right: Стадия 2. Диагноз As-Is/Gap,\nБЕЗ решения [STOP]
+
+repeat
+  :/bft-concept → concept.md;
+  note right: Стадия 3. 2–3 концепта решения [STOP]
+  :/bft-debate → вердикт в concept.md;
+  note right: Стадия 4. 3 раунда,\nАдвокат Дьявола
+repeat while (Концепт забракован / пивот?) is (да) not (принят)
+
+:/bft-constraints → constraints.md;
+note right: Стадия 5. Ограничения релиза Ф/Г\nrepowise + People Graph [STOP]
+
+repeat
+  :/bft-draft → <epic>.md (черновик БФТ);
+  note right: Стадия 6. БТ/ПТ/ИТ/ФТ/НФТ\n+ Ограничения релиза [STOP]
+  :/bft-validate → validation.md;
+  note right: Стадия 7. 19 hard gates + Светофор
+repeat while (Светофор 🔴 нарушен гейт?) is (да) not (🟢 / 🟡)
+
+:/bft-deliver → публикация;
+note right: Стадия 8. JIRA Эпик + 2×Confluence\n+ связи; манифест delivery.md\n[STOP: сухой прогон → ок PO]
+
+:Done;
+stop
+
+@enduml
