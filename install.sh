@@ -108,7 +108,7 @@ echo "→ Целевой корень: $DEST_ROOT"
 mkdir -p "$DEST_SKILLS" "$DEST_COMMANDS" "$DEST_WORKFLOWS"
 
 # Навыки фреймворка (каждый — каталог с SKILL.md + resources + examples)
-SKILLS=(bft-writer okr-planner sprint-planner po-research info-channels summary)
+SKILLS=(bft-writer okr-planner sprint-planner po-research info-channels summary paf-init paf-nexus-create paf-onboard people-links people-map nexus-calibration)
 
 # Команды фреймворка
 COMMANDS=(
@@ -117,6 +117,7 @@ COMMANDS=(
   sprint-roadmap sprint-sync sprint-goal sprint-decompose sprint-load sprint-deliver
   po-research
   channel-map channel-list channel-route
+  radar-calibrate radar-graph radar-review
   summary
 )
 
@@ -185,6 +186,18 @@ if [ -f "$SRC_PROFILE_TPL" ]; then
   else
     cp "$SRC_PROFILE_TPL" "$DEST_ROOT/domain-profile.template.md"
     echo "  ✓ domain-profile.template.md (скопируйте в domain-profile.md и заполните под проект)"
+  fi
+fi
+
+# --- справочник sa_documentation (read-only, нужен paf-навыкам) ---
+SRC_SADOC="$SCRIPT_DIR/sa_documentation"
+if [ -d "$SRC_SADOC" ]; then
+  if [ -d "$DEST_ROOT/../sa_documentation" ] && [ "$MODE" = "install" ]; then
+    echo "  · sa_documentation/ уже есть — пропускаю (для обновления: --update)"
+  else
+    mkdir -p "$DEST_ROOT/../sa_documentation"
+    cp -R "$SRC_SADOC/." "$DEST_ROOT/../sa_documentation/"
+    echo "  ✓ sa_documentation/ (справочник PAF, read-only)"
   fi
 fi
 
