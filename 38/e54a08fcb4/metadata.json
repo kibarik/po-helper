@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "38e54a08fcb4",
+  "strategy": "manual-commit",
+  "branch": "feat/bft-backlog-controll",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/superpowers/specs/2026-07-09-bft-backlog-control-design.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/38/e54a08fcb4/0/metadata.json",
+      "transcript": "/38/e54a08fcb4/0/full.jsonl",
+      "compact_transcript": "/38/e54a08fcb4/0/transcript.jsonl",
+      "content_hash": "/38/e54a08fcb4/0/content_hash.txt",
+      "prompt": "/38/e54a08fcb4/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 947,
+    "cache_creation_tokens": 27927,
+    "cache_read_tokens": 6501238,
+    "output_tokens": 22722,
+    "api_call_count": 37
+  }
+}
