@@ -142,6 +142,73 @@
 
 ---
 
+## § Синхронизация с доской (Backlog.md control)
+
+Доска Backlog.md — операционное зеркало этого пайплайна: состояние каждого БФТ видно на доске, PO не теряет ни один БФТ из контекста. **Это единственный источник механики синхронизации** — командные файлы `bft-*.md` только ссылаются сюда.
+
+**Два измерения задачи `bft`:**
+- **status задачи = контроль процесса** (жизненный цикл, 5 состояний).
+- **чек-лист AC = стадии пайплайна** (`value`…`deliver`).
+
+**Пять состояний контроля** (только для label `bft`): `To Do → In Progress → Wait for Review → Accepted → Done`.
+
+| Стадия (команда) | AC отметить | status после стадии |
+|---|---|---|
+| `/bft-value` | `value` | `In Progress` (**find-or-create** задачи) |
+| `/bft-context-gen` · `/bft-context-gen-deep` | `context-gen` | `In Progress` |
+| `/bft-ext-teams` | `ext-teams` | `In Progress` |
+| `/bft-problem` | `problem` | `In Progress` |
+| `/bft-concept` | `concept` | `In Progress` |
+| `/bft-debate` | `debate` (забраковано → `--uncheck-ac concept`) | `In Progress` |
+| `/bft-constraints` | `constraints` | `In Progress` |
+| `/bft-draft` | `draft` | `In Progress` |
+| `/bft-validate` | `validate` (🔴 → `--uncheck-ac draft`) | 🟢/🟡 → `Wait for Review`; 🔴 → `In Progress` |
+| приёмка внешним PO (§ ниже) | — | `Accepted` / отказ → `In Progress` |
+| `/bft-deliver` | `deliver` | `Done` |
+
+**Find-or-create (на стадии `/bft-value`):**
+```bash
+# ищем задачу этого эпика среди bft
+backlog task list -l bft --plain | grep -i "<epic_code>"
+# нет → создаём с полным чек-листом стадий
+backlog task create "БФТ <epic_code> — <название>" -l bft -s "In Progress" \
+  -d "Артефакт: bft_documentation/<epic_code>/ · трекер: <jira_key>" \
+  --ac value --ac context-gen --ac ext-teams --ac problem --ac concept \
+  --ac debate --ac constraints --ac draft --ac validate --ac deliver
+```
+Задача уже есть → переиспользуем её id, второй раз не создаём. То же доступно через `mcp__backlog__task_create` / `mcp__backlog__task_list`.
+
+**Отметка стадии** (после каждой стадии, на STOP-паузе):
+```bash
+backlog task edit <task-id> --check-ac <N>          # N — позиция стадии в чек-листе (value=1…deliver=10)
+backlog task edit <task-id> -s "In Progress"        # если меняется status
+backlog task edit <task-id> --append-notes "стадия <name>: <краткий итог/где остановились>"
+```
+Возврат на шаг назад (дебаты забраковали / валидация 🔴) → `--uncheck-ac <N>`, status остаётся `In Progress`.
+
+**Развилка приёмки (Wait for Review) — обязательный аудит.**
+После `/bft-validate` 🟢/🟡: status → `Wait for Review`, черновик уходит внешнему PO (заказчику).
+- **ОДОБРЕНО** → **обязательно** `--append-notes "одобрил {кто} · {когда} · замечания {…}"`. Status → `Accepted` **только когда все правки внесены и учтены в БФТ**. Одобрение с замечаниями само по себе ≠ `Accepted`, пока замечания не внесены.
+  ```bash
+  backlog task edit <task-id> --append-notes "одобрил {кто} · {дата} · замечания {…}"
+  backlog task edit <task-id> -s "Accepted"     # только после внесения всех правок
+  ```
+- **ОТКАЗАНО** → **обязательно** `--append-notes "отказал {кто} · правки на следующую итерацию {…}"`, затем новая итерация с повышенным приоритетом:
+  ```bash
+  backlog task edit <task-id> --append-notes "отказал {кто} · правки {…}"
+  backlog task edit <task-id> --uncheck-ac 9 --priority high -s "In Progress"
+  ```
+Замечания ревью также питают Lessons Learned (`resources/review_feedback.md`, принцип 14).
+
+**Отгрузка** (`/bft-deliver`): предусловие — задача в `Accepted`. После публикации:
+```bash
+backlog task edit <task-id> --check-ac 10 -s "Done"
+```
+
+**Правила:** доска отражает, а не решает (валидность — за hard gates/Светофором); содержание требований на доску не копируем (только ссылки/коды/пути); повторный вызов синхронизации идемпотентен (find-or-create, notes только добавляют).
+
+---
+
 ## Главное правило процесса
 
 **STOP после каждой стадии.** Не лети до финала. После `/bft-context-gen`, `/bft-problem`, `/bft-concept`, `/bft-draft` — выводи результат и ожидаешь решения PO/СА. Только так pipeline = sa-helper по качеству, а не «генерация за один промт».
