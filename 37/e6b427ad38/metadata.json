@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "37e6b427ad38",
+  "strategy": "manual-commit",
+  "branch": "feat/bft-backlog-controll",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "docs/bft-pipeline/README.md",
+    "docs/bft-pipeline/bft-lifecycle.puml",
+    "docs/bft-pipeline/bft-lifecycle.svg",
+    "docs/bft-pipeline/bft-pipeline.html",
+    "docs/bft-pipeline/bft-pipeline.puml",
+    "docs/bft-pipeline/bft-pipeline.svg"
+  ],
+  "sessions": [
+    {
+      "metadata": "/37/e6b427ad38/0/metadata.json",
+      "transcript": "/37/e6b427ad38/0/full.jsonl",
+      "compact_transcript": "/37/e6b427ad38/0/transcript.jsonl",
+      "content_hash": "/37/e6b427ad38/0/content_hash.txt",
+      "prompt": "/37/e6b427ad38/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 27170,
+    "cache_creation_tokens": 469121,
+    "cache_read_tokens": 6448504,
+    "output_tokens": 66524,
+    "api_call_count": 60
+  }
+}

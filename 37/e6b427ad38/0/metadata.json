@@ -1,0 +1,185 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_id": "37e6b427ad38",
+  "session_id": "d969265e-051d-4995-ad98-501d87ea957c",
+  "strategy": "manual-commit",
+  "created_at": "2026-07-09T14:30:26.914427Z",
+  "branch": "feat/bft-backlog-controll",
+  "checkpoints_count": 3,
+  "save_step_count": 3,
+  "files_touched": [
+    "docs/bft-pipeline/README.md",
+    "docs/bft-pipeline/bft-lifecycle.puml",
+    "docs/bft-pipeline/bft-lifecycle.svg",
+    "docs/bft-pipeline/bft-pipeline.html",
+    "docs/bft-pipeline/bft-pipeline.puml",
+    "docs/bft-pipeline/bft-pipeline.svg"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "a19785260549",
+  "token_usage": {
+    "input_tokens": 27170,
+    "cache_creation_tokens": 469121,
+    "cache_read_tokens": 6448504,
+    "output_tokens": 66524,
+    "api_call_count": 60
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01CGfk7jPvveyYzizXqR5Qdc",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "superpowers:brainstorming"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "a19785260549",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 14,
+        "end": 15,
+        "entry_ids": [
+          "5648764b-88d6-4ca1-9797-d9814c65ac9a"
+        ],
+        "tool_use_id": "toolu_01CGfk7jPvveyYzizXqR5Qdc"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01CGfk7jPvveyYzizXqR5Qdc"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: superpowers:brainstorming",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01DhqjGknWEPTE4QEt7YCUv7",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "diagram-view"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "a19785260549",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 99,
+        "end": 100,
+        "entry_ids": [
+          "0e31ab68-d7a2-4239-9f8a-36528926e153"
+        ],
+        "tool_use_id": "toolu_01DhqjGknWEPTE4QEt7YCUv7"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01DhqjGknWEPTE4QEt7YCUv7"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: diagram-view",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01UpBbGyZwkNg5o1wYfM4HYK",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "artifact-design"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "a19785260549",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 121,
+        "end": 122,
+        "entry_ids": [
+          "01d9f9c7-1977-49ac-8845-09146919b218"
+        ],
+        "tool_use_id": "toolu_01UpBbGyZwkNg5o1wYfM4HYK"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01UpBbGyZwkNg5o1wYfM4HYK"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: artifact-design",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-07-09T14:30:26.846717Z",
+    "agent_lines": 181,
+    "agent_removed": 0,
+    "human_added": 171,
+    "human_modified": 30,
+    "human_removed": 0,
+    "total_committed": 370,
+    "total_lines_changed": 382,
+    "agent_percentage": 47.38219895287958,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 204,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 29,
+      "user_lines_removed": 6,
+      "agent_lines_added": 263,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "docs/bft-pipeline/bft-pipeline.html": 29
+      },
+      "user_removed_per_file": {
+        "docs/bft-pipeline/bft-pipeline.html": 6
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 35,
+      "user_lines_removed": 12,
+      "agent_lines_added": 263,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        "docs/bft-pipeline/bft-lifecycle.puml": 5,
+        "docs/bft-pipeline/bft-lifecycle.svg": 1,
+        "docs/bft-pipeline/bft-pipeline.html": 29
+      },
+      "user_removed_per_file": {
+        "docs/bft-pipeline/bft-lifecycle.puml": 5,
+        "docs/bft-pipeline/bft-lifecycle.svg": 1,
+        "docs/bft-pipeline/bft-pipeline.html": 6
+      }
+    }
+  ]
+}
