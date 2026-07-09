@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.8",
+  "checkpoint_version": "branch-v1",
+  "checkpoint_id": "adb410a1591a",
+  "strategy": "manual-commit",
+  "branch": "feat/onboarding-flow",
+  "checkpoints_count": 6,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/ad/b410a1591a/0/metadata.json",
+      "transcript": "/ad/b410a1591a/0/full.jsonl",
+      "compact_transcript": "/ad/b410a1591a/0/transcript.jsonl",
+      "content_hash": "/ad/b410a1591a/0/content_hash.txt",
+      "prompt": "/ad/b410a1591a/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 3219,
+    "cache_creation_tokens": 239159,
+    "cache_read_tokens": 8257654,
+    "output_tokens": 32444,
+    "api_call_count": 45
+  }
+}
