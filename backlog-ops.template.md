@@ -35,6 +35,28 @@
 
 ---
 
+## BFT — жизненный цикл контроля (5 состояний)
+
+Для label `bft` **status задачи = контроль процесса** (не просто крупная фаза). Остальные типы (`okr`/`sprint`/`request`/`release`) — обычные `To Do/In Progress/Done`.
+
+`To Do → In Progress → Wait for Review → Accepted → Done`
+
+| status | Значение | Переход |
+|---|---|---|
+| **To Do** | взят на контроль, пайплайн не начат | парковка будущего БФТ, чтоб не забыть |
+| **In Progress** | идёт пайплайн (`value`…`validate`) | старт `/bft-value` (find-or-create задачи) |
+| **Wait for Review** | черновик у внешнего PO на приёмке требований | `/bft-validate` 🟢/🟡 |
+| **Accepted** | внешний PO одобрил **и все правки внесены в БФТ** | развилка приёмки (см. ниже) |
+| **Done** | опубликовано в JIRA + Confluence | `/bft-deliver` |
+
+**Обязательный аудит на приёмке (`Wait for Review`):**
+- **Одобрено** → `--append-notes "одобрил {кто} · {когда} · замечания {…}"`; status → `Accepted` **только после внесения всех правок** (одобрение с замечаниями ≠ `Accepted`, пока не внесены).
+- **Отказано** → `--append-notes "отказал {кто} · правки {…}"`, затем `--uncheck-ac validate --priority high` и status → `In Progress` (новая итерация).
+
+Механика вызовов (find-or-create, `--check-ac`, `-s`, `--append-notes`) — в `bft-writer/SKILL.md` § Синхронизация с доской.
+
+---
+
 ## Когда обновлять доску (на STOP-паузах пайплайна)
 
 1. **Старт пайплайна** (`/*-context-gen`, `/req-context`, `/sprint-sync`, `/release-frame`) — создать задачу:
