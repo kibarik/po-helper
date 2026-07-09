@@ -317,6 +317,15 @@ adapt_backlog_init() {
       rep "backlog_init:     FAILED"
     fi
   fi
+  # BFT-контроль: расширенные статусы доски (идемпотентно; массивы backlog правятся в файле)
+  local CFG="$TARGET/backlog/config.yml"
+  if [ -f "$CFG" ] && ! grep -q "Wait for Review" "$CFG"; then
+    local _tmp; _tmp="$(mktemp)"
+    sed 's/^statuses:.*/statuses: ["To Do", "In Progress", "Wait for Review", "Accepted", "Done"]/' \
+      "$CFG" > "$_tmp" && mv "$_tmp" "$CFG"
+    echo "  ✓ backlog статусы расширены для BFT-контроля (5 состояний)"
+    rep "backlog_statuses: OK (5 для BFT)"
+  fi
   # конвенция операционного штаба рядом с доской
   if [ -f "$TARGET/backlog-ops.template.md" ] && [ -d "$TARGET/backlog" ]; then
     mkdir -p "$TARGET/backlog/docs"
