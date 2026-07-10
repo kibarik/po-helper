@@ -32,6 +32,10 @@ services:
       - "GITHUB.DEPLOYMENT_TYPE=app"
       - "GITHUB.APP_ID=${GITHUB_APP_ID}"
       - "GITHUB.WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET}"
-      - "GITHUB.PRIVATE_KEY=${GITHUB_PRIVATE_KEY}"
+      # private_key NOT via env: multiline PEM gets its newlines flattened by
+      # env substitution and fails to parse ("Failed to get git provider").
+      # Supply it via a Dokploy File Mount instead:
+      #   Mount Path: /app/pr_agent/settings/.secrets.toml
+      #   Content:    [github] + private_key = """<full PEM>"""
     expose:
       - "3000"
