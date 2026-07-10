@@ -42,16 +42,26 @@ git repo — nothing else to clone.
 
 ---
 
-## 3. Secrets — Dokploy File Mount
+## 3. Secrets — Dokploy Environment
 
-The private key is multiline, so inject the whole config as a file, not env vars.
+Set these in the service's **Environment** tab (the compose substitutes them):
 
-Service → **Advanced → Mounts → Add File Mount**:
+```
+OPENAI_KEY=<z.ai GLM-5 key>
+GITHUB_APP_ID=<app id>
+GITHUB_WEBHOOK_SECRET=<webhook secret from step 1>
+GITHUB_PRIVATE_KEY=<paste the whole .pem>
+```
 
-- **Mount Path**: `/app/pr_agent/settings/.secrets.toml`
-- **Content**: a filled-in copy of [`.secrets.toml.example`](.secrets.toml.example) —
-  z.ai key + `api_base` + `[config]` model block + `[github]` `deployment_type="app"`,
-  `app_id`, `webhook_secret`, and the full `.pem` between the triple quotes.
+Model/provider default to z.ai GLM-5 in the compose; override with
+`OPENAI_API_BASE`, `CONFIG_MODEL`, `CONFIG_MAX_TOKENS` only if needed.
+
+> **Multiline .pem caveat.** `GITHUB_PRIVATE_KEY` is a multiline PEM. Dokploy's
+> Environment editor keeps newlines — paste the key as-is (BEGIN/END lines
+> included). If the app logs a key-parse error, the newlines got flattened; then
+> either re-paste preserving line breaks, or switch that one value to a File
+> Mount at `/app/pr_agent/settings/.secrets.toml` with a `[github] private_key`
+> triple-quoted block (see `.secrets.toml.example`).
 
 ---
 

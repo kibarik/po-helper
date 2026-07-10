@@ -1,12 +1,15 @@
 # PR-Agent GitHub App for Dokploy (Compose service type).
 #
-# Differences from docker-compose.yml:
-#   - No Caddy: Dokploy's built-in Traefik terminates TLS (Let's Encrypt).
-#   - No ports: Dokploy routes the domain to this service over its own network.
-#   - Builds straight from the upstream git URL as context — no local clone,
-#     so Dokploy can build it from just this compose file.
-#   - Secrets come from a Dokploy "File Mount" at the path below, not a local
-#     .secrets.toml (see DOKPLOY.md).
+# Secrets come from the Dokploy "Environment" tab (variable substitution below),
+# not a mounted file. Set these 4 in Dokploy → Environment:
+#   OPENAI_KEY             z.ai GLM-5 API key
+#   GITHUB_APP_ID          the App's ID
+#   GITHUB_WEBHOOK_SECRET  the webhook secret
+#   GITHUB_PRIVATE_KEY     the App's .pem (see note in DOKPLOY.md re: multiline)
+# Model/provider default to z.ai GLM-5 — override via the *_ vars if needed.
+#
+# TLS + routing handled by Dokploy Traefik: attach a Domain to this service,
+# container port 3000, HTTPS on.
 services:
   pr-agent:
     build:
@@ -17,10 +20,18 @@ services:
     restart: unless-stopped
     environment:
       - PORT=3000
-    # Dokploy → this service → Domains: host = pr-agent.<your-domain>,
-    # container port = 3000, HTTPS on, cert = Let's Encrypt.
+      # --- LLM (z.ai GLM-5) ---
+      - "OPENAI.KEY=${OPENAI_KEY}"
+      - "OPENAI.API_BASE=${OPENAI_API_BASE:-https://api.z.ai/api/coding/paas/v4}"
+      - "CONFIG.MODEL=${CONFIG_MODEL:-openai/glm-5}"
+      - "CONFIG.MODEL_TURBO=${CONFIG_MODEL:-openai/glm-5}"
+      - "CONFIG.FALLBACK_MODELS=${CONFIG_FALLBACK_MODELS:-[\"openai/glm-5\"]}"
+      - "CONFIG.CUSTOM_MODEL_MAX_TOKENS=${CONFIG_MAX_TOKENS:-128000}"
+      - "CONFIG.GIT_PROVIDER=github"
+      # --- GitHub App ---
+      - "GITHUB.DEPLOYMENT_TYPE=app"
+      - "GITHUB.APP_ID=${GITHUB_APP_ID}"
+      - "GITHUB.WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET}"
+      - "GITHUB.PRIVATE_KEY=${GITHUB_PRIVATE_KEY}"
     expose:
       - "3000"
-    # Secrets file supplied via Dokploy "File Mount":
-    #   Mount Path: /app/pr_agent/settings/.secrets.toml
-    #   Content:    filled-in copy of .secrets.toml.example
