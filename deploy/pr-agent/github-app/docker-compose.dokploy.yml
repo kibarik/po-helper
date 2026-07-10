@@ -1,15 +1,17 @@
 # PR-Agent GitHub App for Dokploy (Compose service type).
 #
-# Secrets come from the Dokploy "Environment" tab (variable substitution below),
-# not a mounted file. Set these 4 in Dokploy → Environment:
+# Single-line secrets come from the Dokploy "Environment" tab (substitution
+# below). Set these 3 in Dokploy → Environment:
 #   OPENAI_KEY             z.ai GLM-5 API key
 #   GITHUB_APP_ID          the App's ID
 #   GITHUB_WEBHOOK_SECRET  the webhook secret
-#   GITHUB_PRIVATE_KEY     the App's .pem (see note in DOKPLOY.md re: multiline)
+# The App's PRIVATE KEY (multiline PEM) goes via a Dokploy File Mount, NOT env —
+# env substitution flattens the newlines and the key fails to parse. Mount:
+#   Path:    /app/pr_agent/settings/.secrets.toml
+#   Content: [github]  +  private_key = """<full PEM incl. BEGIN/END>"""
 # Model/provider default to z.ai GLM-5 — override via the *_ vars if needed.
 #
-# TLS + routing handled by Dokploy Traefik: attach a Domain to this service,
-# container port 3000, HTTPS on.
+# TLS + routing handled by Dokploy Traefik (or plain HTTP for traefik.me).
 services:
   pr-agent:
     build:
