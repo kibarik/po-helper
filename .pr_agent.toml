@@ -1,0 +1,39 @@
+# PR-Agent review behavior for this repo (no secrets — safe to commit).
+# Picked up automatically when the self-hosted PR-Agent App reviews this repo.
+# Keys / model / App credentials live in deploy/pr-agent/github-app/.secrets.toml.
+
+[github_app]
+# Auto-run when a PR is opened / reopened / marked ready for review.
+pr_commands = [
+    "/describe",
+    "/review",
+    "/improve",
+]
+# Re-review when new commits are pushed to an open PR (App must subscribe to the
+# Push event). Trim to just /describe if full re-review on every push is noisy.
+handle_push_trigger = true
+push_commands = [
+    "/describe",
+    "/review",
+]
+
+[pr_reviewer]
+extra_instructions = """\
+Отвечай на русском. Это po-helper — настраиваемый каркас для Product Owner: \
+ядро для любого PO, конфигурация через domain-profile, примеры иллюстративны. \
+Основной контент — навыки (skills) и markdown-конфиги, не приложение. \
+Фокус ревью: логика навыков и пайплайнов, целостность конфигов/шаблонов, \
+корректность ссылок между узлами Нексусов, безопасность (нет утечки ключей/PII). \
+Не придирайся к стилю markdown.\
+"""
+require_score_review = true
+require_tests_review = false
+num_code_suggestions = 0        # suggestions handled by the /improve tool
+
+[pr_description]
+extra_instructions = "Пиши описание PR на русском, кратко и по делу."
+publish_labels = true
+
+[pr_code_suggestions]
+extra_instructions = "Отвечай на русском. Предлагай только предметные улучшения, без косметики."
+num_code_suggestions = 4

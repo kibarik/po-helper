@@ -21,3 +21,11 @@ repomix-output.xml
 __pycache__/
 *.py[cod]
 .pytest_cache/
+
+# self-hosted PR-Agent — secrets, cloned source & runtime state
+deploy/pr-agent/github-app/.secrets.toml
+deploy/pr-agent/github-app/Caddyfile
+deploy/pr-agent/github-app/pr-agent/
+deploy/pr-agent/cron/.env
+deploy/pr-agent/cron/state/
+deploy/pr-agent/cron/run.log
