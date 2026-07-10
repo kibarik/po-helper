@@ -1,0 +1,48 @@
+# Self-hosted PR-Agent as a GitHub App: auto-review on PR open + mention-driven
+# commands (/ask, /review, /improve, ...). Real-time via webhook.
+#
+# Layout expected in this folder:
+#   ./pr-agent/          <- git clone https://github.com/qodo-ai/pr-agent.git
+#   ./.secrets.toml      <- from .secrets.toml.example (git-ignored)
+#   ./Caddyfile          <- from Caddyfile.example (only if using bundled TLS)
+#
+# Bring up:  docker compose up -d --build
+# Logs:      docker compose logs -f pr-agent
+services:
+  pr-agent:
+    build:
+      # Clone the upstream repo here first (see README). We build the app image
+      # ourselves because upstream doesn't publish a stable github_app tag.
+      context: ./pr-agent
+      dockerfile: docker/Dockerfile
+      target: github_app
+    image: pragent/pr-agent:github_app
+    restart: unless-stopped
+    environment:
+      - PORT=3000
+    volumes:
+      # Secrets injected as a mounted file (key, app_id, webhook_secret, pem).
+      - ./.secrets.toml:/app/pr_agent/settings/.secrets.toml:ro
+    expose:
+      - "3000"
+    # If you already run your own reverse proxy, drop the caddy service below
+    # and instead publish the port to it, e.g.:  ports: ["127.0.0.1:3000:3000"]
+
+  # Optional bundled TLS. Auto Let's Encrypt cert for the domain in Caddyfile.
+  # Delete this service if you terminate TLS elsewhere.
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - pr-agent
+
+volumes:
+  caddy_data:
+  caddy_config:

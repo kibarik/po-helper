@@ -1,0 +1,14 @@
+# systemd one-shot: runs one review pass. Paired with pr-review.timer.
+# Install: copy both files to /etc/systemd/system/, edit paths/User below,
+#   systemctl daemon-reload && systemctl enable --now pr-review.timer
+[Unit]
+Description=PR-Agent review pass over open PRs
+Wants=network-online.target
+After=network-online.target docker.service
+
+[Service]
+Type=oneshot
+# Run as a user that is in the `docker` group and has `gh` authenticated.
+User=deploy
+WorkingDirectory=/opt/pr-agent
+ExecStart=/opt/pr-agent/review-open-prs.sh

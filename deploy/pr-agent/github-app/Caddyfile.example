@@ -1,0 +1,7 @@
+# Copy to Caddyfile and set your real domain. Caddy fetches a Let's Encrypt
+# cert automatically (needs ports 80+443 reachable + DNS A record to this box).
+# Skip this file entirely if you terminate TLS with your own proxy.
+
+pr-agent.example.com {
+    reverse_proxy pr-agent:3000
+}
