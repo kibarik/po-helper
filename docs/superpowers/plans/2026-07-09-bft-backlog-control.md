@@ -8,6 +8,8 @@
 
 **Tech Stack:** Markdown (навык + команды), Backlog.md CLI/MCP (v1.44+), bash (`install.sh`), YAML (`backlog/config.yml`). Кода нет — документарно-конфигурационная задача, «тесты» = верификационные команды.
 
+> **Поправка (post-implementation, сверено на живом Backlog.md 1.44):** в примерах ниже `--check-ac`/`--uncheck-ac` местами указаны по имени AC (`concept`/`draft`/`validate`/`deliver`) — реальный CLI 1.44 принимает **1-based индекс, не имя** (`concept`=5, `draft`=8, `validate`=9, `deliver`=10). Также `backlog task list` **не имеет** фильтра `-l/--label` (флаг только у `task create`) — find-or-create отбирает задачу грепом по коду эпика в заголовке. Авторитетная, исправленная механика — в `bft-writer/SKILL.md` § Синхронизация с доской; фрагменты этого плана оставлены как исходная запись замысла.
+
 ## Global Constraints
 
 - **Инварианты дизайна (не переоткрывать)** — из `docs/superpowers/specs/2026-07-09-bft-backlog-control-design.md`:

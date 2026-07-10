@@ -152,24 +152,27 @@
 
 **Пять состояний контроля** (только для label `bft`): `To Do → In Progress → Wait for Review → Accepted → Done`.
 
-| Стадия (команда) | AC отметить | status после стадии |
+Чек-лист AC 1-based, порядок фиксирован (как в `--ac` при создании): 1 `value` · 2 `context-gen` · 3 `ext-teams` · 4 `problem` · 5 `concept` · 6 `debate` · 7 `constraints` · 8 `draft` · 9 `validate` · 10 `deliver`. `--check-ac`/`--uncheck-ac` принимают **индекс, не имя** (backlog 1.44).
+
+| Стадия (команда) | AC отметить (индекс) | status после стадии |
 |---|---|---|
-| `/bft-value` | `value` | `In Progress` (**find-or-create** задачи) |
-| `/bft-context-gen` · `/bft-context-gen-deep` | `context-gen` | `In Progress` |
-| `/bft-ext-teams` | `ext-teams` | `In Progress` |
-| `/bft-problem` | `problem` | `In Progress` |
-| `/bft-concept` | `concept` | `In Progress` |
-| `/bft-debate` | `debate` (забраковано → `--uncheck-ac concept`) | `In Progress` |
-| `/bft-constraints` | `constraints` | `In Progress` |
-| `/bft-draft` | `draft` | `In Progress` |
-| `/bft-validate` | `validate` (🔴 → `--uncheck-ac draft`) | 🟢/🟡 → `Wait for Review`; 🔴 → `In Progress` |
+| `/bft-value` | `--check-ac 1` (value) | `In Progress` (**find-or-create** задачи) |
+| `/bft-context-gen` · `/bft-context-gen-deep` | `--check-ac 2` (context-gen) | `In Progress` |
+| `/bft-ext-teams` | `--check-ac 3` (ext-teams) | `In Progress` |
+| `/bft-problem` | `--check-ac 4` (problem) | `In Progress` |
+| `/bft-concept` | `--check-ac 5` (concept) | `In Progress` |
+| `/bft-debate` | `--check-ac 6` (debate); забраковано → `--uncheck-ac 5` (concept) | `In Progress` |
+| `/bft-constraints` | `--check-ac 7` (constraints) | `In Progress` |
+| `/bft-draft` | `--check-ac 8` (draft) | `In Progress` |
+| `/bft-validate` | `--check-ac 9` (validate); 🔴 → `--uncheck-ac 8` (draft) | 🟢/🟡 → `Wait for Review`; 🔴 → `In Progress` |
 | приёмка внешним PO (§ ниже) | — | `Accepted` / отказ → `In Progress` |
-| `/bft-deliver` | `deliver` | `Done` |
+| `/bft-deliver` | `--check-ac 10` (deliver) | `Done` |
 
 **Find-or-create (на стадии `/bft-value`):**
 ```bash
-# ищем задачу этого эпика среди bft
-backlog task list -l bft --plain | grep -i "<epic_code>"
+# ищем задачу этого эпика (в backlog 1.44 `task list` не фильтрует по label —
+# грепаем по коду эпика в заголовке; заголовок bft-задачи всегда «БФТ <epic_code> …»)
+backlog task list --plain | grep -i "<epic_code>"
 # нет → создаём с полным чек-листом стадий
 backlog task create "БФТ <epic_code> — <название>" -l bft -s "In Progress" \
   -d "Артефакт: bft_documentation/<epic_code>/ · трекер: <jira_key>" \

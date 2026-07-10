@@ -20,7 +20,7 @@
 
 Обзор штаба:
 - `backlog board` — канбан по статусам («чем занимались»).
-- `backlog task list --plain` — список; `-l bft` — фильтр по типу.
+- `backlog task list --plain` — список (в backlog 1.44 `list` не фильтрует по label; тип отбирают грепом: `… | grep -i "БФТ"` / по коду эпика).
 - `backlog task view <id> --plain` — карточка артефакта с чек-листом стадий.
 
 ---
@@ -51,7 +51,7 @@
 
 **Обязательный аудит на приёмке (`Wait for Review`):**
 - **Одобрено** → `--append-notes "одобрил {кто} · {когда} · замечания {…}"`; status → `Accepted` **только после внесения всех правок** (одобрение с замечаниями ≠ `Accepted`, пока не внесены).
-- **Отказано** → `--append-notes "отказал {кто} · правки {…}"`, затем `--uncheck-ac validate --priority high` и status → `In Progress` (новая итерация).
+- **Отказано** → `--append-notes "отказал {кто} · правки {…}"`, затем `--uncheck-ac 9 --priority high` (снять `validate`) и status → `In Progress` (новая итерация).
 
 Механика вызовов (find-or-create, `--check-ac`, `-s`, `--append-notes`) — в `bft-writer/SKILL.md` § Синхронизация с доской.
 

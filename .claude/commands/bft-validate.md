@@ -102,4 +102,4 @@ description: 'Валидация черновика БФТ — hard gates + Св
 4. Не финализируй БФТ при 🔴 — готовым к ревью считается только верифицированное (🟢/🟡). Непроверенное за готовое не выдаётся (принцип 15).
 
 ## Синхронизация с доской
-`validate` · 🟢/🟡 → status `Wait for Review` (приёмка внешним PO); 🔴 → `--uncheck-ac draft`, `In Progress` — по протоколу `bft-writer/SKILL.md` § Синхронизация с доской.
+`validate` · `--check-ac 9` · 🟢/🟡 → status `Wait for Review` (приёмка внешним PO); 🔴 → `--uncheck-ac 8` (draft), `In Progress` — по протоколу `bft-writer/SKILL.md` § Синхронизация с доской.

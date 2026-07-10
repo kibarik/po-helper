@@ -134,7 +134,7 @@
       <tr><td>внутр. откат (дебаты/валидация 🔴)</td><td><span class="pill prog">In Progress</span></td><td><span class="mono">--uncheck-ac</span>; notes «вернулись на …» (петля внутри пайплайна, до продакта)</td></tr>
       <tr><td><span class="mono">/bft-validate</span> 🟢/🟡</td><td><span class="pill wait">Wait for Review</span></td><td>check <span class="mono">validate</span>; черновик отдан <b>внешнему PO</b> (заказчик, приёмщик) на приёмку требований</td></tr>
       <tr><td><b>Внешний PO ОДОБРИЛ</b></td><td><span class="pill acc">Accepted</span></td><td><span class="must">MUST</span><span class="mono">--append-notes</span> «одобрил {кто} · {когда} · замечания {…}». Accepted — <b>только когда все правки внесены и учтены в БФТ</b> (одобрение с замечаниями ≠ Accepted, пока не внесены)</td></tr>
-      <tr><td><b>Внешний PO ОТКАЗАЛ</b></td><td><span class="pill prog">In Progress</span> <span class="pill high">priority ↑ high</span></td><td><span class="must">MUST</span><span class="mono">--append-notes</span> «отказал {кто} · правки на след. итерацию {…}»; <span class="mono">--priority high</span>; <span class="mono">--uncheck-ac validate</span></td></tr>
+      <tr><td><b>Внешний PO ОТКАЗАЛ</b></td><td><span class="pill prog">In Progress</span> <span class="pill high">priority ↑ high</span></td><td><span class="must">MUST</span><span class="mono">--append-notes</span> «отказал {кто} · правки на след. итерацию {…}»; <span class="mono">--priority high</span>; <span class="mono">--uncheck-ac 9</span> (validate)</td></tr>
       <tr><td><span class="mono">/bft-deliver</span></td><td><span class="pill done">Done</span></td><td>check <span class="mono">deliver</span>; опубликовано</td></tr>
     </tbody>
   </table>
