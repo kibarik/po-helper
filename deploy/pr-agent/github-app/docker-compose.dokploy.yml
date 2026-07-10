@@ -1,14 +1,13 @@
 # PR-Agent GitHub App for Dokploy (Compose service type).
 #
-# Single-line secrets come from the Dokploy "Environment" tab (substitution
-# below). Set these 3 in Dokploy → Environment:
-#   OPENAI_KEY             z.ai GLM-5 API key
-#   GITHUB_APP_ID          the App's ID
-#   GITHUB_WEBHOOK_SECRET  the webhook secret
-# The App's PRIVATE KEY (multiline PEM) goes via a Dokploy File Mount, NOT env —
-# env substitution flattens the newlines and the key fails to parse. Mount:
-#   Path:    /app/pr_agent/settings/.secrets.toml
-#   Content: [github]  +  private_key = """<full PEM incl. BEGIN/END>"""
+# All secrets come from the Dokploy "Environment" tab. Set these 4:
+#   OPENAI_KEY                z.ai GLM-5 API key
+#   GITHUB_APP_ID             the App's ID
+#   GITHUB_WEBHOOK_SECRET     the webhook secret
+#   GITHUB_PRIVATE_KEY_B64    base64 of the App's .pem (single line — see DOKPLOY.md)
+# The PEM is base64 (single line, so env substitution can't mangle newlines);
+# the entrypoint below decodes it into .secrets.toml at startup, because a raw
+# multiline PEM in env fails to parse ("Failed to get git provider").
 # Model/provider default to z.ai GLM-5 — override via the *_ vars if needed.
 #
 # TLS + routing handled by Dokploy Traefik (or plain HTTP for traefik.me).
@@ -34,10 +33,23 @@ services:
       - "GITHUB.DEPLOYMENT_TYPE=app"
       - "GITHUB.APP_ID=${GITHUB_APP_ID}"
       - "GITHUB.WEBHOOK_SECRET=${GITHUB_WEBHOOK_SECRET}"
-      # private_key NOT via env: multiline PEM gets its newlines flattened by
-      # env substitution and fails to parse ("Failed to get git provider").
-      # Supply it via a Dokploy File Mount instead:
-      #   Mount Path: /app/pr_agent/settings/.secrets.toml
-      #   Content:    [github] + private_key = """<full PEM>"""
+      - "GITHUB_PRIVATE_KEY_B64=${GITHUB_PRIVATE_KEY_B64}"
+    # Decode the base64 PEM into pr-agent's secrets file, then exec the same
+    # server command the github_app image uses. $$ escapes compose interpolation
+    # so GITHUB_PRIVATE_KEY_B64 is read from the container env at runtime.
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        mkdir -p /app/pr_agent/settings
+        {
+          printf '[github]\nprivate_key = """\n'
+          printf '%s' "$$GITHUB_PRIVATE_KEY_B64" | base64 -d
+          printf '\n"""\n'
+        } > /app/pr_agent/settings/.secrets.toml
+        exec python -m gunicorn -k uvicorn.workers.UvicornWorker \
+          -c pr_agent/servers/gunicorn_config.py --forwarded-allow-ips '*' \
+          pr_agent.servers.github_app:app
     expose:
       - "3000"
