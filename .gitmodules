@@ -1,0 +1,3 @@
+[submodule "integrations/github-issue-agents"]
+	path = integrations/github-issue-agents
+	url = https://github.com/kibarik/GitHub-issue-agents.git
