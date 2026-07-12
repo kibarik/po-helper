@@ -35,14 +35,17 @@ tags: [research, xpm, shapiro, service-design, methodology]
 |---|---|---|---|---|
 | **[XPM-GB]** | `github.com/x-raizor/xpm` — «Карта процесса-опыта. Методичка» (GitBook) | первоисточник | ✅ склонирован целиком (31 .md + ассеты) | 100% текста |
 | **[XPM-KB]** | `github.com/Byndyusoft/xp-mapping` — база знаний | первоисточник | ✅ склонирован (доки + шаблоны + 9 PDF-примеров + combinator.xlsx) | 100% текста |
+| **[SIM-KB]** | `github.com/Byndyusoft/sim` — Карта реализации историй (КРИ) | первоисточник | ✅ **склонирован** (README + шаблоны xlsx/numbers) | ядро метода — 100% |
+| **[HM-KB]** | `github.com/Byndyusoft/hypothesismapping` — Карта гипотез (Бындю) | первоисточник | ✅ **склонирован** (13 .md: топологии, ошибки, стандарт, стратсессия…) | 100% текста |
+| **[SWOT-KB]** | `github.com/Byndyusoft/linkedswot` — Связанный SWOT (Бындю) | первоисточник | ✅ **склонирован** (README целиком) | ядро метода — 100% |
 | **[XPM-ART]** | `ashapiro.ru/articles/xpm` — вводная статья (2 главы книги) | первоисточник | ⛔ домен заблокирован | покрыт мирроном [XPM-GB] |
 | **[XPM-BOOK]** | Книга «Карта процесса-опыта. Проектирование услуги через её визуализацию» | первоисточник | ⛔ платная/заблокирован | не получен |
-| **[SIM]** | `ashapiro.ru/articles/sim` — Карта реализации историй (КРИ, 2024) | первоисточник | ⛔ заблокирован; репо `x-raizor/story-implementation-mapping` = только LICENSE | только назначение + место в связке |
-| **[USM]** | `ashapiro.ru/articles/usm` — Руководство по User Story Mapping (2019) | первоисточник | ⛔ заблокирован | только назначение + место |
-| **[HYP-TREE]** | `ashapiro.ru/articles/hypotheses-tree` — Дерево гипотез развития (2021) | первоисточник | ⛔ заблокирован | только назначение + место |
-| **[HYP-MAP]** | А. Бындю, «Карта гипотез», 2023 (внешний автор, тот же стек) | смежный | ⛔ | упоминание |
+| **[USM]** | `ashapiro.ru/articles/usm` — Руководство по User Story Mapping (2019) | первоисточник | ⛔ заблокирован; на GitHub нет | только назначение + место (+ Паттон 2014) |
+| **[HYP-TREE]** | `ashapiro.ru/articles/hypotheses-tree` — Дерево гипотез развития (2021) | первоисточник | ⛔ заблокирован; на GitHub нет | только назначение + место |
 | **[DDD]** | `github.com/x-raizor/ddd-talk` — «Дизайн, движимый данными» | ранняя работа | ✅ склонирован | материалы доклада (nodebox/handlebars) |
 | **[WREINER]** | Wreiner et al., «Exploring Service Blueprints for Multiple Actors: Car Parking Services», 2009 | предшественник | — | источник референс-картинки `Blueprint 24h` |
+
+> **Обновление после доп-исследования GitHub-организации Byndyusoft:** найдены и получены целиком ещё три базы знаний — `sim` (SIM/КРИ), `hypothesismapping` (Карта гипотез), `linkedswot` (Связанный SWOT). Таким образом из GitHub получены **четыре метода на 100%** (XPM, SIM, Карта гипотез, Связанный SWOT). Заблокированными остаются только `USM` (2019) и `Дерево гипотез развития` (2021) — их на GitHub нет, только на `ashapiro.ru`. Официальный инструмент-реализация всех методов — **Социотех** (`sociotech.center`).
 
 **Прочие репозитории `x-raizor`** (не методология, для контекста): `Efficiency` (Sketch-плагины), `visual-tokipona`, `generative-avatars`, `nodebox1-generative-tools`, `graphic-tension-simulator` — инструментальные/художественные, вне скоупа оцифровки методов.
 
