@@ -9,7 +9,7 @@
 | [`AI-PROCESSES/`](AI-PROCESSES/README.md) | AI-Native фреймворк Product Discovery: 9 вех (Step 0…8, от Идеи до PCF) × движок Product Sprint (`PULSE → SCOUT → BUNCH → PITCH → EXECUTE → HARVEST`) + опер-модель и fit-точки | основной справочник процесса |
 | [`AI-TRANSFORMATION/`](AI-TRANSFORMATION/index.md) | Принципы AI-Native команды по PAF (Тихомиров С.), источники `[S1]–[S7]` | теория и роли |
 | `TRADITIONAL/` | Raw-раннбуки классического Product Discovery (`RB-STEP-1…8`) — первоисточник методов | глубокое погружение |
-| [`BLUEPRINT/`](BLUEPRINT/README.md) | Методология построения Service Blueprint (гибридная нотация CJM × Blueprint по А. Шапиро): анатомия 5 дорожек + 3 линии, StepByStep-конвейер из 7 стадий (бизнес-процесс — зеркало `bft-writer`) | построение диаграмм опыта услуги |
+| [`XPM/`](XPM/README.md) | Методология **Карты процесса-опыта** (А. Шапиро, Byndyusoft): пошаговое руководство для новичков — из чего состоит карта, 5 шагов построения, типовые ошибки, сквозной пример. Плюс `RESEARCH.md` (deep-research семейства методов) и `SUITE.md` (каркас набора скиллов) | построение карт процесса-опыта с нуля |
 | `RL/` | Research Library — заметки-исследования (рост, A/B, метрики) | точечные темы |
 
 ## Внутреннее (для контрибьюторов)

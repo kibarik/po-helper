@@ -107,9 +107,9 @@ N+1 deliver → рендер (Excalidraw MCP) + публикация            
 
 ---
 
-## 6. Судьба `docs/BLUEPRINT/`
+## 6. Service Blueprint — предшественник XPM
 
-`docs/BLUEPRINT/` (первый проход) описывает **generic Service Blueprint** — предшественник XPM (Wreiner 2009). Действие: пометить как «предшественник» и заменить целевую методичку на точный **XPM** (эта папка `docs/XPM/`). Не удалять — оставить как узел о Service Blueprint со ссылкой на XPM.
+Первый проход (папка `docs/BLUEPRINT/`) описывал **generic Service Blueprint** — исторический предшественник XPM (Wreiner 2009, откуда взят референс `Blueprint 24h`). Эта папка **удалена**: целевой метод — точный **XPM** (человеческое руководство — в [[README]], пошагово — в [[postroenie/README]]). Service Blueprint остаётся упомянут как один из корней метода в [[RESEARCH]] и [[osnovy/chto-takoe-kpo]].
 
 ---
 
@@ -122,4 +122,4 @@ N+1 deliver → рендер (Excalidraw MCP) + публикация            
 5. `usm-writer`, `hypotheses-tree` — после разблокировки/присылки источников.
 
 ---
-**Version:** 1.0 · **Last updated:** 2026-07-12 · **См. также:** [[RESEARCH]] · [[../BLUEPRINT/README]]
+**Version:** 1.0 · **Last updated:** 2026-07-12 · **См. также:** [[RESEARCH]] · [[README]] (руководство)
