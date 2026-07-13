@@ -1,0 +1,5 @@
+[
+  { "key": "DEMO-1", "fields": { "issuetype": { "name": "Инициатива" }, "summary": "Инициатива один", "status": { "name": "В работе" } } },
+  { "key": "DEMO-101", "fields": { "issuetype": { "name": "Эпик" }, "summary": "Эпик альфа", "status": { "name": "Бэклог" } } },
+  { "key": "DEMO-999", "fields": { "issuetype": { "name": "Эпик" }, "summary": "Сирота", "status": { "name": "Открыт" } } }
+]

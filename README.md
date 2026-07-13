@@ -14,6 +14,7 @@
 | Сценарий | Команды | Результат | Детально |
 |:---|:---|:---|:---|
 | **OKR** | `/okr-context-gen … /okr-deliver` (8 стадий) | Квартальный OKR (OBJ + KR + IMP) + ландшафт внешних команд | [↓ OKR](#-okr--квартальное-планирование) |
+| **GANTT-sync** | `/gantt-sync [--dry]` | Read-model сверка GANTT ↔ OKR ↔ JIRA: автоген джойнит KR и live-JIRA поверх скелета GanttPRO и подсвечивает дрейф покрытия (эпики-сироты, карточки без KR/эпика) | [SKILL](.claude/skills/gantt-sync/SKILL.md) |
 | **Спринт** | `/sprint-roadmap` · PLAN `/sprint-sync … /sprint-deliver` · BUILD `/sprint-build` · `/sprint-activate` · ↺ `/sprint-fact` | Roadmap KR×спринт + план спринта (Sprint Goal + capacity + N+1) + материализация в JIRA (reuse-first, ноль орфанов, activation-gate) + ФАКТ по завершении (velocity/carryover) | [SKILL](.claude/skills/sprint-planner/SKILL.md) |
 | **БФТ** | `/bft-value … /bft-deliver` (10 стадий) | Бизнес-Функциональные Требования по эпику + карта внешних команд | [↓ БФТ](#-бфт--бизнес-функциональные-требования) |
 | **Внешние запросы** | `/req-context … /req-handoff` (7 стадий) | Скоринг внешнего запроса → SMART-задача + routing (front door перед БФТ) | [SKILL](.claude/skills/request-intake/SKILL.md) |

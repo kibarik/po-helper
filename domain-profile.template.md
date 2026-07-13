@@ -22,8 +22,12 @@ paths:
   standards_doc:    "{planning_root}/BEST-PRACTICES-OBJ-KR.md"
   # Индекс OKR квартала (таблица KR по OBJ)
   index_doc:        "{planning_root}/INDEX.md"
-  # Карта связи KR ↔ Epic трекера
+  # Карта связи KR ↔ Epic трекера (ключ связи для GANTT-sync: карточка → KR → эпики)
   kr_epic_map_doc:  "{planning_root}/KR-EPIC-MAP.md"
+  # GANTT-sync (навык gantt-sync): экспорт GanttPRO — скелет квартала (кладёт владелец GANTT, файл заменяется)
+  gantt_source_xlsx:     "{planning_root}/Roadmap.xlsx"
+  # GANTT-sync: автоген-зеркало сверки покрытия (перезатирается движком, руками не править)
+  gantt_sync_status_doc: "{planning_root}/GANTT-SYNC-STATUS.md"
   # Финальный артефакт OKR
   okr_output_doc:   "{planning_root}/OKR-{quarter}.md"
   # Roadmap по спринтам на квартал (матрица KR × спринт; rolling)
@@ -175,6 +179,22 @@ tracker:
 - `build` — разблокирует BUILD-проход (`/sprint-build`, `/sprint-activate`): необратимая запись в JIRA через MCP, только после dry-run→approve. Переключается осознанно PO, не «по умолчанию».
 
 **Гигиена доступа:** трекер — **только через MCP** (`tracker.mcp`). Токены/PAT руками не собирать и не вставлять в чат. Нет MCP → остановиться и попросить поднять MCP/VPN, а не искать обходной путь.
+
+---
+
+## 3a. GANTT-sync (gantt) — для навыка `gantt-sync`
+
+Опорные строки GanttPRO-экспорта (по ним парсер отличает свимлейны/карточки и падает с внятной ошибкой, если структура уехала). Пусто → дефолты. Правь, если экспорт на другом языке/шаблоне.
+
+```yaml
+gantt:
+  anchors:
+    header: "Инициативы в квартале"   # строка-шапка таблицы
+    legend: "Легенда фаз:"            # начало блока легенды (после него — не карточки)
+    stack:  "Стек:"                   # начало блока стека
+```
+
+Проекты для сверки берутся из `tracker.projects`. Пути xlsx/зеркала — `paths.gantt_source_xlsx` / `paths.gantt_sync_status_doc`.
 
 ---
 
