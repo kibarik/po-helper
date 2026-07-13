@@ -1,0 +1,12 @@
+# dependencies
+node_modules/
+package-lock.json
+
+# personal config & secrets — never commit
+.env
+auth.json
+
+# local runtime state / outputs
+.last-chats.json
+chats-out/
+*.log

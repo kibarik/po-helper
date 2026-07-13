@@ -1,0 +1,21 @@
+{
+  "name": "mts-link-chat-sync",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "description": "Export MTS Link chat messages for a time window into markdown, for LLM analysis.",
+  "engines": {
+    "node": ">=21"
+  },
+  "scripts": {
+    "login": "node login.mjs",
+    "list": "node chats.mjs --list-chats",
+    "watch": "node chats.mjs --watch",
+    "pull": "node chats.mjs --pull",
+    "postinstall": "playwright install chromium"
+  },
+  "dependencies": {
+    "playwright": "^1.40.0",
+    "yaml": "^2.9.0"
+  }
+}
