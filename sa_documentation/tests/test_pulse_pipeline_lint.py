@@ -5,6 +5,7 @@ SKILLS = REPO / ".claude/skills"
 CMDS = REPO / ".claude/commands"
 
 PULSE_SKILLS = ["chat-watch", "chat-sync", "pulse-radar", "pulse-promote"]
+PULSE_COMMANDS = ["chat-watch", "chat-sync", "pulse-radar", "pulse-promote"]
 FORBIDDEN = ["link-radar", "radar-promote", "mts-po-workspace",
              "Ишманов", "team-ishmanov-aleksej", "Парфило", "GDS Daily"]
 
@@ -21,7 +22,7 @@ def test_all_pulse_skills_present():
 
 
 def test_all_pulse_commands_present():
-    for c in PULSE_SKILLS:
+    for c in PULSE_COMMANDS:
         assert (CMDS / f"{c}.md").is_file(), f"нет команды {c}"
 
 
@@ -42,7 +43,8 @@ def test_contract_defines_chat_dump():
 
 
 def test_no_absolute_tools_path_outside_adapter():
-    # ~/tools и ~/.mts-link-sync допустимы только внутри tools/adapters/mts-link/
+    # skill bodies must not carry absolute ~/tools или ~/.mts-link-sync пути;
+    # адаптер (tools/adapters/mts-link/) намеренно вне scope этой проверки
     hits = []
     for p in _skill_files():
         text = p.read_text(encoding="utf-8")
