@@ -1,11 +1,11 @@
 ---
 nexus: pulse
 node_type: radar
-source: "MTS Link"
+source: "Командные чаты"
 window: 2026-01-13..2026-01-15
 generated: 2026-01-15
 chats_scanned: 3
-signals_count: 4
+signals_count: 5
 tags: [progress-pulse, radar, chats]
 ---
 
@@ -33,4 +33,4 @@ tags: [progress-pulse, radar, chats]
 
 ## 🔕 Прочее / инфошум
 
-- ⚪ Каналы-вещание без значимых сигналов: «Новости компании», «Дежурная смена» ← скипнуто (только анонсы)
+- ⚪ Каналы-вещание без значимых сигналов: «Новости компании», «Дежурная смена» ← скипнуто (только анонсы/новости)
