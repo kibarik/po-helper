@@ -42,6 +42,18 @@ def test_contract_defines_chat_dump():
     assert "type: chat-dump" in contract.read_text(encoding="utf-8")
 
 
+def test_adapters_emit_contract_type():
+    adapters = REPO / "tools/adapters"
+    if not adapters.is_dir():
+        return
+    hits = []
+    for p in adapters.rglob("*"):
+        if p.is_file() and p.suffix in {".mjs", ".js", ".md"}:
+            if "type: mts-chat" in p.read_text(encoding="utf-8"):
+                hits.append(str(p.relative_to(REPO)))
+    assert not hits, f"адаптер пишет устаревший type: mts-chat вместо contract type: chat-dump: {hits}"
+
+
 def test_no_absolute_tools_path_outside_adapter():
     # skill bodies must not carry absolute ~/tools или ~/.mts-link-sync пути;
     # адаптер (tools/adapters/mts-link/) намеренно вне scope этой проверки

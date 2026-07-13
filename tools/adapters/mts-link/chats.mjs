@@ -181,9 +181,9 @@ async function main() {
         if (dry) { console.log(`  [dry] ${e.name}: ${msgs.length} сообщений`); continue; }
         const fileBase = `${win} ${sanitize(e.name)}`;
         const lines = [
-          "---", "type: mts-chat", `chat-id: "${chatId}"`, `window: ${win}`,
+          "---", "type: chat-dump", `source: "MTS Link"`, `chat-id: "${chatId}"`, `window: "${win}"`,
           `purpose: ${JSON.stringify(e.purpose || "")}`, `extract: ${JSON.stringify(e.extract || "")}`,
-          `msg-count: ${msgs.length}`, "source: MTS Link", "---", "", `# ${e.name}`, "",
+          `msg-count: ${msgs.length}`, "---", "", `# ${e.name}`, "",
         ];
         let lastDate = "";
         for (const m of msgs) {

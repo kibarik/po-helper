@@ -1,7 +1,7 @@
 # Эталон промоута — pulse-promote
 
 Источник сигналов: `../../pulse-radar/examples/ideal_radar.md` (обезличенный).
-Радар-нота: `GROUND/PULSE/radar/2026-01-15-pulse-radar.md` (window 2026-01-13..2026-01-15, 4 сигнала).
+Радар-нота: `GROUND/PULSE/radar/2026-01-15-pulse-radar.md` (window 2026-01-13..2026-01-15, 5 сигналов).
 
 ## Список кандидатов (шаг 5)
 
