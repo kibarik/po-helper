@@ -1,0 +1,46 @@
+@startuml
+title Жизненный цикл контроля БФТ на доске Backlog (статус задачи)
+
+skinparam defaultFontName Helvetica
+skinparam shadowing false
+skinparam ArrowColor #33668E
+skinparam ArrowFontColor #4A5866
+skinparam state {
+  BorderColor #33668E
+  BackgroundColor #EAF2F8
+  FontColor #1C2530
+  AttributeFontColor #5B6672
+}
+
+[*] --> To_Do
+
+state "To Do" as To_Do : взят на контроль, пайплайн не начат
+state "In Progress" as In_Progress : идёт пайплайн /bft-value…/bft-validate
+state "Wait for Review" as Wait : черновик БФТ у внешнего PO (заказчик, приёмщик) на приёмке требований
+state "Accepted" as Accepted : внешний PO одобрил; все правки внесены и учтены в БФТ
+state "Done" as Done : отгружено (JIRA + Confluence)
+
+To_Do --> In_Progress : /bft-value (старт)
+In_Progress --> In_Progress : стадии 1..7\ncheck AC
+In_Progress --> Wait : /bft-validate 🟢/🟡\n→ отдать внешнему PO
+
+Wait --> Accepted : ОДОБРЕНО
+note on link #D6F0DD
+  ОБЯЗАТЕЛЬНО append-notes:
+  кто одобрил · когда · замечания
+  Accepted — ТОЛЬКО когда все
+  правки внесены и учтены в БФТ
+end note
+
+Wait --> In_Progress : ОТКАЗАНО
+note on link #F7D9D9
+  ОБЯЗАТЕЛЬНО append-notes:
+  кто отказал · какие правки
+  на следующую итерацию
+  → priority = high
+end note
+
+Accepted --> Done : /bft-deliver
+Done --> [*]
+
+@enduml

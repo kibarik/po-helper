@@ -142,6 +142,76 @@
 
 ---
 
+## § Синхронизация с доской (Backlog.md control)
+
+Доска Backlog.md — операционное зеркало этого пайплайна: состояние каждого БФТ видно на доске, PO не теряет ни один БФТ из контекста. **Это единственный источник механики синхронизации** — командные файлы `bft-*.md` только ссылаются сюда.
+
+**Два измерения задачи `bft`:**
+- **status задачи = контроль процесса** (жизненный цикл, 5 состояний).
+- **чек-лист AC = стадии пайплайна** (`value`…`deliver`).
+
+**Пять состояний контроля** (только для label `bft`): `To Do → In Progress → Wait for Review → Accepted → Done`.
+
+Чек-лист AC 1-based, порядок фиксирован (как в `--ac` при создании): 1 `value` · 2 `context-gen` · 3 `ext-teams` · 4 `problem` · 5 `concept` · 6 `debate` · 7 `constraints` · 8 `draft` · 9 `validate` · 10 `deliver`. `--check-ac`/`--uncheck-ac` принимают **индекс, не имя** (backlog 1.44).
+
+| Стадия (команда) | AC отметить (индекс) | status после стадии |
+|---|---|---|
+| `/bft-value` | `--check-ac 1` (value) | `In Progress` (**find-or-create** задачи) |
+| `/bft-context-gen` · `/bft-context-gen-deep` | `--check-ac 2` (context-gen) | `In Progress` |
+| `/bft-ext-teams` | `--check-ac 3` (ext-teams) | `In Progress` |
+| `/bft-problem` | `--check-ac 4` (problem) | `In Progress` |
+| `/bft-concept` | `--check-ac 5` (concept) | `In Progress` |
+| `/bft-debate` | `--check-ac 6` (debate); забраковано → `--uncheck-ac 5` (concept) | `In Progress` |
+| `/bft-constraints` | `--check-ac 7` (constraints) | `In Progress` |
+| `/bft-draft` | `--check-ac 8` (draft) | `In Progress` |
+| `/bft-validate` | `--check-ac 9` (validate); 🔴 → `--uncheck-ac 8` (draft) | 🟢/🟡 → `Wait for Review`; 🔴 → `In Progress` |
+| приёмка внешним PO (§ ниже) | — | `Accepted` / отказ → `In Progress` |
+| `/bft-deliver` | `--check-ac 10` (deliver) | `Done` |
+
+**Find-or-create (на стадии `/bft-value`):**
+```bash
+# ищем задачу этого эпика (в backlog 1.44 `task list` не фильтрует по label —
+# грепаем по коду эпика в заголовке; заголовок bft-задачи всегда «БФТ <epic_code> …»)
+backlog task list --plain | grep -i "<epic_code>"
+# нет → создаём с полным чек-листом стадий
+backlog task create "БФТ <epic_code> — <название>" -l bft -s "In Progress" \
+  -d "Артефакт: bft_documentation/<epic_code>/ · трекер: <jira_key>" \
+  --ac value --ac context-gen --ac ext-teams --ac problem --ac concept \
+  --ac debate --ac constraints --ac draft --ac validate --ac deliver
+```
+Задача уже есть → переиспользуем её id, второй раз не создаём. То же доступно через `mcp__backlog__task_create` / `mcp__backlog__task_list`.
+
+**Отметка стадии** (после каждой стадии, на STOP-паузе):
+```bash
+backlog task edit <task-id> --check-ac <N>          # N — позиция стадии в чек-листе (value=1…deliver=10)
+backlog task edit <task-id> -s "In Progress"        # если меняется status
+backlog task edit <task-id> --append-notes "стадия <name>: <краткий итог/где остановились>"
+```
+Возврат на шаг назад (дебаты забраковали / валидация 🔴) → `--uncheck-ac <N>`, status остаётся `In Progress`.
+
+**Развилка приёмки (Wait for Review) — обязательный аудит.**
+После `/bft-validate` 🟢/🟡: status → `Wait for Review`, черновик уходит внешнему PO (заказчику).
+- **ОДОБРЕНО** → **обязательно** `--append-notes "одобрил {кто} · {когда} · замечания {…}"`. Status → `Accepted` **только когда все правки внесены и учтены в БФТ**. Одобрение с замечаниями само по себе ≠ `Accepted`, пока замечания не внесены.
+  ```bash
+  backlog task edit <task-id> --append-notes "одобрил {кто} · {дата} · замечания {…}"
+  backlog task edit <task-id> -s "Accepted"     # только после внесения всех правок
+  ```
+- **ОТКАЗАНО** → **обязательно** `--append-notes "отказал {кто} · правки на следующую итерацию {…}"`, затем новая итерация с повышенным приоритетом:
+  ```bash
+  backlog task edit <task-id> --append-notes "отказал {кто} · правки {…}"
+  backlog task edit <task-id> --uncheck-ac 9 --priority high -s "In Progress"
+  ```
+Замечания ревью также питают Lessons Learned (`resources/review_feedback.md`, принцип 14).
+
+**Отгрузка** (`/bft-deliver`): предусловие — задача в `Accepted`. После публикации:
+```bash
+backlog task edit <task-id> --check-ac 10 -s "Done"
+```
+
+**Правила:** доска отражает, а не решает (валидность — за hard gates/Светофором); содержание требований на доску не копируем (только ссылки/коды/пути); повторный вызов синхронизации идемпотентен (find-or-create, notes только добавляют).
+
+---
+
 ## Главное правило процесса
 
 **STOP после каждой стадии.** Не лети до финала. После `/bft-context-gen`, `/bft-problem`, `/bft-concept`, `/bft-draft` — выводи результат и ожидаешь решения PO/СА. Только так pipeline = sa-helper по качеству, а не «генерация за один промт».
