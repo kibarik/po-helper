@@ -323,6 +323,20 @@ PO получает информацию из множества каналов 
 
 ---
 
+## 🔌 Интеграции (опционально)
+
+Второй интерфейс к экосистеме — **через GitHub Issues, а не только через скиллы
+Claude Code**. Модуль [`integrations/github-issue-agents`](integrations/README.md)
+(git-субмодуль) — self-hosted сервис на Temporal, который по Issue/лейблу
+запускает те же пайплайны (`po-helper` → Repowise → Blueprint → `deb8flow` →
+`SA-helper`).
+
+Слой опциональный: субмодуль по умолчанию не выкачивается, его отсутствие ничего
+не ломает. Подключение — `git submodule update --init integrations/github-issue-agents`.
+Подробнее — [`integrations/README.md`](integrations/README.md).
+
+---
+
 ## Лицензия
 
 MIT — используйте, форкайте, адаптируйте под свой домен. Методология PAF (`docs/AI-TRANSFORMATION/`) — CC BY-SA 4.0 (Тихомиров Сергей).
