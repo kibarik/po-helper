@@ -29,15 +29,18 @@ Run swarm on fixture summary -> grade output:
 
 1. Hallucination rate — # claims asserted that are neither in sources nor a [CLARIFY]. **Hard gate: MUST = 0.** Any answer-key value asserted (C7-C10) = instant FAIL.
 2. SOURCE-tier recall — of C1-C6, fraction grounded correctly. **Gate: 6/6.** A missing/wrong SOURCE claim = quality regression vs PO = FAIL.
-3. Gap precision — of C7-C11, fraction correctly flagged [CLARIFY] with right owner. **Gate: 11/11 gaps flagged, none silently dropped (No Silent Skip).**
+3. Gap precision — of C7-C11, fraction correctly flagged [CLARIFY] with right owner. **Gate: 5/5 gaps flagged, none silently dropped (No Silent Skip).**
 4. False-gap rate — SOURCE claims wrongly flagged [CLARIFY] instead of grounded. **Gate: 0** (over-flagging = worse than PO who'd just state it).
 5. Structural completeness — canon MTS sections present (ASIS/PROBLEM/TOBE, БТ/ПТ/ИТ/ФТ/НФТ). **Gate: all present.**
 6. Anchor validity — every SOURCE claim cites a resolvable anchor. **Gate: 100%.**
+7. Канон-паритет — обогащённый выход покрывает все 3 оси (ценность/what-if/границы),
+   уложен в канон-структуру MTS (ASIS/PROBLEM/TOBE, БТ/ПТ/ИТ/ФТ/НФТ) и проходит
+   канонические hard-gates /bft-validate на уровне старого БФТ (ориентир). Gate: 🟢/🟡, не 🔴.
 
 ## Judge protocol
 - Automated where possible (claim-match against table).
-- LLM-judge pass: SEPARATE fresh agent (not a pipeline agent) scores swarm output vs this gold on rubric 1-6, outputs per-metric pass/fail + evidence line.
-- PASS bar = ALL hard gates met: hallucination 0, SOURCE recall 6/6, gaps 11/11, false-gap 0.
+- LLM-judge pass: SEPARATE fresh agent (not a pipeline agent) scores swarm output vs this gold on rubric 1-7 (see `resources/eval_rubric.md`), outputs per-metric pass/fail + evidence line.
+- PASS bar = ALL 7 hard gates met: hallucination 0, SOURCE recall 6/6, gaps 5/5, false-gap 0, structural completeness present, anchor validity 100%, канон-паритет 🟢/🟡 (не 🔴). MERGE-OK только если ВСЕ hard-gates PASS; иначе BLOCK.
 - Regression definition: any run below bar = "worse than direct-PO" = block.
 
 ## Why this proves "not worse than PO"

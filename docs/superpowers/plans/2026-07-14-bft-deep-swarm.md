@@ -549,7 +549,7 @@ git commit -m "feat(bft-deep): конфиг deep_lane + ruflo namespace + пор
 
 Run: исполнить `/bft-deep .claude/skills/bft-deep-swarm/examples/golden_deep_summary.md golden-refund` → получить `<epic>.md`.
 Затем дать СВЕЖЕМУ судье (по `resources/eval_rubric.md`) этот вывод + `examples/golden_deep_gold.md`.
-Expected: 7 метрик → все hard-gates PASS → `MERGE-OK`. Особо: hallucination=0 (C7-C10 как `[УТОЧНИТЬ]`, не значения answer-key), SOURCE-recall 6/6, gaps 11/11.
+Expected: 7 метрик → все hard-gates PASS → `MERGE-OK`. Особо: hallucination=0 (C7-C10 как `[УТОЧНИТЬ]`, не значения answer-key), SOURCE-recall 6/6, gaps 5/5.
 
 - [ ] **Step 2: Если BLOCK — чинить скилл, не рубрику**
 

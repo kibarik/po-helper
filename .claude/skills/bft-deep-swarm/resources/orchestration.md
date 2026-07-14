@@ -3,7 +3,7 @@
 ## ruflo-контракт (координация)
 - `swarm_init(topology=hierarchical)` — один swarm на прогон; swarmId в память.
 - `agent_spawn(agentType per роль, model=opus для lead/verify, sonnet для worker)` — cost-tracking + memory на стадию.
-- `memory_store/retrieve(namespace="bft-deep/<epic_slug>")` — shared fact-base + хендофф артефактов.
+- `memory_store/retrieve(namespace="{ruflo.namespace_prefix}/<epic_slug>")` (дефолт `bft-deep`) — shared fact-base + хендофф артефактов.
 - `coordination_consensus` — вердикт дебатов + грудинг-споры.
 - **Degradation:** ошибка любого ruflo-tool → native-Task исполнение + файловый хендофф `artefacts/` + лог в error-callback. ruflo down ≠ прогон прерван.
 
@@ -23,4 +23,4 @@
 8. validate: /bft-validate — hard-gates + Светофор. Convergence-stop (grounding_verifier.md §convergence).
 9. citation: grounding_verifier.md §forced-citation.
 10. review: свежий агент, весь документ против канон-ориентира.
-11. emit: workspace/<epic_slug>/<epic_slug>.md + artefacts/ + нотификация (deep_fork.md §нотификация).
+11. emit: {bft_store|workspace}/<epic_slug>/<epic_slug>.md (резолв пути — SKILL.md §Резолв конфига) + artefacts/ + нотификация (deep_fork.md §нотификация).

@@ -25,7 +25,7 @@ Merge-гейт качества — `resources/eval_rubric.md`.
 Читать `.claude/domain-profile.md` (нет → `domain-profile.template.md` + `[УТОЧНИТЬ]`, без остановки):
 - `paths.bft_store` / workspace (куда `<epic_slug>/<epic_slug>.md`);
 - `models.deep_lane` (опц.; нет → модель сессии);
-- ruflo namespace `bft-deep/<epic_slug>` (§ orchestration);
+- ruflo namespace `{ruflo.namespace_prefix}/<epic_slug>` (дефолт `bft-deep`) (§ orchestration);
 - `stakeholders`, `capacity.roster_source` (владельцы `[УТОЧНИТЬ]`).
 
 ## Голос
