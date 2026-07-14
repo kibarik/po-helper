@@ -20,6 +20,7 @@
 | **Задача в JIRA** | `/jira-task` | Свободный текст → задача в JIRA по шаблону (Образ результата/ASIS/ПРОБЛЕМА/TOBE) + relevance-ссылки | [SKILL](.claude/skills/jira-task/SKILL.md) |
 | **Инфо-каналы** | `/channel-map` · `/channel-list` · `/channel-route` | Реестр каналов поступления информации + разметка входящего (источник → стейкхолдеры/тема/участок/цель → роутинг) | [SKILL](.claude/skills/info-channels/SKILL.md) |
 | **Summary встреч** | `/summary [транскрипт]` | Выжимка транскрипта созвона в `#summary`-заметку (Тема / Проблема / Ключевое / Договорённости) → .md в папку оперативных сведений | [SKILL](.claude/skills/summary/SKILL.md) |
+| **Сводка к дейлику** | `/daily-brief [окно]` ⏰ | Read-only дайджест ПЕРЕД стендапом: «кто что сделал» за сутки из трекера (JIRA MCP) + сверка обязательств прошлого дейлика (PULSE) и Backlog → copy-ready сообщение по людям (эмодзи @username → что сделал → вопрос к дейлику), сгруппированное по Sprint Goal/KR, + блок «на кого смотреть» + план PO. Годна на cron. Зеркало `/daily-review` (brief ДО, review ПОСЛЕ) | [SKILL](.claude/skills/daily-brief/SKILL.md) |
 | **Дейлики** | `/daily-review [транскрипт]` | Разбор стендапа в папку-снапшот PULSE: прогресс к цели спринта + plain-text блокеры (по KR отгрузки в Production + актуальные даты) + реестр обязательств (сделал/не сделал→новый план) + перемещения карточек; проекция обязательств/блокеров/договорённостей в личный планнер Backlog.md как SMART-задачи | [SKILL](.claude/skills/daily-review/SKILL.md) |
 | **Контекст** | `/po-research` | Контекст-пак уровня Deep Research | [SKILL](.claude/skills/po-research/SKILL.md) |
 | **Релизы** | `/release-frame` · `/release-baseline` · `/release-sync` ⏰ · `/release-gate` | Управление обязательством и дрейфом объёма ≥ 2 спринтов | [SKILL](.claude/skills/release-guard/SKILL.md) |
@@ -346,6 +347,20 @@ PO получает информацию из множества каналов 
 | якорь `code:line` | якорь трекер/PO/wiki/roadmap |
 
 Механика качества идентична; отличается источник «якорей истины».
+
+---
+
+## 🔌 Интеграции (опционально)
+
+Второй интерфейс к экосистеме — **через GitHub Issues, а не только через скиллы
+Claude Code**. Модуль [`integrations/github-issue-agents`](integrations/README.md)
+(git-субмодуль) — self-hosted сервис на Temporal, который по Issue/лейблу
+запускает те же пайплайны (`po-helper` → Repowise → Blueprint → `deb8flow` →
+`SA-helper`).
+
+Слой опциональный: субмодуль по умолчанию не выкачивается, его отсутствие ничего
+не ломает. Подключение — `git submodule update --init integrations/github-issue-agents`.
+Подробнее — [`integrations/README.md`](integrations/README.md).
 
 ---
 

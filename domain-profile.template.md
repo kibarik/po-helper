@@ -63,6 +63,8 @@ paths:
   summary_notes: "GROUND/PULSE/summaries"
   # Корень заметок созвонов (/daily-review). Один прогон = папка {type}-{ГГГГ-ММ-ДД-ЧЧММ}/ с report.md + blockers.md + commitments.md + sprint-pulse.md
   meeting_notes: "GROUND/PULSE/meetings"
+  # Корень сводок перед дейликом (/daily-brief). Один прогон = файл daily-brief-{ГГГГ-ММ-ДД-ЧЧММ}.md (read-only дайджест активности за сутки)
+  brief_notes: "GROUND/PULSE/briefs"
 ```
 
 ## 1a. Планнер PO (planner)
