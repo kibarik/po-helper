@@ -1,6 +1,6 @@
 # Перенос Pulse-pipeline (чаты → радар → промоут) в po-helper — дизайн
 
-> Дата: 2026-07-13 · Автор: PO (Ишманов) + Claude · Статус: спека на ревью
+> Дата: 2026-07-13 · Автор: PO + Claude · Статус: спека на ревью
 > Контекст: цепочка разработана и обкатана в инстансе `mts-po-workspace` — скиллы
 > `chat-watch → chat-sync → link-radar → radar-promote` + node-тул `tools/mts-link-chat-sync`.
 > Задача — вынести generic-слой в фреймворк po-helper, чтобы любой пользователь получал

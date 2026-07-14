@@ -7,7 +7,7 @@
 ## Имя файла
 
 ```
-{radar_notes}/{ГГГГ-ММ-ДД}-pulse-radar.md
+{pulse_radar_dir}/{ГГГГ-ММ-ДД}-pulse-radar.md
 ```
 
 где дата = дата прогона скилла.

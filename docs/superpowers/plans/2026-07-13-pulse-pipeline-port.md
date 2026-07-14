@@ -10,7 +10,7 @@
 
 ## Global Constraints
 
-- **Источник (порт из):** `/Users/aleksishmanov/.superset/worktrees/71127651-8584-4849-82d8-40aade7ac975/chat-analytics-llm-export` — далее `$SRC`.
+- **Источник (порт из):** локальный worktree исходного инстанса (`mts-po-workspace`) — далее `$SRC`.
 - **Целевой репо:** `~/projects/po-helper` — далее `$PO`. Все git-операции из `$PO`.
 - **Ветка:** `feat/pulse-pipeline-port` от `origin/main` (уже создана).
 - **Нейминг:** `link-radar` → `pulse-radar`; `radar-promote` → `pulse-promote`. `chat-watch`/`chat-sync` имена сохраняются. People Radar (`/radar-calibrate|graph|review`, `nexus-calibration`) НЕ трогать.
@@ -394,7 +394,7 @@ LC_ALL=C sed -i '' -e 's/radar-promote/pulse-promote/g' -e 's/link-radar/pulse-r
 Применить Edit-ы к `$PO/.claude/skills/pulse-promote/resources/promote_rules.md`:
 
 Edit A — owner в шаблоне узла:
-- old: `owner: Ишманов Алексей Юрьевич`
+- old: `owner: <ФИО PO — было захардкожено в источнике>`
 - new: `owner: <po_name из .claude/domain-profile.md>`
 
 Edit B — owns_node в шаблоне узла:

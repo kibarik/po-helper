@@ -54,6 +54,29 @@ def test_adapters_emit_contract_type():
     assert not hits, f"адаптер пишет устаревший type: mts-chat вместо contract type: chat-dump: {hits}"
 
 
+def test_no_stale_radar_notes_key_in_pulse_skills():
+    # канонический ключ каталога радар-нот — paths.pulse_radar_dir;
+    # старое имя radar_notes из исходного link-radar не должно остаться (рассинхрон с профилем)
+    hits = []
+    for p in _skill_files():
+        if "radar_notes" in p.read_text(encoding="utf-8"):
+            hits.append(str(p.relative_to(REPO)))
+    assert not hits, f"стейл-ключ radar_notes (нужен pulse_radar_dir): {hits}"
+
+
+def test_pulse_docs_have_no_absolute_home_path():
+    # план/спека шиппятся через install.sh — не должны нести абсолютный путь с именем ОС-пользователя
+    docs = [
+        REPO / "docs/superpowers/plans/2026-07-13-pulse-pipeline-port.md",
+        REPO / "docs/superpowers/specs/2026-07-13-pulse-pipeline-port-design.md",
+    ]
+    hits = []
+    for p in docs:
+        if p.is_file() and "/Users/" in p.read_text(encoding="utf-8"):
+            hits.append(str(p.relative_to(REPO)))
+    assert not hits, f"абсолютный /Users/-путь (PII) в pulse-доках: {hits}"
+
+
 def test_no_absolute_tools_path_outside_adapter():
     # skill bodies must not carry absolute ~/tools или ~/.mts-link-sync пути;
     # адаптер (tools/adapters/mts-link/) намеренно вне scope этой проверки

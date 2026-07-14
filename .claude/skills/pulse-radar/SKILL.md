@@ -30,7 +30,7 @@ inputs:
   prev_radar:    "GROUND/PULSE/radar/"                 # последняя заметка — для дедупа [NEW]/[идёт]
 
 outputs:
-  radar_notes:   "paths.radar_notes из .claude/domain-profile.md"
+  pulse_radar_dir:   "paths.pulse_radar_dir из .claude/domain-profile.md"
   default:       "GROUND/PULSE/radar"
   filename:      "{ГГГГ-ММ-ДД}-pulse-radar.md"         # дата = дата прогона
 ```
@@ -89,7 +89,7 @@ outputs:
 
 7. **Дедуп.** Прочитать **последнюю** заметку в `GROUND/PULSE/radar/` (по имени файла). Сигнал, которого там не было → метка `[NEW]`. Сигнал, который там присутствовал и продолжается → `[идёт]`. Первый прогон (папка пустая) → все сигналы `[NEW]`.
 
-8. **Рендер.** Разложить сигналы по 6 секциям (порядок и формат из `resources/radar_format.md`). Собрать frontmatter: `window`, `chats_scanned`, `signals_count`. Записать один файл в `{radar_notes}/{ГГГГ-ММ-ДД}-pulse-radar.md`.
+8. **Рендер.** Разложить сигналы по 6 секциям (порядок и формат из `resources/radar_format.md`). Собрать frontmatter: `window`, `chats_scanned`, `signals_count`. Записать один файл в `{pulse_radar_dir}/{ГГГГ-ММ-ДД}-pulse-radar.md`.
 
 9. **Отчёт PO.** Показать в чат: сколько сигналов, сколько `[NEW]`, путь к файлу. Топ-3 🔴/🚧 — вывести явно. Ждать подтверждения PO.
 
