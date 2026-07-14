@@ -340,6 +340,23 @@ models:
 
 ---
 
+## 10. ruflo + bft-deep (V2 БФТ-конвейер) — опц.
+
+Координация фонового Deep-конвейера (skill `bft-deep-swarm`) и порог адаптивного форка `/bft-fast`. Отсутствует → дефолты навыка.
+
+```yaml
+ruflo:
+  # namespace_prefix: префикс memory-namespace ruflo (полный: <prefix>/<epic_slug>).
+  namespace_prefix: "bft-deep"
+bft_deep:
+  # context_probe: порог richness контекста для адаптивного форка (RICH → Deep параллельно Fast; THIN → Deep после Fast).
+  context_probe:
+    rich_min_facts: 8            # мин. фактов в Summary для RICH
+    require_epic_for_rich: false # JIRA-эпик не обязателен для RICH
+```
+
+---
+
 ## Как команды используют профиль
 
 1. Каждая команда на «Этапе 1: Загрузка контекста» читает `.claude/domain-profile.md`.
