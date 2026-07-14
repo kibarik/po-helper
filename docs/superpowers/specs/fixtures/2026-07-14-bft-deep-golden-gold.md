@@ -1,6 +1,6 @@
 # Eval fixture — GOLD (reference = direct-PO quality bar)
 
-Input: `bft-deep-eval-fixture-summary.md`
+Input: `2026-07-14-bft-deep-golden-summary.md`
 Purpose: prove swarm BFT quality is NOT worse than direct-PO interaction.
 
 ## Two-tier annotated claim table
