@@ -35,7 +35,9 @@ upstream_bft: docs/superpowers/specs/2026-07-13-bft-fast-draft-first-bft.md
 │   │   ├── extraction_schema.md    схема сущностей извлечения из Summary
 │   │   └── demo_synthesis.md       как строить How to demo (E2E от лица пользователя)
 │   └── examples/
-│       └── golden_letter.md        эталон (Приложение A upstream-БФТ)
+│       ├── golden_summary.md       эталонный вход (Приложение A upstream-БФТ)
+│       ├── golden_letter.md        эталонный выход (Приложение A upstream-БФТ)
+│       └── thin_summary.md         тонкий Summary — крайний случай (§12)
 └── commands/bft-fast.md            точка входа /bft-fast <источник>
 ```
 
@@ -156,7 +158,7 @@ PO ──/bft-fast <источник>──▶ [resolve СТ-1..4]
 
 ## 13. Артефакты репо (что создаём/меняем)
 
-Создаём: `skills/bft-fast/{SKILL.md, resources/letter_format.md, resources/extraction_schema.md, resources/demo_synthesis.md, examples/golden_letter.md}`, `commands/bft-fast.md`.
+Создаём: `skills/bft-fast/{SKILL.md, resources/letter_format.md, resources/extraction_schema.md, resources/demo_synthesis.md, examples/golden_summary.md, examples/golden_letter.md, examples/thin_summary.md}`, `commands/bft-fast.md`.
 Меняем (аддитивно, опц.): `domain-profile.template.md` — зарезервировать `models.fast_lane` с комментарием.
 Не трогаем: существующие `bft-*` команды и `skills/bft-writer/*` (НФТ-6).
 
