@@ -11,7 +11,7 @@
 |---|---|---|---|
 | 1 | Hallucination | =0 | любое answer-key значение (C7-C10) утверждается без `[УТОЧНИТЬ]`; либо claim не из sources и не помечен |
 | 2 | SOURCE-recall | полный | любой C1-C6 отсутствует/искажён |
-| 3 | Gaps flagged | все | любой PO-ONLY (C7-C11) не помечен `[УТОЧНИТЬ]` (No Silent Skip) |
+| 3 | Gaps flagged | все | любой PO-ONLY (C7-C11) не помечен `[УТОЧНИТЬ]` ИЛИ помечен неверным владельцем vs claim-table (No Silent Skip + right owner) |
 | 4 | False-gap | =0 | SOURCE-факт ошибочно в `[УТОЧНИТЬ]` |
 | 5 | Canon-структура | present | нет секции ASIS/PROBLEM/TOBE или БТ/ПТ/ИТ/ФТ/НФТ |
 | 6 | Anchor validity | 100% | SOURCE-claim без резолвимого якоря |
