@@ -12,7 +12,7 @@
 1. swarm_init + seed (Fast-черновик или полный контекст) → memory. Vague вход → шире `[УТОЧНИТЬ]`.
 
 ### DEEP (обогащение seed)
-2. context: /bft-context-gen-deep (parallel JIRA/Confluence/repowise/ADR/стейкхолдеры). Per-source fallback: timeout/403 → источник=UNAVAILABLE; claim оттуда → `[УТОЧНИТЬ]`, никогда «пусто=нет данных». Memory-audit гейтит фактбазу.
+2. context: /bft-context-gen-deep (канонический навык, уже существует в репо — `.claude/commands/bft-context-gen-deep.md`; не создаётся этим PR, переиспользуется) (parallel JIRA/Confluence/repowise/ADR/стейкхолдеры). Per-source fallback: timeout/403 → источник=UNAVAILABLE; claim оттуда → `[УТОЧНИТЬ]`, никогда «пусто=нет данных». Memory-audit гейтит фактбазу.
 3. value: ось 1 (enrichment.md §Ценность). bft-value.
 4. what-if: ось 2 (enrichment.md §What-if).
 5. bounds: ось 3 (enrichment.md §Границы).
