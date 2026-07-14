@@ -39,8 +39,8 @@ Run swarm on fixture summary -> grade output:
 
 ## Judge protocol
 - Automated where possible (claim-match against table).
-- LLM-judge pass: SEPARATE fresh agent (not a pipeline agent) scores swarm output vs this gold on rubric 1-6, outputs per-metric pass/fail + evidence line.
-- PASS bar = ALL hard gates met: hallucination 0, SOURCE recall 6/6, gaps 11/11, false-gap 0.
+- LLM-judge pass: SEPARATE fresh agent (not a pipeline agent) scores swarm output vs this gold on rubric 1-7 (see `resources/eval_rubric.md`), outputs per-metric pass/fail + evidence line.
+- PASS bar = ALL 7 hard gates met: hallucination 0, SOURCE recall 6/6, gaps 11/11, false-gap 0, structural completeness present, anchor validity 100%, канон-паритет 🟢/🟡 (не 🔴). MERGE-OK только если ВСЕ hard-gates PASS; иначе BLOCK.
 - Regression definition: any run below bar = "worse than direct-PO" = block.
 
 ## Why this proves "not worse than PO"
