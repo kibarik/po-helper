@@ -323,6 +323,8 @@ adapt_backlog_init() {
     [ -f "$TARGET/backlog/docs/operational-hq.md" ] || \
       cp "$TARGET/backlog-ops.template.md" "$TARGET/backlog/docs/operational-hq.md"
   fi
+  # Pulse-pipeline: каталоги радара и intake чатов
+  mkdir -p "$TARGET/GROUND/PULSE/radar" "$TARGET/GROUND/_intake/chats"
 }
 adapt_backlog_init
 
@@ -361,3 +363,4 @@ echo "   Дальше (рассуждающие шаги — за /paf-install):
 echo "   1) заполнить .claude/domain-profile.md  →  /paf-init (интервью + засев GROUND)"
 echo "   2) Reload Window в IDE — команды и MCP-серверы подхватятся"
 echo "   3) OKR: /okr-context-gen <quarter> · БФТ: /bft-context-gen <epic> · Спринт: /sprint-roadmap <quarter>"
+echo "   • (опц.) чат-адаптер: tools/adapters/mts-link — npm install && npm run login (не ставится авто)"

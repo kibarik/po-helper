@@ -63,7 +63,24 @@ paths:
   summary_notes: "GROUND/PULSE/summaries"
   # Корень заметок созвонов (/daily-review). Один прогон = папка {type}-{ГГГГ-ММ-ДД-ЧЧММ}/ с report.md + blockers.md + commitments.md + sprint-pulse.md
   meeting_notes: "GROUND/PULSE/meetings"
+  # Pulse-радар (навык pulse-radar): датированные радар-ноты из чат-дампов
+  pulse_radar_dir: "GROUND/PULSE/radar"
 ```
+
+## 1b. Источники чатов (info_sources)
+
+Откуда `/chat-sync` берёт сообщения. Пусто → ручной drop дампов по контракту
+(`.claude/skills/chat-sync/resources/chat_dump_contract.md`).
+
+```yaml
+info_sources:
+  # адаптер выгрузки чатов; "" → ручной режим. Референс-адаптер: tools/adapters/mts-link (opt-in)
+  chat_adapter: ""
+  # куда адаптер пишет дампы (вход /pulse-radar)
+  chat_intake_dir: "GROUND/_intake/chats"
+```
+
+---
 
 ## 1a. Планнер PO (planner)
 

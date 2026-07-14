@@ -29,3 +29,9 @@ deploy/pr-agent/github-app/pr-agent/
 deploy/pr-agent/cron/.env
 deploy/pr-agent/cron/state/
 deploy/pr-agent/cron/run.log
+
+# opt-in чат-адаптеры (node-зависимости и секреты не коммитим)
+tools/adapters/*/node_modules/
+tools/adapters/*/.env
+tools/adapters/*/auth.json
+tools/adapters/*/.last-chats.json
